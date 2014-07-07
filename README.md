@@ -106,3 +106,15 @@ namespace MySolution.WebProject.Models
 	}
 }
 ```
+
+#### Screen Shots
+
+Code Generator
+
+![Code Generator](/docs/CodeGenerator.png)
+
+Connection String Builder
+
+![Connection String Builder](/docs/ConnectionStringBuilder.png)
+
+
