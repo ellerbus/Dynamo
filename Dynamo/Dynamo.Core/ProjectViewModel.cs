@@ -55,6 +55,10 @@ namespace Dynamo.Core
         public void NewProject()
         {
             Project = new Project();
+
+            Templates = null;
+
+            Tables = null;
         }
 
         /// <summary>

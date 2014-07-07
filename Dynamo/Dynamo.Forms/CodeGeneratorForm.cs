@@ -89,6 +89,8 @@ namespace Dynamo.Forms
             ViewModel.NewProject();
 
             viewModelBindingSource.ResetCurrentItem();
+
+            mainTabControl.SelectedTab = tableTabPage;
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
