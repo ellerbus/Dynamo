@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Augment;
 using DatabaseSchemaReader.DataSchema;
-using NOX;
 using Dynamo.Core;
 
 namespace Dynamo.Forms
@@ -22,13 +23,19 @@ namespace Dynamo.Forms
 
             Font = SystemFonts.MessageBoxFont;
 
-            viewModelBindingSource.DataSource = new ProjectViewModel();
+            viewModelBindingSource.DataSource = new GeneratorViewModel();
+
+            GeneratorViewModel.ProgressChanged += GeneratorViewModel_ProgressChanged;
 
             DataTable dt = DbProviderFactories.GetFactoryClasses();
 
             string[] providers = dt.Rows.OfType<DataRow>().Select(x => x["InvariantName"] as string).OrderBy(x => x).ToArray();
 
             dataProviderComboBox.DataSource = providers;
+
+            linesOfCodeBindingSource.DataSource = new LinesOfCodeViewModel();
+
+            LinesOfCodeViewModel.ProgressChanged += LinesOfCodeViewModel_ProgressChanged;
         }
 
         #endregion
@@ -41,9 +48,9 @@ namespace Dynamo.Forms
             {
                 f.Description = "Select Folder...";
 
-                if (Directory.Exists(ViewModel.SolutionFile))
+                if (Directory.Exists(GeneratorViewModel.SolutionFile))
                 {
-                    f.SelectedPath = ViewModel.Project.SolutionPath;
+                    f.SelectedPath = GeneratorViewModel.Project.SolutionPath;
                 }
                 else
                 {
@@ -52,7 +59,7 @@ namespace Dynamo.Forms
 
                 if (f.ShowDialog(this) == DialogResult.OK)
                 {
-                    ViewModel.TemplateFolder = f.SelectedPath;
+                    GeneratorViewModel.TemplateFolder = f.SelectedPath;
 
                     solutionLinkLabel.DataBindings[0].ReadValue();
                     templateLinkLabel.DataBindings[0].ReadValue();
@@ -69,11 +76,49 @@ namespace Dynamo.Forms
 
                 if (f.ShowDialog(this) == DialogResult.OK)
                 {
-                    ViewModel.SolutionFile = f.FileName;
+                    GeneratorViewModel.SolutionFile = f.FileName;
 
                     solutionLinkLabel.DataBindings[0].ReadValue();
                     templateLinkLabel.DataBindings[0].ReadValue();
+
+                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
                 }
+            }
+        }
+
+        private void LinesOfCodeViewModel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Application.DoEvents();
+
+            if (InvokeRequired)
+            {
+                Action<string> a = new Action<string>(x => linesOfCodeStatusLabel.Text = x);
+
+                Invoke(a, e.UserState as string);
+            }
+            else
+            {
+                linesOfCodeStatusLabel.Text = e.UserState as string;
+
+                Application.DoEvents();
+            }
+        }
+
+        private void GeneratorViewModel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Application.DoEvents();
+
+            if (InvokeRequired)
+            {
+                Action<string> a = new Action<string>(x => generatorStatusLabel.Text = x);
+
+                Invoke(a, e.UserState as string);
+            }
+            else
+            {
+                generatorStatusLabel.Text = e.UserState as string;
+
+                Application.DoEvents();
             }
         }
 
@@ -86,7 +131,7 @@ namespace Dynamo.Forms
                 return;
             }
 
-            ViewModel.NewProject();
+            GeneratorViewModel.NewProject();
 
             viewModelBindingSource.ResetCurrentItem();
 
@@ -107,21 +152,21 @@ namespace Dynamo.Forms
                 ofd.AddExtension = true;
                 ofd.CheckPathExists = true;
                 ofd.CheckFileExists = true;
-                ofd.DefaultExt = Project.FileExtension;
-                ofd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(Project.FileExtension);
+                ofd.DefaultExt = GeneratorProject.FileExtension;
+                ofd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
                 ofd.Multiselect = false;
                 ofd.Title = "Open File...";
 
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
-                    ViewModel.OpenProject(ofd.FileName);
+                    GeneratorViewModel.OpenProject(ofd.FileName);
 
                     viewModelBindingSource.ResetCurrentItem();
 
                     Action action = new Action(() => {
                         Cursor = Cursors.WaitCursor;
 
-                        ViewModel.RefreshSchema();
+                        GeneratorViewModel.RefreshSchema();
 
                         mainTabControl.SelectedTab = tableTabPage;
 
@@ -130,6 +175,8 @@ namespace Dynamo.Forms
 
                     Invoke(action);
 
+                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
+
                     Application.DoEvents();
                 }
             }
@@ -137,9 +184,9 @@ namespace Dynamo.Forms
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ViewModel.IsValidFileName)
+            if (GeneratorViewModel.IsValidFileName)
             {
-                ViewModel.SaveProject();
+                GeneratorViewModel.SaveProject();
             }
             else
             {
@@ -153,7 +200,7 @@ namespace Dynamo.Forms
 
             if (f != null)
             {
-                ViewModel.SaveAsProject(f);
+                GeneratorViewModel.SaveAsProject(f);
             }
         }
 
@@ -190,19 +237,19 @@ namespace Dynamo.Forms
 
             if (tables.Count > 0)
             {
-                ViewModel.Generate(tables, files);
+                GeneratorViewModel.Generate(tables, files);
             }
 
-            ViewModel.Current = 0;
+            GeneratorViewModel.Current = 0;
 
             Cursor = Cursors.Default;
         }
 
         private void refreshTablesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (ViewModel.IsConnectionStringValid)
+            if (GeneratorViewModel.IsConnectionStringValid)
             {
-                ViewModel.RefreshSchema();
+                GeneratorViewModel.RefreshSchema();
             }
         }
 
@@ -237,7 +284,7 @@ namespace Dynamo.Forms
         /// NULL if the operation should be cancelled</returns>
         private bool? CheckForSave()
         {
-            if (ViewModel.Project.IsDirty)
+            if (GeneratorViewModel.Project.IsDirty)
             {
                 DialogResult mbr = MessageBox.Show(this,
                     "Would you like to save the current Project?",
@@ -249,9 +296,9 @@ namespace Dynamo.Forms
                 switch (mbr)
                 {
                     case DialogResult.Yes:
-                        if (ViewModel.IsValidFileName)
+                        if (GeneratorViewModel.IsValidFileName)
                         {
-                            ViewModel.SaveProject();
+                            GeneratorViewModel.SaveProject();
                         }
                         else
                         {
@@ -263,7 +310,7 @@ namespace Dynamo.Forms
                                 return null;
                             }
 
-                            ViewModel.SaveAsProject(f);
+                            GeneratorViewModel.SaveAsProject(f);
                         }
                         return true;
 
@@ -284,8 +331,8 @@ namespace Dynamo.Forms
             {
                 sfd.AddExtension = true;
                 sfd.CheckPathExists = true;
-                sfd.DefaultExt = Project.FileExtension;
-                sfd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(Project.FileExtension);
+                sfd.DefaultExt = GeneratorProject.FileExtension;
+                sfd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
                 sfd.OverwritePrompt = true;
                 sfd.Title = "Save File...";
 
@@ -302,9 +349,14 @@ namespace Dynamo.Forms
 
         #region Properties
 
-        private ProjectViewModel ViewModel
+        private GeneratorViewModel GeneratorViewModel
         {
-            get { return viewModelBindingSource.DataSource as ProjectViewModel; }
+            get { return viewModelBindingSource.DataSource as GeneratorViewModel; }
+        }
+
+        private LinesOfCodeViewModel LinesOfCodeViewModel
+        {
+            get { return linesOfCodeBindingSource.DataSource as LinesOfCodeViewModel; }
         }
 
         #endregion

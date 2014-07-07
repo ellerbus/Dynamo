@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{215B5BF9-FA44-42D0-B767-536D212DEDF3}</ProjectGuid>
+    <ProjectGuid>{8ADC2ABC-ACCD-48B8-920A-3B952DA516A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dynamo.Tests</RootNamespace>
@@ -35,18 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DatabaseSchemaReader">
-      <HintPath>..\packages\DatabaseSchemaReader.1.3.3.0\lib\net40\DatabaseSchemaReader.dll</HintPath>
-    </Reference>
-    <Reference Include="DotLiquid">
-      <HintPath>..\packages\DotLiquid.1.8.0\lib\NET45\DotLiquid.dll</HintPath>
-    </Reference>
-    <Reference Include="EnsureThat">
-      <HintPath>..\packages\Ensure.That.1.0.0\lib\portable-win+net40+sl40+wp71\EnsureThat.dll\EnsureThat.dll</HintPath>
-    </Reference>
-    <Reference Include="NOX">
-      <HintPath>..\packages\dotNetObjectExtensionLibrary.1.3.7\lib\net45\NOX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -70,9 +58,6 @@
       <Project>{f2515151-5e19-41fa-9afb-fe7f4382d981}</Project>
       <Name>Dynamo.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

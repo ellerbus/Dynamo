@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace Dynamo.Core
@@ -11,7 +6,7 @@ namespace Dynamo.Core
     /// <summary>
     /// 
     /// </summary>
-    public class Project
+    public class GeneratorProject
     {
         #region Members
 

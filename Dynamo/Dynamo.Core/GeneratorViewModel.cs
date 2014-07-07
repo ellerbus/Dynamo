@@ -5,17 +5,17 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Augment;
 using DatabaseSchemaReader;
 using DatabaseSchemaReader.DataSchema;
 using EnsureThat;
-using NOX;
 
 namespace Dynamo.Core
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProjectViewModel : INotifyPropertyChanged
+    public class GeneratorViewModel : INotifyPropertyChanged
     {
         #region Members
 
@@ -26,13 +26,18 @@ namespace Dynamo.Core
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public event ProgressChangedEventHandler ProgressChanged;
+
         #endregion
 
         #region Constructor
 
-        public ProjectViewModel()
+        public GeneratorViewModel()
         {
-            Project = new Project();
+            Project = new GeneratorProject();
         }
 
         #endregion
@@ -49,12 +54,20 @@ namespace Dynamo.Core
             }
         }
 
+        private void OnProgressChanged(string message)
+        {
+            if (ProgressChanged != null)
+            {
+                ProgressChanged(this, new ProgressChangedEventArgs(0, message));
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
         public void NewProject()
         {
-            Project = new Project();
+            Project = new GeneratorProject();
 
             Templates = null;
 
@@ -75,9 +88,9 @@ namespace Dynamo.Core
 
             using (StreamReader sr = new StreamReader(FileName))
             {
-                XmlSerializer s = new XmlSerializer(typeof(Project));
+                XmlSerializer s = new XmlSerializer(typeof(GeneratorProject));
 
-                Project = s.Deserialize(sr) as Project;
+                Project = s.Deserialize(sr) as GeneratorProject;
 
                 LoadTemplateFiles();
 
@@ -92,7 +105,7 @@ namespace Dynamo.Core
         {
             using (StreamWriter sw = new StreamWriter(FileName))
             {
-                XmlSerializer s = new XmlSerializer(typeof(Project));
+                XmlSerializer s = new XmlSerializer(typeof(GeneratorProject));
 
                 s.Serialize(sw, Project);
 
@@ -127,7 +140,7 @@ namespace Dynamo.Core
 
             foreach (GeneratorTable table in tables)
             {
-                Message = "Working {0}".FormatArgs(table.Name);
+                OnProgressChanged("Working {0}".FormatArgs(table.Name));
 
                 foreach (string inPath in files)
                 {
@@ -150,11 +163,13 @@ namespace Dynamo.Core
                 }
             }
 
-            Message = "";
+            OnProgressChanged("");
         }
 
         public void RefreshSchema()
         {
+            OnProgressChanged("Refreshing Schema...");
+
             using (DatabaseReader dr = new DatabaseReader(ConnectionString, DataProvider))
             {
                 Tables = dr.AllTables();
@@ -163,6 +178,8 @@ namespace Dynamo.Core
 
                 OnPropertyChanged("Tables");
             }
+
+            OnProgressChanged("");
         }
 
         private void LoadTemplateFiles()
@@ -222,7 +239,7 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
-        public Project Project { get; set; }
+        public GeneratorProject Project { get; set; }
 
         /// <summary>
         /// 
@@ -445,16 +462,6 @@ namespace Dynamo.Core
             set { _total = value; OnPropertyChanged("Total"); }
         }
         private int _total;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Message
-        {
-            get { return _message; }
-            set { _message = value; OnPropertyChanged("Message"); }
-        }
-        private string _message;
 
         #endregion
     }

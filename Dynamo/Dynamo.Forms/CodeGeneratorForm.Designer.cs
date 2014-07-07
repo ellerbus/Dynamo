@@ -30,6 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeGeneratorForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,7 +52,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.templateLinkLabel = new System.Windows.Forms.LinkLabel();
             this.generateButton = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tableTabPage = new System.Windows.Forms.TabPage();
             this.tablesDataGridView = new System.Windows.Forms.DataGridView();
@@ -58,12 +61,24 @@
             this.displayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileInfoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.linesOfCodeTabPage = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.extensionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.commentsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.blankDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.linesOfCodeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.connectionStringTextBox = new System.Windows.Forms.TextBox();
             this.dataProviderComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.connectionStringButton = new System.Windows.Forms.Button();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.linesOfCodeStatusLabel = new System.Windows.Forms.Label();
+            this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.generatorStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).BeginInit();
             this.mainTabControl.SuspendLayout();
@@ -71,6 +86,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).BeginInit();
             this.templateTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).BeginInit();
+            this.linesOfCodeTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).BeginInit();
+            this.mainStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -193,7 +212,7 @@
             // 
             // viewModelBindingSource
             // 
-            this.viewModelBindingSource.DataSource = typeof(Dynamo.Core.ProjectViewModel);
+            this.viewModelBindingSource.DataSource = typeof(Dynamo.Core.GeneratorViewModel);
             // 
             // label1
             // 
@@ -242,18 +261,6 @@
             this.generateButton.UseVisualStyleBackColor = true;
             this.generateButton.Click += new System.EventHandler(this.generateButton_Click);
             // 
-            // progressBar
-            // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.viewModelBindingSource, "Current", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", this.viewModelBindingSource, "Total", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.progressBar.Location = new System.Drawing.Point(116, 163);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(481, 10);
-            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar.TabIndex = 7;
-            // 
             // mainTabControl
             // 
             this.mainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -261,10 +268,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainTabControl.Controls.Add(this.tableTabPage);
             this.mainTabControl.Controls.Add(this.templateTabPage);
+            this.mainTabControl.Controls.Add(this.linesOfCodeTabPage);
             this.mainTabControl.Location = new System.Drawing.Point(13, 186);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(759, 264);
+            this.mainTabControl.Size = new System.Drawing.Size(759, 237);
             this.mainTabControl.TabIndex = 8;
             // 
             // tableTabPage
@@ -312,7 +320,7 @@
             this.templateTabPage.Location = new System.Drawing.Point(4, 22);
             this.templateTabPage.Name = "templateTabPage";
             this.templateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.templateTabPage.Size = new System.Drawing.Size(751, 238);
+            this.templateTabPage.Size = new System.Drawing.Size(751, 194);
             this.templateTabPage.TabIndex = 1;
             this.templateTabPage.Text = "Templates";
             this.templateTabPage.UseVisualStyleBackColor = true;
@@ -362,6 +370,91 @@
             this.fileInfoDataGridViewTextBoxColumn.Name = "fileInfoDataGridViewTextBoxColumn";
             this.fileInfoDataGridViewTextBoxColumn.ReadOnly = true;
             this.fileInfoDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // linesOfCodeTabPage
+            // 
+            this.linesOfCodeTabPage.Controls.Add(this.linesOfCodeStatusLabel);
+            this.linesOfCodeTabPage.Controls.Add(this.dataGridView1);
+            this.linesOfCodeTabPage.Location = new System.Drawing.Point(4, 22);
+            this.linesOfCodeTabPage.Name = "linesOfCodeTabPage";
+            this.linesOfCodeTabPage.Size = new System.Drawing.Size(751, 211);
+            this.linesOfCodeTabPage.TabIndex = 2;
+            this.linesOfCodeTabPage.Text = "Lines of Code";
+            this.linesOfCodeTabPage.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.extensionDataGridViewTextBoxColumn,
+            this.commentsDataGridViewTextBoxColumn,
+            this.blankDataGridViewTextBoxColumn,
+            this.codeDataGridViewTextBoxColumn,
+            this.totalDataGridViewTextBoxColumn});
+            this.dataGridView1.DataMember = "LinesOfCodeMetrics";
+            this.dataGridView1.DataSource = this.linesOfCodeBindingSource;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 6);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(739, 177);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // extensionDataGridViewTextBoxColumn
+            // 
+            this.extensionDataGridViewTextBoxColumn.DataPropertyName = "Extension";
+            this.extensionDataGridViewTextBoxColumn.HeaderText = "Extension";
+            this.extensionDataGridViewTextBoxColumn.Name = "extensionDataGridViewTextBoxColumn";
+            this.extensionDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // commentsDataGridViewTextBoxColumn
+            // 
+            this.commentsDataGridViewTextBoxColumn.DataPropertyName = "Comments";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle1.Format = "N0";
+            this.commentsDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.commentsDataGridViewTextBoxColumn.HeaderText = "Comments";
+            this.commentsDataGridViewTextBoxColumn.Name = "commentsDataGridViewTextBoxColumn";
+            this.commentsDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // blankDataGridViewTextBoxColumn
+            // 
+            this.blankDataGridViewTextBoxColumn.DataPropertyName = "Blank";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "N0";
+            this.blankDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            this.blankDataGridViewTextBoxColumn.HeaderText = "Blank";
+            this.blankDataGridViewTextBoxColumn.Name = "blankDataGridViewTextBoxColumn";
+            this.blankDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // codeDataGridViewTextBoxColumn
+            // 
+            this.codeDataGridViewTextBoxColumn.DataPropertyName = "Code";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "N0";
+            this.codeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            this.codeDataGridViewTextBoxColumn.HeaderText = "Code";
+            this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
+            this.codeDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // totalDataGridViewTextBoxColumn
+            // 
+            this.totalDataGridViewTextBoxColumn.DataPropertyName = "Total";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N0";
+            this.totalDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            this.totalDataGridViewTextBoxColumn.HeaderText = "Total";
+            this.totalDataGridViewTextBoxColumn.Name = "totalDataGridViewTextBoxColumn";
+            this.totalDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // linesOfCodeBindingSource
+            // 
+            this.linesOfCodeBindingSource.DataSource = typeof(Dynamo.Core.LinesOfCodeViewModel);
             // 
             // connectionStringTextBox
             // 
@@ -415,11 +508,55 @@
             this.connectionStringButton.UseVisualStyleBackColor = true;
             this.connectionStringButton.Click += new System.EventHandler(this.connectionStringButton_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.viewModelBindingSource, "Current", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", this.viewModelBindingSource, "Total", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.progressBar.Location = new System.Drawing.Point(116, 163);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(481, 10);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 7;
+            // 
+            // linesOfCodeStatusLabel
+            // 
+            this.linesOfCodeStatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.linesOfCodeStatusLabel.Location = new System.Drawing.Point(3, 186);
+            this.linesOfCodeStatusLabel.Name = "linesOfCodeStatusLabel";
+            this.linesOfCodeStatusLabel.Size = new System.Drawing.Size(742, 23);
+            this.linesOfCodeStatusLabel.TabIndex = 14;
+            this.linesOfCodeStatusLabel.Text = "...";
+            this.linesOfCodeStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mainToolTip.SetToolTip(this.linesOfCodeStatusLabel, "Connection String to connect to your ADO.NET data source");
+            // 
+            // mainStatusStrip
+            // 
+            this.mainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generatorStatusLabel});
+            this.mainStatusStrip.Location = new System.Drawing.Point(0, 440);
+            this.mainStatusStrip.Name = "mainStatusStrip";
+            this.mainStatusStrip.Size = new System.Drawing.Size(784, 22);
+            this.mainStatusStrip.TabIndex = 16;
+            this.mainStatusStrip.Text = "statusStrip1";
+            // 
+            // generatorStatusLabel
+            // 
+            this.generatorStatusLabel.AutoSize = false;
+            this.generatorStatusLabel.Name = "generatorStatusLabel";
+            this.generatorStatusLabel.Size = new System.Drawing.Size(738, 17);
+            this.generatorStatusLabel.Spring = true;
+            this.generatorStatusLabel.Text = "...";
+            this.generatorStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // CodeGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 462);
+            this.Controls.Add(this.mainStatusStrip);
             this.Controls.Add(this.connectionStringButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -446,6 +583,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).EndInit();
             this.templateTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).EndInit();
+            this.linesOfCodeTabPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).EndInit();
+            this.mainStatusStrip.ResumeLayout(false);
+            this.mainStatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -469,7 +611,6 @@
         private System.Windows.Forms.LinkLabel templateLinkLabel;
         private System.Windows.Forms.ToolStripMenuItem generateCodeFilesToolStripMenuItem;
         private System.Windows.Forms.Button generateButton;
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolStripMenuItem refreshTablesToolStripMenuItem;
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage tableTabPage;
@@ -487,5 +628,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fileInfoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn displayDataGridViewTextBoxColumn1;
         private System.Windows.Forms.ToolTip mainToolTip;
+        private System.Windows.Forms.TabPage linesOfCodeTabPage;
+        private System.Windows.Forms.BindingSource linesOfCodeBindingSource;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn extensionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn commentsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn blankDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn totalDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label linesOfCodeStatusLabel;
+        private System.Windows.Forms.StatusStrip mainStatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel generatorStatusLabel;
     }
 }
