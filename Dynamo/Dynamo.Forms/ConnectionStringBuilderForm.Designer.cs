@@ -33,17 +33,18 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dictionaryPairBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.connectionPropertiesDataGridView = new System.Windows.Forms.DataGridView();
             this.keyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.dictionaryPairBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.connectionPropertiesDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dictionaryPairBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.Location = new System.Drawing.Point(669, 393);
             this.cancelButton.Name = "cancelButton";
@@ -54,6 +55,7 @@
             // 
             // okButton
             // 
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Location = new System.Drawing.Point(583, 393);
             this.okButton.Name = "okButton";
@@ -62,25 +64,24 @@
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // connectionPropertiesDataGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.connectionPropertiesDataGridView.AllowUserToAddRows = false;
+            this.connectionPropertiesDataGridView.AllowUserToDeleteRows = false;
+            this.connectionPropertiesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectionPropertiesDataGridView.AutoGenerateColumns = false;
+            this.connectionPropertiesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.connectionPropertiesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.keyDataGridViewTextBoxColumn,
             this.valueDataGridViewTextBoxColumn,
             this.typeDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.dictionaryPairBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(737, 375);
-            this.dataGridView1.TabIndex = 3;
-            // 
-            // dictionaryPairBindingSource
-            // 
-            this.dictionaryPairBindingSource.DataSource = typeof(Dynamo.Forms.DictionaryBindingPair);
+            this.connectionPropertiesDataGridView.DataSource = this.dictionaryPairBindingSource;
+            this.connectionPropertiesDataGridView.Location = new System.Drawing.Point(12, 12);
+            this.connectionPropertiesDataGridView.Name = "connectionPropertiesDataGridView";
+            this.connectionPropertiesDataGridView.Size = new System.Drawing.Size(737, 375);
+            this.connectionPropertiesDataGridView.TabIndex = 3;
             // 
             // keyDataGridViewTextBoxColumn
             // 
@@ -111,6 +112,10 @@
             this.typeDataGridViewTextBoxColumn.ReadOnly = true;
             this.typeDataGridViewTextBoxColumn.Width = 56;
             // 
+            // dictionaryPairBindingSource
+            // 
+            this.dictionaryPairBindingSource.DataSource = typeof(Dynamo.Forms.DictionaryBindingPair);
+            // 
             // ConnectionStringBuilderForm
             // 
             this.AcceptButton = this.okButton;
@@ -118,14 +123,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(761, 436);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.connectionPropertiesDataGridView);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.cancelButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ConnectionStringBuilderForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Connection String Builder";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.connectionPropertiesDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dictionaryPairBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -136,7 +141,7 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.BindingSource dictionaryPairBindingSource;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView connectionPropertiesDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn keyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn typeDataGridViewTextBoxColumn;
