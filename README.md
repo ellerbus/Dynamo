@@ -50,7 +50,7 @@ namespace {{ PROJECT }}.Models
 		///	Gets / Sets database column '{{ column.name }}' (primary key)
 		///	</summary>
 		[Column("{{ column.name }}"), Key]
-		public {{ column.clr_type }} {{ column.short_name | pascal | remove:BASECLASS }} { get; set; }
+		public {{ column.clr_type }} {{ column.name | pascal | remove:BASECLASS }} { get; set; }
 		
 		{% endfor -%}
 		
@@ -62,7 +62,7 @@ namespace {{ PROJECT }}.Models
 		///	Gets / Sets database column '{{ column.name }}'
 		///	</summary>
 		[Column("{{ column.name }}")]
-		public {{ column.clr_type }} {{ column.short_name | pascal }} { get; set; }
+		public {{ column.clr_type }} {{ column.name | pascal }} { get; set; }
 
 		{% endif %}{% endfor -%}
 
