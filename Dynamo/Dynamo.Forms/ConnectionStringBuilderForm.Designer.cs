@@ -46,7 +46,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(669, 393);
+            this.cancelButton.Location = new System.Drawing.Point(692, 419);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(80, 31);
             this.cancelButton.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(583, 393);
+            this.okButton.Location = new System.Drawing.Point(606, 419);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(80, 31);
             this.okButton.TabIndex = 2;
@@ -80,7 +80,7 @@
             this.connectionPropertiesDataGridView.DataSource = this.dictionaryPairBindingSource;
             this.connectionPropertiesDataGridView.Location = new System.Drawing.Point(12, 12);
             this.connectionPropertiesDataGridView.Name = "connectionPropertiesDataGridView";
-            this.connectionPropertiesDataGridView.Size = new System.Drawing.Size(737, 375);
+            this.connectionPropertiesDataGridView.Size = new System.Drawing.Size(760, 401);
             this.connectionPropertiesDataGridView.TabIndex = 3;
             // 
             // keyDataGridViewTextBoxColumn
@@ -122,11 +122,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(761, 436);
+            this.ClientSize = new System.Drawing.Size(784, 462);
             this.Controls.Add(this.connectionPropertiesDataGridView);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.cancelButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "ConnectionStringBuilderForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Connection String Builder";

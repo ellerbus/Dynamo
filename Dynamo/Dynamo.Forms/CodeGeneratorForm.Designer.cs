@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeGeneratorForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,10 +48,10 @@
             this.templateLinkLabel = new System.Windows.Forms.LinkLabel();
             this.generateButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.mainTabControl = new System.Windows.Forms.TabControl();
+            this.tableTabPage = new System.Windows.Forms.TabPage();
             this.tablesDataGridView = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.templateTabPage = new System.Windows.Forms.TabPage();
             this.templatesDataGridView = new System.Windows.Forms.DataGridView();
             this.connectionStringTextBox = new System.Windows.Forms.TextBox();
             this.dataProviderComboBox = new System.Windows.Forms.ComboBox();
@@ -59,29 +59,29 @@
             this.label4 = new System.Windows.Forms.Label();
             this.connectionStringButton = new System.Windows.Forms.Button();
             this.viewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.displayDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.displayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileInfoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.menuStrip1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.displayDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mainMenuStrip.SuspendLayout();
+            this.mainTabControl.SuspendLayout();
+            this.tableTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.templateTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // mainMenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(761, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(784, 24);
+            this.mainMenuStrip.TabIndex = 0;
+            this.mainMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -177,12 +177,13 @@
             // 
             // solutionLinkLabel
             // 
-            this.solutionLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.solutionLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.solutionLinkLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.solutionLinkLabel.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.viewModelBindingSource, "SolutionFile", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.solutionLinkLabel.Location = new System.Drawing.Point(116, 82);
             this.solutionLinkLabel.Name = "solutionLinkLabel";
-            this.solutionLinkLabel.Size = new System.Drawing.Size(633, 23);
+            this.solutionLinkLabel.Size = new System.Drawing.Size(656, 23);
             this.solutionLinkLabel.TabIndex = 2;
             this.solutionLinkLabel.TabStop = true;
             this.solutionLinkLabel.Text = "linkLabel1";
@@ -209,12 +210,13 @@
             // 
             // templateLinkLabel
             // 
-            this.templateLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.templateLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.templateLinkLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.templateLinkLabel.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.viewModelBindingSource, "TemplateFolder", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.templateLinkLabel.Location = new System.Drawing.Point(116, 114);
             this.templateLinkLabel.Name = "templateLinkLabel";
-            this.templateLinkLabel.Size = new System.Drawing.Size(633, 23);
+            this.templateLinkLabel.Size = new System.Drawing.Size(656, 23);
             this.templateLinkLabel.TabIndex = 5;
             this.templateLinkLabel.TabStop = true;
             this.templateLinkLabel.Text = "linkLabel1";
@@ -225,7 +227,7 @@
             // 
             this.generateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.generateButton.DataBindings.Add(new System.Windows.Forms.Binding("Enabled", this.viewModelBindingSource, "CanGenerate", true));
-            this.generateButton.Location = new System.Drawing.Point(595, 157);
+            this.generateButton.Location = new System.Drawing.Point(618, 157);
             this.generateButton.Name = "generateButton";
             this.generateButton.Size = new System.Drawing.Size(154, 23);
             this.generateButton.TabIndex = 6;
@@ -235,38 +237,39 @@
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.viewModelBindingSource, "Current", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.progressBar.DataBindings.Add(new System.Windows.Forms.Binding("Maximum", this.viewModelBindingSource, "Total", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.progressBar.Location = new System.Drawing.Point(116, 157);
+            this.progressBar.Location = new System.Drawing.Point(116, 163);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(458, 10);
+            this.progressBar.Size = new System.Drawing.Size(481, 10);
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 7;
             // 
-            // tabControl1
+            // mainTabControl
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.mainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(13, 186);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(736, 238);
-            this.tabControl1.TabIndex = 8;
+            this.mainTabControl.Controls.Add(this.tableTabPage);
+            this.mainTabControl.Controls.Add(this.templateTabPage);
+            this.mainTabControl.Location = new System.Drawing.Point(13, 186);
+            this.mainTabControl.Name = "mainTabControl";
+            this.mainTabControl.SelectedIndex = 0;
+            this.mainTabControl.Size = new System.Drawing.Size(759, 264);
+            this.mainTabControl.TabIndex = 8;
             // 
-            // tabPage1
+            // tableTabPage
             // 
-            this.tabPage1.Controls.Add(this.tablesDataGridView);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(728, 212);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tables";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tableTabPage.Controls.Add(this.tablesDataGridView);
+            this.tableTabPage.Location = new System.Drawing.Point(4, 22);
+            this.tableTabPage.Name = "tableTabPage";
+            this.tableTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.tableTabPage.Size = new System.Drawing.Size(751, 238);
+            this.tableTabPage.TabIndex = 0;
+            this.tableTabPage.Text = "Tables";
+            this.tableTabPage.UseVisualStyleBackColor = true;
             // 
             // tablesDataGridView
             // 
@@ -285,19 +288,19 @@
             this.tablesDataGridView.Name = "tablesDataGridView";
             this.tablesDataGridView.ReadOnly = true;
             this.tablesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tablesDataGridView.Size = new System.Drawing.Size(716, 200);
+            this.tablesDataGridView.Size = new System.Drawing.Size(739, 226);
             this.tablesDataGridView.TabIndex = 0;
             // 
-            // tabPage2
+            // templateTabPage
             // 
-            this.tabPage2.Controls.Add(this.templatesDataGridView);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(728, 212);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Templates";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.templateTabPage.Controls.Add(this.templatesDataGridView);
+            this.templateTabPage.Location = new System.Drawing.Point(4, 22);
+            this.templateTabPage.Name = "templateTabPage";
+            this.templateTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.templateTabPage.Size = new System.Drawing.Size(751, 238);
+            this.templateTabPage.TabIndex = 1;
+            this.templateTabPage.Text = "Templates";
+            this.templateTabPage.UseVisualStyleBackColor = true;
             // 
             // templatesDataGridView
             // 
@@ -318,7 +321,7 @@
             this.templatesDataGridView.Name = "templatesDataGridView";
             this.templatesDataGridView.ReadOnly = true;
             this.templatesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.templatesDataGridView.Size = new System.Drawing.Size(716, 200);
+            this.templatesDataGridView.Size = new System.Drawing.Size(739, 226);
             this.templatesDataGridView.TabIndex = 3;
             // 
             // connectionStringTextBox
@@ -328,7 +331,7 @@
             this.connectionStringTextBox.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.viewModelBindingSource, "ConnectionString", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.connectionStringTextBox.Location = new System.Drawing.Point(116, 54);
             this.connectionStringTextBox.Name = "connectionStringTextBox";
-            this.connectionStringTextBox.Size = new System.Drawing.Size(597, 20);
+            this.connectionStringTextBox.Size = new System.Drawing.Size(620, 20);
             this.connectionStringTextBox.TabIndex = 12;
             // 
             // dataProviderComboBox
@@ -362,7 +365,8 @@
             // 
             // connectionStringButton
             // 
-            this.connectionStringButton.Location = new System.Drawing.Point(719, 52);
+            this.connectionStringButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.connectionStringButton.Location = new System.Drawing.Point(742, 52);
             this.connectionStringButton.Name = "connectionStringButton";
             this.connectionStringButton.Size = new System.Drawing.Size(30, 23);
             this.connectionStringButton.TabIndex = 15;
@@ -373,19 +377,11 @@
             // 
             this.viewModelBindingSource.DataSource = typeof(Dynamo.Core.ProjectViewModel);
             // 
-            // displayDataGridViewTextBoxColumn1
-            // 
-            this.displayDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.displayDataGridViewTextBoxColumn1.DataPropertyName = "Name";
-            this.displayDataGridViewTextBoxColumn1.HeaderText = "Display";
-            this.displayDataGridViewTextBoxColumn1.Name = "displayDataGridViewTextBoxColumn1";
-            this.displayDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // displayDataGridViewTextBoxColumn
             // 
             this.displayDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.displayDataGridViewTextBoxColumn.DataPropertyName = "Display";
-            this.displayDataGridViewTextBoxColumn.HeaderText = "Display";
+            this.displayDataGridViewTextBoxColumn.HeaderText = "Select Template Files to Use";
             this.displayDataGridViewTextBoxColumn.Name = "displayDataGridViewTextBoxColumn";
             this.displayDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -405,34 +401,43 @@
             this.fileInfoDataGridViewTextBoxColumn.ReadOnly = true;
             this.fileInfoDataGridViewTextBoxColumn.Visible = false;
             // 
+            // displayDataGridViewTextBoxColumn1
+            // 
+            this.displayDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.displayDataGridViewTextBoxColumn1.DataPropertyName = "Name";
+            this.displayDataGridViewTextBoxColumn1.HeaderText = "Select Tables to Use When Generating";
+            this.displayDataGridViewTextBoxColumn1.Name = "displayDataGridViewTextBoxColumn1";
+            this.displayDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
             // CodeGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 436);
+            this.ClientSize = new System.Drawing.Size(784, 462);
             this.Controls.Add(this.connectionStringButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.connectionStringTextBox);
             this.Controls.Add(this.dataProviderComboBox);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.mainTabControl);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.generateButton);
             this.Controls.Add(this.templateLinkLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.solutionLinkLabel);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.mainMenuStrip);
+            this.MainMenuStrip = this.mainMenuStrip;
+            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "CodeGeneratorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Code Geneator";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
+            this.mainTabControl.ResumeLayout(false);
+            this.tableTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.templateTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -442,7 +447,7 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
@@ -460,20 +465,20 @@
         private System.Windows.Forms.Button generateButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.ToolStripMenuItem refreshTablesToolStripMenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl mainTabControl;
+        private System.Windows.Forms.TabPage tableTabPage;
+        private System.Windows.Forms.TabPage templateTabPage;
         private System.Windows.Forms.BindingSource viewModelBindingSource;
         private System.Windows.Forms.DataGridView tablesDataGridView;
         private System.Windows.Forms.DataGridView templatesDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn displayDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fileInfoDataGridViewTextBoxColumn;
         private System.Windows.Forms.TextBox connectionStringTextBox;
         private System.Windows.Forms.ComboBox dataProviderComboBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button connectionStringButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn displayDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fileInfoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn displayDataGridViewTextBoxColumn1;
     }
 }

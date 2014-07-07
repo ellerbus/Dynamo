@@ -121,6 +121,8 @@ namespace Dynamo.Forms
 
                         ViewModel.RefreshSchema();
 
+                        mainTabControl.SelectedTab = tableTabPage;
+
                         Cursor = Cursors.Default;
                     });
 
