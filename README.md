@@ -31,7 +31,7 @@ CREATE TABLE MEMBER
 
 ```
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Web{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.WebProject{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
 using System.ComponentModel.DataAnnotations;
