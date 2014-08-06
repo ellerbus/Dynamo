@@ -61,7 +61,7 @@ namespace Dynamo.Core
         private bool? _hasIdentity;
 
         /// <summary>
-        /// An Identity in SqlNOX schema must be IsIdentity &amp; IsPrimaryKey
+        /// An Identity in Dynamo schema must be IsIdentity &amp; IsPrimaryKey
         /// </summary>
         public GeneratorColumn Identity
         {

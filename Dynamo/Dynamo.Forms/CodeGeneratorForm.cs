@@ -153,7 +153,7 @@ namespace Dynamo.Forms
                 ofd.CheckPathExists = true;
                 ofd.CheckFileExists = true;
                 ofd.DefaultExt = GeneratorProject.FileExtension;
-                ofd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
+                ofd.Filter = "Dynamo Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
                 ofd.Multiselect = false;
                 ofd.Title = "Open File...";
 
@@ -332,7 +332,7 @@ namespace Dynamo.Forms
                 sfd.AddExtension = true;
                 sfd.CheckPathExists = true;
                 sfd.DefaultExt = GeneratorProject.FileExtension;
-                sfd.Filter = "SqlNOX Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
+                sfd.Filter = "Dynamo Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
                 sfd.OverwritePrompt = true;
                 sfd.Title = "Save File...";
 
