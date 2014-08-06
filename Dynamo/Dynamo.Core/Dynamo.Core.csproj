@@ -64,6 +64,7 @@
     <Compile Include="LinesOfCodeViewModel.cs" />
     <Compile Include="GeneratorProject.cs" />
     <Compile Include="GeneratorViewModel.cs" />
+    <Compile Include="Pluralizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

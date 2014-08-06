@@ -31,6 +31,16 @@ namespace Dynamo.Core
 
         #region Methods
 
+        public static string Plural(string input)
+        {
+            return Pluralizer.ToPlural(input);
+        }
+
+        public static string Singular(string input)
+        {
+            return Pluralizer.ToSingular(input);
+        }
+
         public static string LPad(string input, int pad)
         {
             return input.PadLeft(pad, ' ');
