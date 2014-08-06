@@ -1,4 +1,5 @@
-﻿using DatabaseSchemaReader.DataSchema;
+﻿using System;
+using DatabaseSchemaReader.DataSchema;
 
 namespace Dynamo.Core
 {
@@ -32,7 +33,14 @@ namespace Dynamo.Core
 
             SqlType = column.DbDataType;
 
+            Type t = Type.GetType(column.DataType.NetDataType);
+
             ClrType = column.DataType.NetDataTypeCSharpName;
+
+            if (IsNullable && t.IsValueType)
+            {
+                ClrType += "?";
+            }
         }
 
         /// <summary>
