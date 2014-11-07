@@ -1,0 +1,43 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
+using System;
+using System.Diagnostics;
+
+namespace {{ PROJECT }}.Models
+{
+	///	<summary>
+	///
+	///	</summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	public partial class {{ BASECLASS }}
+	{
+		#region ToString
+
+		///	<summary>
+		///	DebuggerDisplay for this object
+		///	</summary>
+		private string DebuggerDisplay
+		{
+			get
+			{
+				string key = "[" + {% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";	
+				
+				return string.Format("{0}{1}={2}", GetType().Name, key, "Description");
+			}
+		}
+		
+		#endregion
+
+		#region Foreign Key Properties
+		{% for column in table.foreign_keys %}
+		/////	<summary>
+		/////	Gets / Sets the foreign key to '{{ column.name }}'
+		/////	</summary>
+		//public {{ column.name | remove:'_id' | pascal }} {{ column.name | remove:'_id' | pascal }} { get; internal set; }
+		
+		{% endfor -%}
+		
+		#endregion
+	}
+}
