@@ -45,7 +45,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateCodeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solutionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.viewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -62,6 +62,7 @@
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileInfoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.linesOfCodeTabPage = new System.Windows.Forms.TabPage();
+            this.linesOfCodeStatusLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.extensionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.commentsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -76,7 +77,6 @@
             this.connectionStringButton = new System.Windows.Forms.Button();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.linesOfCodeStatusLabel = new System.Windows.Forms.Label();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.generatorStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainMenuStrip.SuspendLayout();
@@ -175,7 +175,7 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateCodeFilesToolStripMenuItem,
-            this.refreshTablesToolStripMenuItem});
+            this.refreshToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -184,16 +184,16 @@
             // 
             this.generateCodeFilesToolStripMenuItem.Name = "generateCodeFilesToolStripMenuItem";
             this.generateCodeFilesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.generateCodeFilesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.generateCodeFilesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.generateCodeFilesToolStripMenuItem.Text = "&Generate Code Files...";
             this.generateCodeFilesToolStripMenuItem.Click += new System.EventHandler(this.generateCodeFilesToolStripMenuItem_Click);
             // 
-            // refreshTablesToolStripMenuItem
+            // refreshToolStripMenuItem
             // 
-            this.refreshTablesToolStripMenuItem.Name = "refreshTablesToolStripMenuItem";
-            this.refreshTablesToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.refreshTablesToolStripMenuItem.Text = "&Refresh Tables";
-            this.refreshTablesToolStripMenuItem.Click += new System.EventHandler(this.refreshTablesToolStripMenuItem_Click);
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.refreshToolStripMenuItem.Text = "&Refresh Tables / Templates";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // solutionLinkLabel
             // 
@@ -281,7 +281,7 @@
             this.tableTabPage.Location = new System.Drawing.Point(4, 22);
             this.tableTabPage.Name = "tableTabPage";
             this.tableTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tableTabPage.Size = new System.Drawing.Size(751, 238);
+            this.tableTabPage.Size = new System.Drawing.Size(751, 211);
             this.tableTabPage.TabIndex = 0;
             this.tableTabPage.Text = "Tables";
             this.tableTabPage.UseVisualStyleBackColor = true;
@@ -320,7 +320,7 @@
             this.templateTabPage.Location = new System.Drawing.Point(4, 22);
             this.templateTabPage.Name = "templateTabPage";
             this.templateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.templateTabPage.Size = new System.Drawing.Size(751, 194);
+            this.templateTabPage.Size = new System.Drawing.Size(751, 211);
             this.templateTabPage.TabIndex = 1;
             this.templateTabPage.Text = "Templates";
             this.templateTabPage.UseVisualStyleBackColor = true;
@@ -381,6 +381,18 @@
             this.linesOfCodeTabPage.TabIndex = 2;
             this.linesOfCodeTabPage.Text = "Lines of Code";
             this.linesOfCodeTabPage.UseVisualStyleBackColor = true;
+            // 
+            // linesOfCodeStatusLabel
+            // 
+            this.linesOfCodeStatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.linesOfCodeStatusLabel.Location = new System.Drawing.Point(3, 186);
+            this.linesOfCodeStatusLabel.Name = "linesOfCodeStatusLabel";
+            this.linesOfCodeStatusLabel.Size = new System.Drawing.Size(742, 23);
+            this.linesOfCodeStatusLabel.TabIndex = 14;
+            this.linesOfCodeStatusLabel.Text = "...";
+            this.linesOfCodeStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.mainToolTip.SetToolTip(this.linesOfCodeStatusLabel, "Connection String to connect to your ADO.NET data source");
             // 
             // dataGridView1
             // 
@@ -520,18 +532,6 @@
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 7;
             // 
-            // linesOfCodeStatusLabel
-            // 
-            this.linesOfCodeStatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.linesOfCodeStatusLabel.Location = new System.Drawing.Point(3, 186);
-            this.linesOfCodeStatusLabel.Name = "linesOfCodeStatusLabel";
-            this.linesOfCodeStatusLabel.Size = new System.Drawing.Size(742, 23);
-            this.linesOfCodeStatusLabel.TabIndex = 14;
-            this.linesOfCodeStatusLabel.Text = "...";
-            this.linesOfCodeStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.mainToolTip.SetToolTip(this.linesOfCodeStatusLabel, "Connection String to connect to your ADO.NET data source");
-            // 
             // mainStatusStrip
             // 
             this.mainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -546,7 +546,7 @@
             // 
             this.generatorStatusLabel.AutoSize = false;
             this.generatorStatusLabel.Name = "generatorStatusLabel";
-            this.generatorStatusLabel.Size = new System.Drawing.Size(738, 17);
+            this.generatorStatusLabel.Size = new System.Drawing.Size(769, 17);
             this.generatorStatusLabel.Spring = true;
             this.generatorStatusLabel.Text = "...";
             this.generatorStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -611,7 +611,7 @@
         private System.Windows.Forms.LinkLabel templateLinkLabel;
         private System.Windows.Forms.ToolStripMenuItem generateCodeFilesToolStripMenuItem;
         private System.Windows.Forms.Button generateButton;
-        private System.Windows.Forms.ToolStripMenuItem refreshTablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage tableTabPage;
         private System.Windows.Forms.TabPage templateTabPage;

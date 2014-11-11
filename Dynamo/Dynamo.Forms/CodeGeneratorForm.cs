@@ -245,11 +245,12 @@ namespace Dynamo.Forms
             Cursor = Cursors.Default;
         }
 
-        private void refreshTablesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (GeneratorViewModel.IsConnectionStringValid)
             {
                 GeneratorViewModel.RefreshSchema();
+                GeneratorViewModel.RefreshTemplates();
             }
         }
 

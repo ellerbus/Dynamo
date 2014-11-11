@@ -117,7 +117,7 @@ namespace Dynamo.Core
         /// 
         /// </summary>
         public void SaveAsProject(string filename)
-        {            
+        {
             FileName = filename;
 
             SaveProject();
@@ -178,6 +178,17 @@ namespace Dynamo.Core
 
                 OnPropertyChanged("Tables");
             }
+
+            OnProgressChanged("");
+        }
+
+        public void RefreshTemplates()
+        {
+            OnProgressChanged("Refreshing Templates...");
+
+            LoadTemplateFiles();
+
+            OnPropertyChanged("Templates");
 
             OnProgressChanged("");
         }
