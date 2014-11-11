@@ -1,0 +1,31 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture PROC %}Upsert{{ BASECLASS | plural }}{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.Database{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
+
+if object_id('{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
+
+create procedure dbo.{{ PROC }}
+	@{{ 'items' | r_pad:30 }} {{ BASECLASS }}TableType readonly
+as
+
+update	t
+set		{% for column in table.columns %}{% if column.is_primary_key == false %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %},
+		{% endif %}{% endif %}{% endfor %}
+from	{{ table.name }} t,
+		@items x
+where	{% for column in table.primary_keys %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %}
+  and	{% endif %}{% endfor %}
+
+insert into {{ table.name }}
+	(
+		{% for column in table.columns %}{% if column.is_identity == false %}{{ column.name }}{%if forloop.last == false %},
+		{% endif %}{% endif %}{% endfor %}
+	)
+	select	{% for column in table.columns %}{% if column.is_identity == false %}x.{{ column.name }}{%if forloop.last == false %},
+			{% endif %}{% endif %}{% endfor %}
+	from	@items x left join {{ table.name }} t
+				on	{% for column in table.primary_keys %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %}
+				and	{% endif %}{% endfor %}
+				and	{% for column in table.primary_keys %}{%if forloop.first == true %}t.{{ column.name | r_pad:27 }} is null{% endif %}{% endfor %}
+go
