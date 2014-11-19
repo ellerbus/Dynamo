@@ -1,4 +1,6 @@
-WORK IN PROGRESS
+TEMPLATES ARE A WORK IN PROGRESS
+
+links to referenced items in the templates
 
 https://github.com/darrencauthon/AutoMoq
 
