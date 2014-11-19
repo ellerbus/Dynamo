@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture REPO %}I{{ table.name | pascal }}Repository{% endcapture -%}
+{% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Repositories\{{ REPO }}.cs{% endcapture -%}
 using System;
@@ -8,7 +8,7 @@ using Insight.Database;
 namespace {{ PROJECT }}.Repositories
 {
 	///	<summary>
-	///
+	/// Repository Interface for {{ BASELCASS }}
 	///	</summary>
 	public interface {{ REPO }}
 	{

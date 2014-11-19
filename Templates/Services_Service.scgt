@@ -1,0 +1,111 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
+{% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Services\{{ SERVICE }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using {{ PROJECT }}.Repositories
+using {{ PROJECT }}.Models;
+
+namespace {{ PROJECT }}.Services
+{
+	/// <summary>
+	/// Service Interface for {{ BASECLASS }}
+	/// </summary>
+    public interface I{{ SERVICE }} 
+    {
+		IList<{{ BASECLASS }}> GetList();
+
+		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+		
+		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
+		
+		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		
+		//void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
+		
+		//void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+    }
+
+	/// <summary>
+	/// Service Implementation for {{ BASECLASS }}
+	/// </summary>
+    public class {{ SERVICE }} : I{{ SERVICE }} 
+    {
+        #region Members
+
+        private {{ REPO }} _repository;
+
+        #endregion
+
+        #region Constructors
+
+        public {{ SERVICE }}({{ REPO }} repository)
+        {
+			_repository = repository;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IList<{{ BASECLASS }}> GetList()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+        {
+            {{ BASECLASS }} {{ BASECLASS | camel }} = !_repository.Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			
+			return {{ BASECLASS | camel }};
+        }
+		
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+		public void Save({{ BASECLASS }} {{ BASECLASS | camel }})
+		{
+			_repository.Save({{ BASECLASS | camel }});
+		}
+		
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+		public void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }})
+		{
+			_repository.Save({{ BASECLASS | plural | camel }});
+		}
+		
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+		public void Delete({{ BASECLASS }} {{ BASECLASS | camel }})
+		{
+			_repository.Delete({{ BASECLASS | camel }});
+		}
+		
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+		public void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		{
+			_repository.Delete({{ BASECLASS | plural | camel }});
+		}
+
+        #endregion
+    }
+}

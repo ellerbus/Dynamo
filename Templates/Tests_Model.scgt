@@ -1,0 +1,30 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture TEST %}{{ BASECLASS }}ModelTests{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}Core\Models\{{ TEST }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using {{ NAMESPACE }}.Core.Models;
+
+namespace {{ PROJECT }}.Core.Models
+{
+    [TestClass]
+    public class {{ TEST }}
+    {
+        #region Property Tests
+		{% for column in table.columns %}		
+        //[TestMethod]
+        //public void {{ BASECLASS }}_{{ column.name | pascal }}_Should_DoSomething()
+		//{
+        //    var actual = new {{ BASECLASS }}() { {{ column.name | pascal }} = "aa" };
+		//
+        //    Assert.AreEqual("AA", actual.{{ column.name | pascal }});
+        //}
+
+		{% endfor -%}
+
+        #endregion
+    }
+}

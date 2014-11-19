@@ -1,0 +1,37 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
+{% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Validators\{{ VALIDATOR }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using FluentValidation;
+using {{ PROJECT }}.Models;
+
+namespace {{ PROJECT }}.Validators
+{
+	///	<summary>
+	/// Represents a basic validator for {{ BASECLASS }}
+	///	</summary>
+    public class {{ VALIDATOR }} : AbstractValidator<{{ BASECLASS }}>
+    {
+        public {{ VALIDATOR }}()
+        {
+			{% for column in table.columns %}{% if column.clr_type == 'string' %}
+			RuleFor(x => x.{{ column.name | pascal }}).NotNull().Length(0, {{ column.length }});
+			{% endif %}{% endfor -%}
+		
+			//	unique keys
+			{% for column in table.unique_keys %}
+			RuleFor(x => x.{{ column.name | pascal }}).NotEmpty();
+			{% endfor -%}
+		
+			//	foreign keys
+			{% for column in table.foreign_keys %}
+			RuleFor(x => x.{{ column.name | remove:'ID' | pascal }}).NotEmpty();
+			{% endfor -%}
+
+		}
+    }
+}
