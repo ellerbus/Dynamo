@@ -1,4 +1,4 @@
-TEMPLATES ARE A WORK IN PROGRESS
+TEMPLATE SAMPLES ARE A WORK IN PROGRESS
 
 links to referenced items in the templates
 
