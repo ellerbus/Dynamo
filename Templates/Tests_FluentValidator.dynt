@@ -1,35 +1,42 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture TEST %}{{ BASECLASS }}ValidatorTests{% endcapture -%}
 {% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Tests{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}Core\Validators\{{ TEST }}.cs{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Validators\{{ TEST }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.TestHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using {{ NAMESPACE }}.Core.Validators;
+using {{ SOLUTION }}.Core.Validators;
 
 namespace {{ PROJECT }}.Core.Validators
 {
-    [TestClass]
-    public class {{ TEST }}
-    {
-        private {{ VALIDATOR }} _validator = new {{ VALIDATOR }}();
+	[TestClass]
+	public class {{ TEST }}
+	{
+		#region Members
 
+		private {{ VALIDATOR }} _validator = new {{ VALIDATOR }}();
+
+		#endregion
+		
+		#region Validation Rule Tests
 		{% for column in table.columns %}
 		[TestMethod]
-        public void {{ VALIDATOR }}_RuleFor_{{ column.name | pascal }}()
-        {
-            _validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal }}, "");
-            _validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal }}, default({{ column.clr_type }}));
-            
+		public void {{ VALIDATOR }}_RuleFor_{{ column.name | pascal | remove:BASECLASS }}()
+		{
+			//	TODO
+			//_validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal | remove:BASECLASS }}, default({{ column.clr_type }}));
+			
 			{% if column.clr_type == 'string' %}
-            _validator.ShouldNotHaveValidationErrorFor(v => v.{{ column.name | pascal }}, new string('0', {{ column.length }}));
-            _validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal }}, new string('0', {{ column.length }} + 1));
+			_validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal | remove:BASECLASS }}, "");
+			_validator.ShouldNotHaveValidationErrorFor(v => v.{{ column.name | pascal | remove:BASECLASS }}, new string('0', {{ column.length }}));
+			_validator.ShouldHaveValidationErrorFor(v => v.{{ column.name | pascal | remove:BASECLASS }}, new string('0', {{ column.length }} + 1));
 			{% endif %}
-        }
+		}
 		
-		{% endfor -%}
+		{% endfor %}
+		#endregion
 	}
 }

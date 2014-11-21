@@ -1,16 +1,17 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROC %}Select{{ BASECLASS }}{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Database{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
 
-if object_id('{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
+if object_id('dbo.{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
+go
 
 create procedure dbo.{{ PROC }}{% for column in table.primary_keys %}
 	@{{ column.name | r_pad:30 }} {{ column.sql_type }}{%if column.sql_type == 'char' %}({{ column.length }}){% endif %}{%if forloop.last == false %},{% endif %}{% endfor %}
 as
 
 select	*
-from	{{ table.name }}
+from	dbo.{{ table.name }}
 where	{% for column in table.primary_keys %}{{ column.name | r_pad:27 }} = @{{ column.name }}{%if forloop.last == false %}
   and	{% endif %}{% endfor %}
 

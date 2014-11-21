@@ -1,8 +1,9 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
 using System.Diagnostics;
+using Augment;
 
 namespace {{ PROJECT }}.Models
 {
@@ -12,7 +13,7 @@ namespace {{ PROJECT }}.Models
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public partial class {{ BASECLASS }}
 	{
-		#region ToString
+		#region ToString/DebuggerDisplay
 
 		///	<summary>
 		///	DebuggerDisplay for this object
@@ -21,9 +22,11 @@ namespace {{ PROJECT }}.Models
 		{
 			get
 			{
-				string key = "[" + {% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";	
+				string pk = "[" + {% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";	
 				
-				return string.Format("{0}{1}={2}", GetType().Name, key, "<Description>");
+				string uq = "[" + {% for column in table.unique_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";
+				
+				return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
 			}
 		}
 		

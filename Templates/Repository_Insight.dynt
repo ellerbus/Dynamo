@@ -1,9 +1,11 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Repositories\{{ REPO }}.cs{% endcapture -%}
 using System;
+using System.Collections.Generic;
 using Insight.Database;
+using {{ PROJECT }}.Models;
 
 namespace {{ PROJECT }}.Repositories
 {
@@ -27,21 +29,21 @@ namespace {{ PROJECT }}.Repositories
 		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>
-		///	Deletes many {{ BASECLASS }} calling the
+		///	Deletes many {{ BASECLASS | plural }} calling the
 		///	stored procedure Delete{{ BASECLASS | plural }}
 		///	</summary>
 		[Sql("Delete{{ BASECLASS | plural }}")]
 		void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
 
 		///	<summary>
-		///	Deletes a single {{ BASECLASS }} calling the
+		///	Saves a single {{ BASECLASS }} calling the
 		///	stored procedure Upsert{{ BASECLASS }}
 		///	</summary>
 		[Sql("Upsert{{ BASECLASS }}")]
-		void Save{{ BASECLASS }} {{ BASECLASS | camel }});
+		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>
-		///	Deletes many {{ BASECLASS }} calling the
+		///	Saves many {{ BASECLASS | plural }} calling the
 		///	stored procedure Upsert{{ BASECLASS | plural }}
 		///	</summary>
 		[Sql("Upsert{{ BASECLASS | plural }}")]

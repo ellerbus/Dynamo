@@ -2,8 +2,8 @@
 {% capture CONTROLLER %}{{ BASECLASS }}Controller{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Web{% endcapture -%}
-{% capture CORE %}{{ NAMESPACE }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Controllers\{{ CONTROLLER }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;

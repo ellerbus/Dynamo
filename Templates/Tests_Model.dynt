@@ -1,30 +1,30 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture TEST %}{{ BASECLASS }}ModelTests{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Tests{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}Core\Models\{{ TEST }}.cs{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ TEST }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using {{ NAMESPACE }}.Core.Models;
+using {{ SOLUTION }}.Core.Models;
 
 namespace {{ PROJECT }}.Core.Models
 {
-    [TestClass]
-    public class {{ TEST }}
-    {
-        #region Property Tests
+	[TestClass]
+	public class {{ TEST }}
+	{
+		#region Property Tests
 		{% for column in table.columns %}		
-        //[TestMethod]
-        //public void {{ BASECLASS }}_{{ column.name | pascal }}_Should_DoSomething()
+		//[TestMethod]
+		//public void {{ BASECLASS }}_{{ column.name | pascal | remove:BASECLASS }}_Should_DoSomething()
 		//{
-        //    var actual = new {{ BASECLASS }}() { {{ column.name | pascal }} = "aa" };
+		//	var actual = new {{ BASECLASS }}() { {{ column.name | pascal | remove:BASECLASS }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %} };
 		//
-        //    Assert.AreEqual("AA", actual.{{ column.name | pascal }});
-        //}
+		//	Assert.AreEqual({% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %}, actual.{{ column.name | pascal | remove:BASECLASS }});
+		//}
 
 		{% endfor -%}
 
-        #endregion
-    }
+		#endregion
+	}
 }

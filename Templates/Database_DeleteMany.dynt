@@ -1,16 +1,17 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROC %}Delete{{ BASECLASS | plural }}{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Database{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
 
-if object_id('{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
+if object_id('dbo.{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
+go
 
 create procedure dbo.{{ PROC }}
 	@{{ 'items' | r_pad:30 }} {{ BASECLASS }}TableType readonly
 as
 
 delete	t
-from	{{ table.name }} t,
+from	dbo.{{ table.name }} t,
 		@items x
 where	{% for column in table.primary_keys %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %}
   and	{% endif %}{% endfor %}

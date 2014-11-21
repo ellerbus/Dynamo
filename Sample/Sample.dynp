@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GeneratorProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SolutionFile>C:\Users\Stu\Documents\GitHub\Dynamo\Sample\Sample.sln</SolutionFile>
+  <TemplateFolder>C:\Users\Stu\Documents\GitHub\Dynamo\Templates</TemplateFolder>
+  <DataProvider>System.Data.SqlClient</DataProvider>
+  <ConnectionString>Data Source=.;Initial Catalog=SAMPLE;Integrated Security=True</ConnectionString>
+</GeneratorProject>

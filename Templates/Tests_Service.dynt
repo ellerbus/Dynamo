@@ -1,146 +1,145 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture TEST %}{{ BASECLASS }}ValidatorTests{% endcapture -%}
+{% capture TEST %}{{ BASECLASS }}ServiceTests{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.Tests{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}Core\Validators\{{ TEST }}.cs{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Services\{{ TEST }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NBuilder;
+using AutoMoq;
+using FizzWare.NBuilder;
 using Moq;
-using {{ NAMESPACE }}.Core.Models;
-using {{ NAMESPACE }}.Core.Repositories;
-using {{ NAMESPACE }}.Core.Services;
+using {{ SOLUTION }}.Core.Models;
+using {{ SOLUTION }}.Core.Repositories;
+using {{ SOLUTION }}.Core.Services;
 
 namespace {{ PROJECT }}.Core.Services
 {
-    [TestClass]
-    public class {{ TEST }}
-    {
-        #region Helpers
+	[TestClass]
+	public class {{ TEST }}
+	{
+		#region Helpers/Test Initializers
 
 		private AutoMoqer Mocker { get; set; }
-        private Mock<{{ REPO }>> MockRepo { get; set; }
+		private Mock<{{ REPO }}> MockRepo { get; set; }
 		private {{ SERVICE }} SubjectUnderTest { get; set; }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            Mocker = new AutoMoq();
+		[TestInitialize]
+		public void TestInitialize()
+		{
+			Mocker = new AutoMoqer();
 
-            SubjectUnderTest = Mocker.Create<{{ SERVICE }}>();
+			SubjectUnderTest = Mocker.Create<{{ SERVICE }}>();
 			
 			MockRepo = Mocker.GetMock<{{ REPO }}>();
-        }
+		}
 
-        #endregion
+		#endregion
 
-        #endregion Tests
+		#region Tests
 		
-        [TestMethod]
-        public void {{ SERVICE }}_Should_GetList()
-        {
+		//[TestMethod]
+		//public void {{ SERVICE }}_Should_GetList()
+		//{
+		//	//	arrange
+		//	var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+		
+		//	MockRepo.Setup(x => x.GetList()).Returns(expected);
+
+		//	//	act
+		//	var actual = SubjectUnderTest.GetList();
+
+		//	//	assert
+		//	CollectionAssert.AreEqual(expected, actual);
+
+		//	MockRepo.VerifyAll();
+		//}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Get()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.name | pascal | remove:BASECLASS }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+
+			//	act
+			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.name | pascal | remove:BASECLASS }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+
+			//	assert
+			Assert.IsNotNull(actual);			
+			{% for column in table.columns %}
+			Assert.AreEqual(expected.{{ column.name | pascal | remove:BASECLASS }}, actual.{{ column.name | pascal | remove:BASECLASS }});{% endfor %}
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Save()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Save(expected));
+
+			//	act
+			SubjectUnderTest.Save(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Save_Many()
+		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
-		
-			MockRepo.Setup(x => x.GetList()).Returns(expected);
+			
+			MockRepo.Setup(x => x.Save(expected));
 
-            //	act
-            var actual = SubjectUnderTest.GetList();
+			//	act
+			SubjectUnderTest.Save(expected);
 
-            //	assert
-            CollectionAssert.AreEqual(expected, actual);
+			//	assert
 
-            MockRepo.VerifyAll();
-        }
+			MockRepo.VerifyAll();
+		}
 
-        [TestMethod]
-        public void {{ SERVICE }}_Should_Get()
-        {
-            //	arrange
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Delete()
+		{
+			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-            MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}Any.{{ column.clr_type | pascal }}(){%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockRepo.Setup(x => x.Delete(expected));
 
-            //	act
-            var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}default({{ column.clr_type }}){%if forloop.last == false %}, {% endif %}{% endfor %});
+			//	act
+			SubjectUnderTest.Delete(expected);
 
-            //	assert
-            Assert.IsNotNull(actual);
-			
-			{% for column in table.columns %}
-			Assert.AreEqual(?, actual.{{ column.name | pascal }});
-			{% endfor -%}
+			//	assert
 
-            MockRepo.VerifyAll();
-        }
+			MockRepo.VerifyAll();
+		}
 
-        [TestMethod]
-        public void {{ SERVICE }}_Should_Save()
-        {
-            //	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-			
-            MockRepo.Setup(x => x.Save(expected));
-
-            //	act
-            SubjectUnderTest.Save(expected);
-
-            //	assert
-
-            MockRepo.VerifyAll();
-        }
-
-        [TestMethod]
-        public void {{ SERVICE }}_Should_Save_Many()
-        {
-            //	arrange
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Delete_Many()
+		{
+			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
-            MockRepo.Setup(x => x.Save(expected));
+			MockRepo.Setup(x => x.Delete(expected));
 
-            //	act
-            SubjectUnderTest.Save(expected);
+			//	act
+			SubjectUnderTest.Delete(expected);
 
-            //	assert
+			//	assert
 
-            MockRepo.VerifyAll();
-        }
+			MockRepo.VerifyAll();
+		}
 
-        [TestMethod]
-        public void {{ SERVICE }}_Should_Delete()
-        {
-            //	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-			
-            MockRepo.Setup(x => x.Delete(expected));
-
-            //	act
-            SubjectUnderTest.Delete(expected);
-
-            //	assert
-
-            MockRepo.VerifyAll();
-        }
-
-        [TestMethod]
-        public void {{ SERVICE }}_Should_Delete_Many()
-        {
-            //	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
-			
-            MockRepo.Setup(x => x.Delete(expected));
-
-            //	act
-            SubjectUnderTest.Delete(expected);
-
-            //	assert
-
-            MockRepo.VerifyAll();
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }
