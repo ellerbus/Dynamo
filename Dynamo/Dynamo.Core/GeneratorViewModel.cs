@@ -20,6 +20,16 @@ namespace Dynamo.Core
     {
         #region Members
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string ProjectExtension = ".dynp";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string TemplateExtension = ".dynt";
+
         private const int DisplayLength = 40;
 
         /// <summary>
@@ -258,7 +268,7 @@ namespace Dynamo.Core
                 }
             }
 
-            foreach (FileInfo f in dir.GetFiles("*.scgt"))
+            foreach (FileInfo f in dir.GetFiles("*" + TemplateExtension))
             {
                 yield return new FileDisplay { FileInfo = f };
             }

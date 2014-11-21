@@ -154,8 +154,8 @@ namespace Dynamo.Forms
                 ofd.AddExtension = true;
                 ofd.CheckPathExists = true;
                 ofd.CheckFileExists = true;
-                ofd.DefaultExt = GeneratorProject.FileExtension;
-                ofd.Filter = "Dynamo Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
+                ofd.DefaultExt = GeneratorViewModel.ProjectExtension;
+                ofd.Filter = "Dynamo Project (*{0})|*{0}".FormatArgs(GeneratorViewModel.ProjectExtension);
                 ofd.Multiselect = false;
                 ofd.Title = "Open File...";
 
@@ -286,11 +286,15 @@ namespace Dynamo.Forms
             {
                 Cursor = Cursors.WaitCursor;
 
+                Application.DoEvents();
+
                 GeneratorViewModel.RefreshSchema();
 
                 mainTabControl.SelectedTab = tableTabPage;
 
                 Cursor = Cursors.Default;
+
+                Application.DoEvents();
             });
 
             Invoke(action);
@@ -376,8 +380,8 @@ namespace Dynamo.Forms
             {
                 sfd.AddExtension = true;
                 sfd.CheckPathExists = true;
-                sfd.DefaultExt = GeneratorProject.FileExtension;
-                sfd.Filter = "Dynamo Code Generator (*{0})|*{0}".FormatArgs(GeneratorProject.FileExtension);
+                sfd.DefaultExt = GeneratorViewModel.ProjectExtension;
+                sfd.Filter = "Dynamo Project (*{0})|*{0}".FormatArgs(GeneratorViewModel.ProjectExtension);
                 sfd.OverwritePrompt = true;
                 sfd.Title = "Save File...";
 

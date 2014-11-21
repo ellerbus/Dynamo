@@ -8,12 +8,6 @@ namespace Dynamo.Core
     /// </summary>
     public class GeneratorProject
     {
-        #region Members
-
-        public const string FileExtension = ".scg";
-
-        #endregion
-
         #region Constructor
 
         #endregion
