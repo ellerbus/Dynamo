@@ -179,7 +179,7 @@ namespace Dynamo.Core
 
             IDictionary<string, string> variables = new Dictionary<string, string>()
             {
-                { "NAMESPACE", Project.Namespace }
+                { "SOLUTION", Project.Namespace }
             };
 
             Total = tables.Count + files.Count;
