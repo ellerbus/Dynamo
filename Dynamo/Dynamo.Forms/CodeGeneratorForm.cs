@@ -36,6 +36,8 @@ namespace Dynamo.Forms
             linesOfCodeBindingSource.DataSource = new LinesOfCodeViewModel();
 
             LinesOfCodeViewModel.ProgressChanged += LinesOfCodeViewModel_ProgressChanged;
+
+            ReloadRecentFiles();
         }
 
         #endregion
@@ -159,25 +161,7 @@ namespace Dynamo.Forms
 
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
-                    GeneratorViewModel.OpenProject(ofd.FileName);
-
-                    viewModelBindingSource.ResetCurrentItem();
-
-                    Action action = new Action(() => {
-                        Cursor = Cursors.WaitCursor;
-
-                        GeneratorViewModel.RefreshSchema();
-
-                        mainTabControl.SelectedTab = tableTabPage;
-
-                        Cursor = Cursors.Default;
-                    });
-
-                    Invoke(action);
-
-                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
-
-                    Application.DoEvents();
+                    OpenProject(ofd.FileName);
                 }
             }
         }
@@ -202,6 +186,20 @@ namespace Dynamo.Forms
             {
                 GeneratorViewModel.SaveAsProject(f);
             }
+        }
+
+        private void recentFilesToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            bool? op = CheckForSave();
+
+            if (op == null)
+            {
+                return;
+            }
+
+            string file = e.ClickedItem.Tag as string;
+
+            OpenProject(file);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -277,6 +275,52 @@ namespace Dynamo.Forms
         #endregion
 
         #region Methods
+
+        private void OpenProject(string fileName)
+        {
+            GeneratorViewModel.OpenProject(fileName);
+
+            viewModelBindingSource.ResetCurrentItem();
+
+            Action action = new Action(() =>
+            {
+                Cursor = Cursors.WaitCursor;
+
+                GeneratorViewModel.RefreshSchema();
+
+                mainTabControl.SelectedTab = tableTabPage;
+
+                Cursor = Cursors.Default;
+            });
+
+            Invoke(action);
+
+            LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
+
+            ReloadRecentFiles();
+
+            Application.DoEvents();
+        }
+
+        private void ReloadRecentFiles()
+        {
+            recentFilesToolStripMenuItem.DropDownItems.Clear();
+
+            IList<string> files = GeneratorViewModel.RecentFiles;
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                string file = files[i];
+
+                ToolStripItem recentMenu = new ToolStripMenuItem()
+                {
+                    Text = "&{0} {1}".FormatArgs(i + 1, file),
+                    Tag = file
+                };
+
+                recentFilesToolStripMenuItem.DropDownItems.Add(file);
+            }
+        }
 
         /// <summary>
         /// 

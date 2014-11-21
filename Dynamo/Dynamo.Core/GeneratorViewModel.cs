@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Augment;
 using DatabaseSchemaReader;
 using DatabaseSchemaReader.DataSchema;
+using Dynamo.Core.Properties;
 using EnsureThat;
 
 namespace Dynamo.Core
@@ -95,6 +96,8 @@ namespace Dynamo.Core
                 LoadTemplateFiles();
 
                 Project.IsDirty = false;
+
+                UpdateRecentFiles(FileName);
             }
         }
 
@@ -110,6 +113,8 @@ namespace Dynamo.Core
                 s.Serialize(sw, Project);
 
                 Project.IsDirty = false;
+
+                UpdateRecentFiles(FileName);
             }
         }
 
@@ -121,6 +126,37 @@ namespace Dynamo.Core
             FileName = filename;
 
             SaveProject();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="latestFile"></param>
+        public void UpdateRecentFiles(string latestFile)
+        {
+            if (Settings.Default.RecentFiles == null)
+            {
+                Settings.Default.RecentFiles = new System.Collections.Specialized.StringCollection();
+            }
+
+            Settings.Default.RecentFiles.Insert(0, latestFile);
+
+            for (int i = 1; i < Settings.Default.RecentFiles.Count; i++)
+            {
+                if (Settings.Default.RecentFiles[i].IsSameAs(latestFile))
+                {
+                    Settings.Default.RecentFiles.RemoveAt(i);
+
+                    i -= 1;
+                }
+            }
+
+            while (Settings.Default.RecentFiles.Count > 9)
+            {
+                Settings.Default.RecentFiles.RemoveAt(9);
+            }
+
+            Settings.Default.Save();
         }
 
         /// <summary>
@@ -428,6 +464,21 @@ namespace Dynamo.Core
         /// 
         /// </summary>
         public bool IsValidFileName { get { return File.Exists(FileName); } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<string> RecentFiles
+        {
+            get
+            {
+                if (Settings.Default.RecentFiles == null)
+                {
+                    return new string[0];
+                }
+                return Settings.Default.RecentFiles.Cast<string>().ToList();
+            }
+        }
 
         /// <summary>
         /// 
