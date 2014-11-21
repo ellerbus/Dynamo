@@ -118,6 +118,12 @@ namespace Dynamo.Core
         {
             using (StreamWriter sw = new StreamWriter(FileName))
             {
+                //  in case of save-as or new project
+                //  ensure relative paths
+                Project.SolutionFile = Utilities.GetRelativePath(FileName, SolutionFile);
+
+                Project.TemplateFolder = Utilities.GetRelativePath(FileName, TemplateFolder);
+
                 XmlSerializer s = new XmlSerializer(typeof(GeneratorProject));
 
                 s.Serialize(sw, Project);
@@ -196,7 +202,7 @@ namespace Dynamo.Core
 
                     string contents = g.GetContents(table, variables, source);
 
-                    string outPath = Path.Combine(Project.SolutionPath, g.FileName);
+                    string outPath = Path.Combine(SolutionFolder, g.FileName);
 
                     string dir = Path.GetDirectoryName(outPath);
 
@@ -241,7 +247,7 @@ namespace Dynamo.Core
 
         private void LoadTemplateFiles()
         {
-            DirectoryInfo dir = new DirectoryInfo(Project.TemplateFolder);
+            DirectoryInfo dir = new DirectoryInfo(TemplateFolder);
 
             if (dir.Exists)
             {
@@ -359,6 +365,19 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
+        public string SolutionFolder
+        {
+            get
+            {
+                FileInfo fi = new FileInfo(SolutionFile);
+
+                return fi.DirectoryName;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string SolutionFile
         {
             get
@@ -368,15 +387,21 @@ namespace Dynamo.Core
                     return "(none)";
                 }
 
-                return Utilities.ShortenPath(Project.SolutionFile, DisplayLength);
+                string dir = Path.GetDirectoryName(FileName);
+
+                string combine = Path.Combine(dir, Project.SolutionFile);
+
+                FileInfo fi = new FileInfo(Path.GetFullPath(combine));
+
+                return fi.FullName;
             }
             set
             {
-                Project.SolutionFile = value;
+                Project.SolutionFile = Utilities.GetRelativePath(FileName, value);
 
                 if (TemplateFolder.IsNullOrEmpty() || TemplateFolder == "(none)")
                 {
-                    string t = Path.Combine(Project.SolutionPath, "Templates");
+                    string t = Path.Combine(SolutionFolder, "Templates");
 
                     if (Directory.Exists(t))
                     {
@@ -401,43 +426,17 @@ namespace Dynamo.Core
                     return "(none)";
                 }
 
-                return Utilities.ShortenPath(Project.TemplateFolder, DisplayLength);
+                string dir = Path.GetDirectoryName(FileName);
+
+                string combine = Path.Combine(dir, Project.TemplateFolder);
+
+                DirectoryInfo di = new DirectoryInfo(Path.GetFullPath(combine));
+
+                return di.FullName;
             }
             set
             {
-                Project.TemplateFolder = value;
-
-                if (value == null)
-                {
-                    Templates = new List<FileDisplay>();
-                }
-                else
-                {
-                    LoadTemplateFiles();
-                }
-
-                OnPropertyChanged("TemplateFolder");
-                OnPropertyChanged("CanGenerate");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Connect
-        {
-            get
-            {
-                if (Project.TemplateFolder.IsNullOrEmpty())
-                {
-                    return "(none)";
-                }
-
-                return Utilities.ShortenPath(Project.TemplateFolder, DisplayLength);
-            }
-            set
-            {
-                Project.TemplateFolder = value;
+                Project.TemplateFolder = Utilities.GetRelativePath(FileName, value);
 
                 if (value == null)
                 {

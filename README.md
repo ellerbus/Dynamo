@@ -3,6 +3,11 @@
 Dynamo is a friendly generator that uses [DB Schema Reader](http://dbschemareader.codeplex.com/)
 and [DotLiquid Syntax](https://github.com/formosatek/dotliquid) to generate code files.
 
+#### Quick Start
+
+For those that simply what to jump in and check things out download or view the [Sample
+Solution](https://github.com/ellerbus/Dynamo/tree/master/Sample).
+
 
 #### SQL Databases Currently Supported
 via [DB Schema Reader](http://dbschemareader.codeplex.com/)

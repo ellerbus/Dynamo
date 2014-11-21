@@ -43,18 +43,6 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
-        [XmlIgnore]
-        public string SolutionPath
-        {
-            get
-            {
-                return Path.GetDirectoryName(SolutionFile);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public string SolutionFile
         {
             get { return _solutionFile; }

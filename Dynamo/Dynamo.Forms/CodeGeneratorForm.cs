@@ -52,7 +52,7 @@ namespace Dynamo.Forms
 
                 if (Directory.Exists(GeneratorViewModel.SolutionFile))
                 {
-                    f.SelectedPath = GeneratorViewModel.Project.SolutionPath;
+                    f.SelectedPath = GeneratorViewModel.SolutionFolder;
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace Dynamo.Forms
                     solutionLinkLabel.DataBindings[0].ReadValue();
                     templateLinkLabel.DataBindings[0].ReadValue();
 
-                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
+                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.SolutionFolder;
                 }
             }
         }
@@ -199,7 +199,14 @@ namespace Dynamo.Forms
 
             string file = e.ClickedItem.Tag as string;
 
-            OpenProject(file);
+            if (File.Exists(file))
+            {
+                OpenProject(file);
+            }
+            else
+            {
+                MessageBox.Show(this, "Selected File does not exist", "Invalid File");
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -282,7 +289,7 @@ namespace Dynamo.Forms
 
             viewModelBindingSource.ResetCurrentItem();
 
-            Action action = new Action(() =>
+            Action schema = new Action(() =>
             {
                 Cursor = Cursors.WaitCursor;
 
@@ -297,11 +304,20 @@ namespace Dynamo.Forms
                 Application.DoEvents();
             });
 
-            Invoke(action);
-
-            LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.Project.SolutionPath;
-
             ReloadRecentFiles();
+
+            Application.DoEvents();
+
+            Invoke(schema);
+
+            Action loc = new Action(() =>
+            {
+                LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.SolutionFolder;
+
+                Application.DoEvents();
+            });
+
+            Invoke(loc);
 
             Application.DoEvents();
         }
@@ -316,13 +332,16 @@ namespace Dynamo.Forms
             {
                 string file = files[i];
 
-                ToolStripItem recentMenu = new ToolStripMenuItem()
+                if (File.Exists(file))
                 {
-                    Text = "&{0} {1}".FormatArgs(i + 1, file),
-                    Tag = file
-                };
+                    ToolStripMenuItem recentMenu = new ToolStripMenuItem()
+                    {
+                        Text = "&{0} {1}".FormatArgs(i + 1, file),
+                        Tag = file
+                    };
 
-                recentFilesToolStripMenuItem.DropDownItems.Add(file);
+                    recentFilesToolStripMenuItem.DropDownItems.Add(recentMenu);
+                }
             }
         }
 
