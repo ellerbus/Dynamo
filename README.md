@@ -5,7 +5,7 @@ and [DotLiquid Syntax](https://github.com/formosatek/dotliquid) to generate code
 
 #### Quick Start
 
-For those that simply what to jump in and check things out download or view the [Sample
+For those that simply what to jump in and check things out download and view the [Sample
 Solution](https://github.com/ellerbus/Dynamo/tree/master/Sample).
 
 
@@ -36,7 +36,7 @@ CREATE TABLE MEMBER
 
 ```
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROJECT %}{{ NAMESPACE }}.WebProject{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.WebProject{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
 using System.ComponentModel.DataAnnotations;
