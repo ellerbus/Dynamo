@@ -1,4 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture COLLECTION %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
@@ -11,7 +12,7 @@ namespace {{ PROJECT }}.Models
 	///
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial class {{ BASECLASS }}
+	public partial class {{ COLLECTION }}
 	{	
 		#region ToString/DebuggerDisplay
 
@@ -20,14 +21,7 @@ namespace {{ PROJECT }}.Models
 		///	</summary>
 		private string DebuggerDisplay
 		{
-			get
-			{
-				string pk = "[" + {% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";	
-				
-				string uq = "[" + {% for column in table.unique_keys %}{{ column.name | pascal | remove:BASECLASS }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %} "]";
-				
-				return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
-			}
+			get { return "Count={0}".FormatArgs(Count); }
 		}
 		
 		#endregion
