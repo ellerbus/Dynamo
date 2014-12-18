@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -39,7 +39,7 @@ namespace Sample.WebApi.Controllers
 		// GET: api/Member
 		public IEnumerable<Member> Get()
 		{
-            return _service.GetList();
+			return _service.GetList();
 		}
 
 		// GET: api/Member/5

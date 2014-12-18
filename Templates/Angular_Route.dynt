@@ -1,0 +1,29 @@
+{% capture BASECLASS %}{{ table.name | camel }}{% endcapture -%}
+{% capture CONFIG %}{{ BASECLASS | pascal | plural }}Config{% endcapture -%}
+{% capture CONTROLLER %}{{ BASECLASS | pascal | plural }}Controller{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
+{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | pascal | plural }}\{{ BASECLASS | plural }}.route.js{% endcapture -%}
+
+(function() {
+	'use strict';
+	
+	angular.module('app').config(['ngRoute', {{ CONFIG }}]);
+
+	function {{ CONFIG }}($routeProvider) {
+		$routeProvider
+			.when('/', {
+				templateUrl: 'list.html',
+				controller: '{{ CONTROLLER }}',
+				controllerAs: 'vm'
+			})
+			.when('/detail/:id', {
+				templateUrl: 'detail.html',
+				controller: '{{ CONTROLLER }}',
+				controllerAs: 'vm'
+			})
+			.otherwise({
+				redirectTo: '/'
+			});
+	};
+})();

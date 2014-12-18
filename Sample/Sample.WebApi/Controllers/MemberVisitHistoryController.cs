@@ -39,7 +39,7 @@ namespace Sample.WebApi.Controllers
 		// GET: api/Member
 		public IEnumerable<MemberVisitHistory> Get()
 		{
-			throw new NotImplementedException();
+			return _service.GetList();
 		}
 
 		// GET: api/Member/5

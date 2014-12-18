@@ -100,6 +100,7 @@ namespace Sample.WebMvc.Controllers
 			member.Name = model.Name;
 			member.CreatedAt = model.CreatedAt;
 			member.UpdatedAt = model.UpdatedAt;
+
 			ValidationResult vr = _validator.Validate(member);
 
 			if (vr.IsValid)

@@ -98,6 +98,7 @@ namespace Sample.WebMvc.Controllers
 			MemberVisitHistory memberVisitHistory = _service.Get(model.MemberId, VisitedAt);
 			
 			memberVisitHistory.PageUrl = model.PageUrl;
+
 			ValidationResult vr = _validator.Validate(memberVisitHistory);
 
 			if (vr.IsValid)
