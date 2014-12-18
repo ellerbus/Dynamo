@@ -9,7 +9,7 @@ namespace Sample.Core.Models
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public partial class MemberVisitHistory
-	{
+	{	
 		#region ToString/DebuggerDisplay
 
 		///	<summary>
@@ -34,7 +34,20 @@ namespace Sample.Core.Models
 		/////	<summary>
 		/////	Gets / Sets the foreign key to 'memberID'
 		/////	</summary>
-		//public Member Member { get; internal set; }
+		//public Member Member
+		//{
+		//	get
+		//	{
+		//		return _member;
+		//	}
+		//	internal set
+		//	{
+		//		_member = value;
+		//
+		//		MemberId = value == null ? default(int) : value.MemberId
+		//	}
+		//}
+		//private Member _member
 		
 				
 		#endregion

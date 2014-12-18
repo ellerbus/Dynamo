@@ -37,7 +37,20 @@ namespace {{ PROJECT }}.Models
 		/////	<summary>
 		/////	Gets / Sets the foreign key to '{{ column.name }}'
 		/////	</summary>
-		//public {{ column.name | remove:'ID' | pascal }} {{ column.name | remove:'ID' | pascal }} { get; internal set; }
+		//public {{ column.name | remove:'ID' | pascal }} {{ column.name | remove:'ID' | pascal }}
+		//{
+		//	get
+		//	{
+		//		return _{{ column.name | remove:'ID' | camel }};
+		//	}
+		//	internal set
+		//	{
+		//		_{{ column.name | remove:'ID' | camel }} = value;
+		//
+		//		{{ column.name | pascal }} = value == null ? default({{ column.clr_type }}) : value.{{ column.name | pascal }}
+		//	}
+		//}
+		//private {{ column.name | remove:'ID' | pascal }} _{{ column.name | remove:'ID' | camel }}
 		
 		{% endfor -%}
 		

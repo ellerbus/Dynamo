@@ -95,9 +95,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="License.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Sample.Core\Sample.Core.csproj">
       <Project>{d1a12d92-107d-4e10-a042-12a710615385}</Project>
       <Name>Sample.Core</Name>

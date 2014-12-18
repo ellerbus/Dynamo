@@ -9,7 +9,7 @@ namespace Sample.Core.Models
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public partial class Member
-	{
+	{	
 		#region ToString/DebuggerDisplay
 
 		///	<summary>
