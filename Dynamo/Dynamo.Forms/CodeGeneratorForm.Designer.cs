@@ -579,6 +579,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.solutionLinkLabel);
             this.Controls.Add(this.mainMenuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenuStrip;
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "CodeGeneratorForm";
