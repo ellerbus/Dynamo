@@ -75,6 +75,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\app.module.js" />
+    <Content Include="App\Members\members.controller.js" />
+    <Content Include="App\Members\members.dataService.js" />
+    <Content Include="App\Members\members.route.js" />
+    <Content Include="App\MemberVisitHistories\memberVisitHistories.controller.js" />
+    <Content Include="App\MemberVisitHistories\memberVisitHistories.dataService.js" />
+    <Content Include="App\MemberVisitHistories\memberVisitHistories.route.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>

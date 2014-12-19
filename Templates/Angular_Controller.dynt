@@ -1,5 +1,4 @@
 {% capture BASECLASS %}{{ table.name | camel }}{% endcapture -%}
-{% capture CONTROLLER %}{{ BASECLASS | pascal | plural }}Controller{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | pascal | plural }}\{{ BASECLASS | plural }}.controller.js{% endcapture -%}
@@ -9,22 +8,30 @@
 
 	angular
 		.module('app')
-		.controller('{{ CONTROLLER }}', {{ CONTROLLER }});
+		.controller('{{ BASECLASS | plural }}Controller', {{ BASECLASS | plural }}Controller)
+		.controller('{{ BASECLASS }}Controller', {{ BASECLASS }}Controller);
 
-	function {{ CONTROLLER }}() {
+	{{ BASECLASS | plural }}Controller.$inject = [];
+	{{ BASECLASS }}Controller.$inject = [];
+		
+	function {{ BASECLASS | plural }}Controller() {
+		var vm = this;
+
+		vm.search = search;
+
+		function search() {
+			/* */
+		};
+	}
+		
+	function {{ BASECLASS }}Controller() {
 		var vm = this;
 	
 		{% for column in table.columns %}
 		vm.{{ column.name | remove:BASECLASS | camel }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}0{% endif %}{% if column.clr_type == 'string' %}''{% endif %}{% if column.clr_type == 'DateTime' %}new Date(){% endif %}{% if column.clr_type == 'DateTime?' %}null /*new Date()*/{% endif %};{% endfor -%}
 
 
-		vm.search = search;
 		vm.save = save;
-
-
-		function search() {
-			/* */
-		};
 
 		function save() {
 			/* */

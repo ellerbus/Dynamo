@@ -1,0 +1,44 @@
+{% capture BASECLASS %}{{ table.name | camel }}{% endcapture -%}
+{% capture API %}/api/{{ BASECLASS | pascal | plural }}{% endcapture -%}
+{% capture SERVICE %}{{ BASECLASS | pascal | plural }}DataService{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
+{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | pascal | plural }}\{{ BASECLASS | plural }}.dataService.js{% endcapture -%}
+
+(function() {
+	'use strict';
+
+	angular
+		.module('app')
+		.factory('{{ SERVICE }}', {{ SERVICE }});
+
+	{{ SERVICE }}.$inject = ['$http', 'logger'];
+
+	function {{ SERVICE }}($http, logger) {
+		return {
+			get{{ BASECLASS | pascal | plural }}: get{{ BASECLASS | pascal | plural }},
+			get{{ BASECLASS | pascal }}: get{{ BASECLASS | pascal }},
+		};
+		
+		function responseComplete(caller, response) {
+			return response.data.results;
+		}
+		
+		function responseFailed(caller, error) {
+			logger.error('XHR Failed for ' + caller + ': ' + error.data);
+		}
+
+		function get{{ BASECLASS | pascal | plural }}() {
+			return $http.get('{{ API }}')
+				.then(function (response) { responseComplete('get{{ BASECLASS | pascal | plural }}', response); })
+				.catch(function (error) { responseFailed('get{{ BASECLASS | pascal | plural }}', error); });
+		}
+
+		function get{{ BASECLASS | pascal }}({% for column in table.primary_keys %}{{ column.name}}{%if forloop.last == false %}, {% endif %}{% endfor %}) {
+			return $http.get('{{ API }}')
+				.then(function (response) { responseComplete('get{{ BASECLASS | pascal }}', response); })
+				.catch(function (error) { responseFailed('get{{ BASECLASS | pascal }}', error); });
+		}
+	}
+
+})();
