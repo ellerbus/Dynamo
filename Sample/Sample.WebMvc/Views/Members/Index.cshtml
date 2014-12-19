@@ -1,0 +1,39 @@
+@model IEnumerable<Member>
+
+@{
+  ViewBag.Title = "Members";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+	@Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+	<tr>
+	
+		<th>Id</th>
+		<th>Name</th>
+		<th>CreatedAt</th>
+		<th>UpdatedAt</th>
+
+	</tr>
+
+	@foreach (var item in Model)
+	{
+	<tr>
+	
+		<td>@item.Id</td>
+		<td>@item.Name</td>
+		<td>@item.CreatedAt</td>
+		<td>@item.UpdatedAt</td>
+		<td>
+			@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+			@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+		</td>
+
+		</tr>
+	}
+
+</table>

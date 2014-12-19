@@ -12,20 +12,20 @@ using Sample.Core.Validators;
 namespace Sample.WebMvc.Controllers
 {
 	///	<summary>
-	/// Represents a basic controller for Member
+	/// Represents a basic controller for Role
 	///	</summary>
-	public class MemberController : Controller
+	public class RolesController : Controller
 	{
 		#region Members
 	
-		private MemberService _service;
-		private IValidator<Member> _validator;
+		private RoleService _service;
+		private IValidator<Role> _validator;
 		
 		#endregion
 		
 		#region Contructors
 
-		public MemberController(MemberService service, IValidator<Member> validator)
+		public RolesController(RoleService service, IValidator<Role> validator)
 		{
 			_service = service;
 			_validator = validator;
@@ -36,7 +36,7 @@ namespace Sample.WebMvc.Controllers
 		#region Index
 
 		//
-		// GET: /Member/Index
+		// GET: /Role/Index
 		public ActionResult Index()
 		{
 			return View(_service.GetList());
@@ -47,16 +47,16 @@ namespace Sample.WebMvc.Controllers
 		#region Create
 
 		//
-		// GET: /Member/Create
+		// GET: /Role/Create
 		public ActionResult Create()
 		{			
-			return View(new Member());
+			return View(new Role());
 		}
 
 		//
-		// POST: /Member/Create
+		// POST: /Role/Create
 		[HttpPost, ValidateAntiForgeryToken]
-		public ActionResult Create(Member model)
+		public ActionResult Create(Role model)
 		{
 			ValidationResult vr = _validator.Validate(model);
 
@@ -77,10 +77,10 @@ namespace Sample.WebMvc.Controllers
 		#region Edit
 
 		//
-		// GET: /Member/Edit/5
-		public ActionResult Edit(int memberId)
+		// GET: /Role/Edit/5
+		public ActionResult Edit(int roleId)
 		{
-			Member model = _service.Get(memberId);
+			Role model = _service.Get(roleId);
 			
 			if (model == null)
 			{
@@ -91,21 +91,21 @@ namespace Sample.WebMvc.Controllers
 		}
 
 		//
-		// POST: /Member/Edit/5
+		// POST: /Role/Edit/5
 		[HttpPost, ValidateAntiForgeryToken]
-		public ActionResult Edit(Member model)
+		public ActionResult Edit(Role model)
 		{
-			Member member = _service.Get(model.Id);
+			Role role = _service.Get(model.Id);
 			
-			member.Name = model.Name;
-			member.CreatedAt = model.CreatedAt;
-			member.UpdatedAt = model.UpdatedAt;
+			role.Name = model.Name;
+			role.CreatedAt = model.CreatedAt;
+			role.UpdatedAt = model.UpdatedAt;
 
-			ValidationResult vr = _validator.Validate(member);
+			ValidationResult vr = _validator.Validate(role);
 
 			if (vr.IsValid)
 			{
-				_service.Save(member);
+				_service.Save(role);
 
 				return RedirectToAction("Index");
 			}
@@ -120,10 +120,10 @@ namespace Sample.WebMvc.Controllers
 		#region Delete
 
 		//
-		// GET: /Member/Delete/5
-		public ActionResult Delete(int memberId)
+		// GET: /Role/Delete/5
+		public ActionResult Delete(int roleId)
 		{
-			Member model = _service.Get(memberId);
+			Role model = _service.Get(roleId);
 			
 			if (model == null)
 			{
@@ -134,9 +134,9 @@ namespace Sample.WebMvc.Controllers
 		}
 
 		//
-		// POST: /Member/Delete/5
+		// POST: /Role/Delete/5
 		[HttpPost, ValidateAntiForgeryToken]
-		public ActionResult Delete(Member model)
+		public ActionResult Delete(Role model)
 		{
 			_service.Delete(model);
 

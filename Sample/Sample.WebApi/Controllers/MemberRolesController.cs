@@ -15,7 +15,7 @@ namespace Sample.WebApi.Controllers
 	///	<summary>
 	/// Represents a basic controller for MemberRole
 	///	</summary>
-	public class MemberRoleController : ApiController
+	public class MemberRolesController : ApiController
 	{
 		#region Members
 	
@@ -26,7 +26,7 @@ namespace Sample.WebApi.Controllers
 		
 		#region Contructors
 
-		public MemberRoleController(MemberRoleService service, IValidator<MemberRole> validator)
+		public MemberRolesController(MemberRoleService service, IValidator<MemberRole> validator)
 		{
 			_service = service;
 			_validator = validator;

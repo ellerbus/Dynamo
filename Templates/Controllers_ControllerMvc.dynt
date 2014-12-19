@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture CONTROLLER %}{{ BASECLASS }}Controller{% endcapture -%}
+{% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}

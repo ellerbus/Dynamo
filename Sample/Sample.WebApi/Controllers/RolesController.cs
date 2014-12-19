@@ -13,20 +13,20 @@ using Sample.Core.Validators;
 namespace Sample.WebApi.Controllers
 {
 	///	<summary>
-	/// Represents a basic controller for Member
+	/// Represents a basic controller for Role
 	///	</summary>
-	public class MemberController : ApiController
+	public class RolesController : ApiController
 	{
 		#region Members
 	
-		private MemberService _service;
-		private IValidator<Member> _validator;
+		private RoleService _service;
+		private IValidator<Role> _validator;
 		
 		#endregion
 		
 		#region Contructors
 
-		public MemberController(MemberService service, IValidator<Member> validator)
+		public RolesController(RoleService service, IValidator<Role> validator)
 		{
 			_service = service;
 			_validator = validator;
@@ -37,27 +37,27 @@ namespace Sample.WebApi.Controllers
 		#region Verb Actions
 
 		// GET: api/Member
-		public IEnumerable<Member> Get()
+		public IEnumerable<Role> Get()
 		{
 			return _service.GetList();
 		}
 
 		// GET: api/Member/5
-		public Member Get(int memberId)
+		public Role Get(int roleId)
 		{
-			Member member = _service.Get(memberId);
+			Role role = _service.Get(roleId);
 			
-			return member;
+			return role;
 		}
 
 		// POST: api/Member
-		public void Post([FromBody]Member member)
+		public void Post([FromBody]Role role)
 		{
-			ValidationResult vr = _validator.Validate(member);
+			ValidationResult vr = _validator.Validate(role);
 
 			if (vr.IsValid)
 			{
-				_service.Save(member);
+				_service.Save(role);
 
 				return;
 			}
@@ -66,13 +66,13 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// PUT: api/Member/5
-		public void Put(int memberId, [FromBody]Member member)
+		public void Put(int roleId, [FromBody]Role role)
 		{
-			Member model = _service.Get(memberId);
+			Role model = _service.Get(roleId);
 			
-			model.Name = member.Name;
-			model.CreatedAt = member.CreatedAt;
-			model.UpdatedAt = member.UpdatedAt;
+			model.Name = role.Name;
+			model.CreatedAt = role.CreatedAt;
+			model.UpdatedAt = role.UpdatedAt;
 
 			ValidationResult vr = _validator.Validate(model);
 
@@ -87,9 +87,9 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// DELETE: api/Member/5
-		public void Delete(int memberId)
+		public void Delete(int roleId)
 		{
-			Member model = _service.Get(memberId);
+			Role model = _service.Get(roleId);
 
 			_service.Delete(model);
 		}
