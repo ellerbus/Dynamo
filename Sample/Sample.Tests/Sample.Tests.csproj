@@ -84,11 +84,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Core\Models\MemberModelTests.cs" />
-    <Compile Include="Core\Models\MemberVisitHistoryModelTests.cs" />
+    <Compile Include="Core\Models\MemberRoleModelTests.cs" />
+    <Compile Include="Core\Models\RoleModelTests.cs" />
+    <Compile Include="Core\Services\MemberRoleServiceTests.cs" />
     <Compile Include="Core\Services\MemberServiceTests.cs" />
-    <Compile Include="Core\Services\MemberVisitHistoryServiceTests.cs" />
+    <Compile Include="Core\Services\RoleServiceTests.cs" />
+    <Compile Include="Core\Validators\MemberRoleValidatorTests.cs" />
     <Compile Include="Core\Validators\MemberValidatorTests.cs" />
-    <Compile Include="Core\Validators\MemberVisitHistoryValidatorTests.cs" />
+    <Compile Include="Core\Validators\RoleValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

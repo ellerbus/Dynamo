@@ -12,37 +12,37 @@ namespace Sample.Core.Repositories
 	{
 		///	<summary>
 		///	Gets a single Member by primary key calling the
-		///	stored procedure SelectMember
+		///	stored procedure MemberSelect
 		///	</summary>
-		[Sql("SelectMember")]
+		[Sql("MemberSelect")]
 		Member Get(int memberId);
 
 		///	<summary>
 		///	Deletes a single Member calling the
-		///	stored procedure DeleteMember
+		///	stored procedure MemberDelete
 		///	</summary>
-		[Sql("DeleteMember")]
+		[Sql("MemberDelete")]
 		void Delete(Member member);
 
 		///	<summary>
 		///	Deletes many Members calling the
-		///	stored procedure DeleteMembers
+		///	stored procedure MemberDeleteMany
 		///	</summary>
-		[Sql("DeleteMembers")]
+		[Sql("MemberDeleteMany")]
 		void Delete(IEnumerable<Member> members);
 
 		///	<summary>
 		///	Saves a single Member calling the
-		///	stored procedure UpsertMember
+		///	stored procedure MemberUpsert
 		///	</summary>
-		[Sql("UpsertMember")]
+		[Sql("MemberUpsert")]
 		void Save(Member member);
 
 		///	<summary>
 		///	Saves many Members calling the
-		///	stored procedure UpsertMembers
+		///	stored procedure MemberUpsertMany
 		///	</summary>
-		[Sql("UpsertMembers")]
+		[Sql("MemberUpsertMany")]
 		void Save(IEnumerable<Member> members);
 	}
 }

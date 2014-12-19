@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROC %}Upsert{{ BASECLASS | plural }}{% endcapture -%}
+{% capture PROC %}{{ BASECLASS }}UpsertMany{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
 

@@ -76,19 +76,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\app.module.js" />
+    <Content Include="App\MemberRoles\memberRoles.controller.js" />
+    <Content Include="App\MemberRoles\memberRoles.dataService.js" />
+    <Content Include="App\MemberRoles\memberRoles.route.js" />
     <Content Include="App\Members\members.controller.js" />
     <Content Include="App\Members\members.dataService.js" />
     <Content Include="App\Members\members.route.js" />
-    <Content Include="App\MemberVisitHistories\memberVisitHistories.controller.js" />
-    <Content Include="App\MemberVisitHistories\memberVisitHistories.dataService.js" />
-    <Content Include="App\MemberVisitHistories\memberVisitHistories.route.js" />
+    <Content Include="App\Roles\roles.controller.js" />
+    <Content Include="App\Roles\roles.dataService.js" />
+    <Content Include="App\Roles\roles.route.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MemberController.cs" />
-    <Compile Include="Controllers\MemberVisitHistoryController.cs" />
+    <Compile Include="Controllers\MemberRoleController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

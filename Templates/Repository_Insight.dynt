@@ -16,37 +16,37 @@ namespace {{ PROJECT }}.Repositories
 	{
 		///	<summary>
 		///	Gets a single {{ BASECLASS }} by primary key calling the
-		///	stored procedure Select{{ BASECLASS }}
+		///	stored procedure {{ BASECLASS }}Select
 		///	</summary>
-		[Sql("Select{{ BASECLASS }}")]
+		[Sql("{{ BASECLASS }}Select")]
 		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 		///	<summary>
 		///	Deletes a single {{ BASECLASS }} calling the
-		///	stored procedure Delete{{ BASECLASS }}
+		///	stored procedure {{ BASECLASS }}Delete
 		///	</summary>
-		[Sql("Delete{{ BASECLASS }}")]
+		[Sql("{{ BASECLASS }}Delete")]
 		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>
 		///	Deletes many {{ BASECLASS | plural }} calling the
-		///	stored procedure Delete{{ BASECLASS | plural }}
+		///	stored procedure {{ BASECLASS }}DeleteMany
 		///	</summary>
-		[Sql("Delete{{ BASECLASS | plural }}")]
+		[Sql("{{ BASECLASS }}DeleteMany")]
 		void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
 
 		///	<summary>
 		///	Saves a single {{ BASECLASS }} calling the
-		///	stored procedure Upsert{{ BASECLASS }}
+		///	stored procedure {{ BASECLASS }}Upsert
 		///	</summary>
-		[Sql("Upsert{{ BASECLASS }}")]
+		[Sql("{{ BASECLASS }}Upsert")]
 		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>
 		///	Saves many {{ BASECLASS | plural }} calling the
-		///	stored procedure Upsert{{ BASECLASS | plural }}
+		///	stored procedure {{ BASECLASS }}UpsertMany
 		///	</summary>
-		[Sql("Upsert{{ BASECLASS | plural }}")]
+		[Sql("{{ BASECLASS }}UpsertMany")]
 		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
 	}
 }

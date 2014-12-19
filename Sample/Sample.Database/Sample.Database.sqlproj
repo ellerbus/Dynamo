@@ -62,20 +62,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\Member.sql" />
-    <None Include="Tables\MemberVisitHistory.sql" />
+    <None Include="Tables\MemberRole.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Procedures\DeleteMember.sql" />
-    <None Include="Procedures\DeleteMembers.sql" />
-    <None Include="Procedures\DeleteMemberVisitHistories.sql" />
-    <None Include="Procedures\DeleteMemberVisitHistory.sql" />
+    <None Include="Tables\Role.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\MemberDelete.sql" />
+    <None Include="Procedures\MemberRoleDelete.sql" />
+    <None Include="Procedures\MemberRoleSelect.sql" />
+    <None Include="Procedures\MemberRoleTableType.sql" />
+    <None Include="Procedures\MemberSelect.sql" />
     <None Include="Procedures\MemberTableType.sql" />
-    <None Include="Procedures\MemberVisitHistoryTableType.sql" />
-    <None Include="Procedures\SelectMember.sql" />
-    <None Include="Procedures\SelectMemberVisitHistory.sql" />
-    <None Include="Procedures\UpsertMember.sql" />
-    <None Include="Procedures\UpsertMembers.sql" />
-    <None Include="Procedures\UpsertMemberVisitHistories.sql" />
-    <None Include="Procedures\UpsertMemberVisitHistory.sql" />
+    <None Include="Procedures\MemberUpsert.sql" />
+    <None Include="Procedures\RoleDelete.sql" />
+    <None Include="Procedures\RoleSelect.sql" />
+    <None Include="Procedures\MemberDeleteMany.sql" />
+    <None Include="Procedures\MemberRoleDeleteMany.sql" />
+    <None Include="Procedures\MemberRoleUpsert.sql" />
+    <None Include="Procedures\MemberRoleUpsertMany.sql" />
+    <None Include="Procedures\MemberUpsertMany.sql" />
+    <None Include="Procedures\RoleDeleteMany.sql" />
+    <None Include="Procedures\RolesUpsert.sql" />
+    <None Include="Procedures\RoleTableType.sql" />
+    <None Include="Procedures\RoleUpsert.sql" />
+    <None Include="Procedures\RoleUpsertMany.sql" />
   </ItemGroup>
 </Project>
