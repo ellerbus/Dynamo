@@ -78,9 +78,7 @@ namespace Sample.Core.Services
 		/// <returns></returns>
 		public IList<Member> GetList()
 		{
-			//	TODO implement stored procedure to get
-			//	a list of Member
-			throw new NotImplementedException();
+			return _repository.GetList();
 		}
 
 		/// <summary>

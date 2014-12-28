@@ -15,6 +15,12 @@ namespace {{ PROJECT }}.Repositories
 	public interface {{ REPO }}
 	{
 		///	<summary>
+		///	Gets a list of {{ BASECLASS | plural }} using SQL
+		///	</summary>
+		[Sql("select * from {{ table.name }}")]
+		IList<{{ BASECLASS }}> GetList();
+	
+		///	<summary>
 		///	Gets a single {{ BASECLASS }} by primary key calling the
 		///	stored procedure {{ BASECLASS }}Select
 		///	</summary>

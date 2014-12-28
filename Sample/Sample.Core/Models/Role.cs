@@ -19,9 +19,9 @@ namespace Sample.Core.Models
 		{
 			get
 			{
-				string pk = "[" + Id +  "]";	
+				string pk = "[" + Id + "]";
 				
-				string uq = "[" + Name +  "]";
+				string uq = "[" + Name + "]";
 				
 				return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
 			}

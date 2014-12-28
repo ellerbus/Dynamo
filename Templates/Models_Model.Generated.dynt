@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.name | pascal | singular }}{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
 using System;

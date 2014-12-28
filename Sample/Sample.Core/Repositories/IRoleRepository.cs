@@ -11,6 +11,12 @@ namespace Sample.Core.Repositories
 	public interface IRoleRepository
 	{
 		///	<summary>
+		///	Gets a list Roles using SQL
+		///	</summary>
+		[Sql("select * from Role")]
+		IList<Role> GetList();
+	
+		///	<summary>
 		///	Gets a single Role by primary key calling the
 		///	stored procedure RoleSelect
 		///	</summary>

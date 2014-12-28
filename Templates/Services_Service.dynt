@@ -83,9 +83,7 @@ namespace {{ PROJECT }}.Services
 		/// <returns></returns>
 		public IList<{{ BASECLASS }}> GetList()
 		{
-			//	TODO implement stored procedure to get
-			//	a list of {{ BASECLASS }}
-			throw new NotImplementedException();
+			return _repository.GetList();
 		}
 
 		/// <summary>

@@ -13,6 +13,7 @@ namespace Sample.WebMvc
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            InjectorConfig.Register();
         }
     }
 }

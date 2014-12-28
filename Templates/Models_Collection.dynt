@@ -1,8 +1,9 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture COLLECTION %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.name | pascal | singular }}{% endcapture -%}
+{% capture COLLECTION %}{{ BASECLASS }}Collection{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\{{ COLLECTION }}.cs{% endcapture -%}
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Augment;
 
@@ -12,7 +13,7 @@ namespace {{ PROJECT }}.Models
 	///
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial class {{ COLLECTION }}
+	public partial class {{ COLLECTION }} : Collection<{{ BASECLASS }}>
 	{	
 		#region ToString/DebuggerDisplay
 

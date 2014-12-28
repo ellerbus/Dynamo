@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Augment;
 
@@ -8,7 +9,7 @@ namespace Sample.Core.Models
 	///
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial class Member
+	public partial class RoleCollection : Collection<Role>
 	{	
 		#region ToString/DebuggerDisplay
 
@@ -17,14 +18,7 @@ namespace Sample.Core.Models
 		///	</summary>
 		private string DebuggerDisplay
 		{
-			get
-			{
-				string pk = "[" + Id + "]";
-				
-				string uq = "[" + Name + "]";
-				
-				return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
-			}
+			get { return "Count={0}".FormatArgs(Count); }
 		}
 		
 		#endregion
