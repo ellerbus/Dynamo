@@ -47,14 +47,14 @@ namespace Dynamo.Core
             {
                 int pos = PropertyName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
 
-                PropertyName = PropertyName.Remove(pos, column.TableName.Length);
+                PropertyName = DotLiquidFilters.Pascal(PropertyName.Remove(pos, column.TableName.Length));
             }
 
             if (ParameterName.StartsWith(column.TableName, StringComparison.InvariantCultureIgnoreCase))
             {
                 int pos = ParameterName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
 
-                ParameterName = ParameterName.Remove(pos, column.TableName.Length);
+                ParameterName = DotLiquidFilters.Camel( ParameterName.Remove(pos, column.TableName.Length));
             }
         }
 
