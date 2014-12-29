@@ -1,4 +1,5 @@
 ﻿using System;
+using Augment;
 using DatabaseSchemaReader.DataSchema;
 
 namespace Dynamo.Core
@@ -41,6 +42,20 @@ namespace Dynamo.Core
             {
                 ClrType += "?";
             }
+
+            if (PropertyName.StartsWith(column.TableName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                int pos = PropertyName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
+
+                PropertyName = PropertyName.Remove(pos, column.TableName.Length);
+            }
+
+            if (ParameterName.StartsWith(column.TableName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                int pos = ParameterName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
+
+                ParameterName = ParameterName.Remove(pos, column.TableName.Length);
+            }
         }
 
         /// <summary>
@@ -50,6 +65,10 @@ namespace Dynamo.Core
         public GeneratorColumn(string name)
         {
             Name = name;
+
+            PropertyName = DotLiquidFilters.Pascal(name.AssertNotNull());
+
+            ParameterName = DotLiquidFilters.Camel(name.AssertNotNull());
         }
 
         #endregion
@@ -64,7 +83,12 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
-        public string ShortName { get; set; }
+        public string PropertyName { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ParameterName { get; private set; }
 
         /// <summary>
         /// 

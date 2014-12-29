@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Augment;
 using DatabaseSchemaReader.DataSchema;
 
 namespace Dynamo.Core
@@ -27,6 +28,8 @@ namespace Dynamo.Core
         {
             Name = name;
 
+            ClassName = Pluralizer.ToSingular(DotLiquidFilters.Pascal(name.AssertNotNull()));
+
             Columns = new GeneratorColumnCollection();
         }
 
@@ -38,6 +41,11 @@ namespace Dynamo.Core
         /// 
         /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ClassName { get; private set; }
 
         /// <summary>
         /// 
