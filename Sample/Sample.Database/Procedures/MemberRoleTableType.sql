@@ -5,7 +5,8 @@ go
 create type dbo.MemberRoleTableType as table
 (
 	memberID                       int,
-	roleID                         int
+	roleID                         int,
+	createdAt                      datetime
 )
 
 go

@@ -10,24 +10,59 @@ namespace Sample.Core.Repositories
 	///	</summary>
 	public interface IMemberRoleRepository
 	{
+		/////	<summary>
+		/////	Dynamic SQL Sample
+		/////	</summary>
+		//[Sql("select * from MemberRole where createdAt > @createdAfter")]
+		//IList<MemberRole> GetList(DateTime createdAfter);
+
 		///	<summary>
-		///	Gets a list MemberRoles using SQL
+		///	Gets many MemberRoles by calling the
+		///	stored procedure MemberRoleSelectMany
 		///	</summary>
-		[Sql("select * from MemberRole")]
-		IList<MemberRole> GetList();
+		[Sql("MemberRoleSelectMany")]
+		IList<MemberRole> Get();
 	
 		///	<summary>
 		///	Gets a single MemberRole by primary key calling the
-		///	stored procedure MemberRoleSelect
+		///	stored procedure MemberRoleSelectOne
 		///	</summary>
-		[Sql("MemberRoleSelect")]
+		[Sql("MemberRoleSelectOne")]
 		MemberRole Get(int memberId, int roleId);
 
 		///	<summary>
-		///	Deletes a single MemberRole calling the
-		///	stored procedure MemberRoleDelete
+		///	Inserts a single MemberRole calling the
+		///	stored procedure MemberRoleInsertOne
 		///	</summary>
-		[Sql("MemberRoleDelete")]
+		[Sql("MemberRoleInsertOne")]
+		void Insert(MemberRole memberRole);
+
+		///	<summary>
+		///	Inserts many MemberRoles calling the
+		///	stored procedure MemberRoleInsertMany
+		///	</summary>
+		[Sql("MemberRoleInsertMany")]
+		void Insert(IEnumerable<MemberRole> memberRoles);
+
+		///	<summary>
+		///	Updates a single MemberRole calling the
+		///	stored procedure MemberRoleUpdateOne
+		///	</summary>
+		[Sql("MemberRoleUpdateOne")]
+		void Update(MemberRole memberRole);
+
+		///	<summary>
+		///	Updates many MemberRoles calling the
+		///	stored procedure MemberRoleUpdateMany
+		///	</summary>
+		[Sql("MemberRoleUpdateMany")]
+		void Update(IEnumerable<MemberRole> memberRoles);
+
+		///	<summary>
+		///	Deletes a single MemberRole calling the
+		///	stored procedure MemberRoleDeleteOne
+		///	</summary>
+		[Sql("MemberRoleDeleteOne")]
 		void Delete(MemberRole memberRole);
 
 		///	<summary>
@@ -39,9 +74,9 @@ namespace Sample.Core.Repositories
 
 		///	<summary>
 		///	Saves a single MemberRole calling the
-		///	stored procedure MemberRoleUpsert
+		///	stored procedure MemberRoleUpsertOne
 		///	</summary>
-		[Sql("MemberRoleUpsert")]
+		[Sql("MemberRoleUpsertOne")]
 		void Save(MemberRole memberRole);
 
 		///	<summary>

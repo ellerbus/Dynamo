@@ -38,6 +38,16 @@ namespace Sample.Tests.Core.Validators
 		}
 		
 		
+		[TestMethod]
+		public void MemberRoleValidator_RuleFor_CreatedAt()
+		{
+			//	TODO
+			//_validator.ShouldHaveValidationErrorFor(v => v.CreatedAt, default(DateTime));
+			
+			
+		}
+		
+		
 		#endregion
 	}
 }

@@ -29,6 +29,13 @@ namespace Sample.Core.Models.Entities
 		
 		#region Properties
 		
+		///	<summary>
+		///	Gets / Sets database column 'createdAt'
+		///	</summary>
+		[Column("createdAt")]
+		public virtual DateTime CreatedAt { get; set; }
+
+		
 		#endregion
 	}
 }

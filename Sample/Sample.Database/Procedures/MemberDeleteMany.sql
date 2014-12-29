@@ -3,12 +3,11 @@ if object_id('dbo.MemberDeleteMany', 'P') is not null drop procedure dbo.MemberD
 go
 
 create procedure dbo.MemberDeleteMany
-	@items                          MemberTableType readonly
+	@items                          dbo.MemberTableType readonly
 as
 
 delete	t
-from	dbo.Member t,
-		@items x
-where	t.memberID                    = x.memberID
+from	dbo.Member t inner join @items x
+			on	x.memberID            = t.memberID
 
 go

@@ -17,12 +17,12 @@ namespace Sample.Core.Services
 		/// Gets a list of Members
 		/// </summary>
 		/// <returns></returns>
-		IList<Member> GetList();
+		IList<Member> Get();
 
 		/// <summary>
 		/// Gets a singe Member based on the given primary key
 		/// </summary>
-		Member Get(int memberId);
+		Member Get(int id);
 		
 		/// <summary>
 		/// Saves a Member
@@ -35,11 +35,31 @@ namespace Sample.Core.Services
 		void Save(IEnumerable<Member> members);
 		
 		///// <summary>
+		///// Inserts a Member
+		///// </summary>
+		//void Insert(Member member);
+
+		///// <summary>
+		///// Inserts a list of Member
+		///// </summary>
+		//void Insert(IEnumerable<Member> members);
+		
+		///// <summary>
+		///// Updates a Member
+		///// </summary>
+		//void Update(Member member);
+
+		///// <summary>
+		///// Updates a list of Member
+		///// </summary>
+		//void Update(IEnumerable<Member> members);
+		
+		///// <summary>
 		///// Deletes a Member
 		///// </summary>
 		//void Delete(Member member);
-		//
-		/// <summary>
+
+		///// <summary>
 		///// Deletes a list of Member
 		///// </summary>
 		//void Delete(IEnumerable<Member> members);
@@ -76,17 +96,17 @@ namespace Sample.Core.Services
 		/// Gets a list of Members
 		/// </summary>
 		/// <returns></returns>
-		public IList<Member> GetList()
+		public IList<Member> Get()
 		{
-			return _repository.GetList();
+			return _repository.Get();
 		}
 
 		/// <summary>
 		/// Gets a singe Member based on the given primary key
 		/// </summary>
-		public Member Get(int memberId)
+		public Member Get(int id)
 		{
-			Member member = _repository.Get(memberId);
+			Member member = _repository.Get(id);
 			
 			return member;
 		}
@@ -107,6 +127,38 @@ namespace Sample.Core.Services
 		public void Save(IEnumerable<Member> members)
 		{
 			_repository.Save(members);
+		}
+		
+		/// <summary>
+		/// Inserts a Member
+		/// </summary>
+		public void Insert(Member member)
+		{
+			_repository.Insert(member);
+		}
+		
+		/// <summary>
+		/// Inserts a list of Member
+		/// </summary>
+		public void Insert(IEnumerable<Member> members)
+		{
+			_repository.Insert(members);
+		}
+		
+		/// <summary>
+		/// Updates a Member
+		/// </summary>
+		public void Update(Member member)
+		{
+			_repository.Update(member);
+		}
+		
+		/// <summary>
+		/// Updates a list of Member
+		/// </summary>
+		public void Update(IEnumerable<Member> members)
+		{
+			_repository.Update(members);
 		}
 		
 		/// <summary>

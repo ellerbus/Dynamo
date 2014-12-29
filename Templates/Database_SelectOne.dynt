@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROC %}{{ BASECLASS }}Select{% endcapture -%}
+{% capture PROC %}{{ BASECLASS }}SelectOne{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
 

@@ -39,13 +39,13 @@ namespace Sample.WebApi.Controllers
 		// GET: api/Member
 		public IEnumerable<Member> Get()
 		{
-			return _service.GetList();
+			return _service.Get();
 		}
 
 		// GET: api/Member/5
-		public Member Get(int memberId)
+		public Member Get(int id)
 		{
-			Member member = _service.Get(memberId);
+			Member member = _service.Get(id);
 			
 			return member;
 		}
@@ -66,9 +66,9 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// PUT: api/Member/5
-		public void Put(int memberId, [FromBody]Member member)
+		public void Put(int id, [FromBody]Member member)
 		{
-			Member model = _service.Get(memberId);
+			Member model = _service.Get(id);
 			
 			model.Name = member.Name;
 			model.CreatedAt = member.CreatedAt;
@@ -87,9 +87,9 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// DELETE: api/Member/5
-		public void Delete(int memberId)
+		public void Delete(int id)
 		{
-			Member model = _service.Get(memberId);
+			Member model = _service.Get(id);
 
 			_service.Delete(model);
 		}

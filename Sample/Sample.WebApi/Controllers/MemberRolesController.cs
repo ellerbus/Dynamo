@@ -39,7 +39,7 @@ namespace Sample.WebApi.Controllers
 		// GET: api/Member
 		public IEnumerable<MemberRole> Get()
 		{
-			return _service.GetList();
+			return _service.Get();
 		}
 
 		// GET: api/Member/5
@@ -70,6 +70,7 @@ namespace Sample.WebApi.Controllers
 		{
 			MemberRole model = _service.Get(memberId, roleId);
 			
+			model.CreatedAt = memberRole.CreatedAt;
 
 			ValidationResult vr = _validator.Validate(model);
 

@@ -28,6 +28,15 @@ namespace Sample.Tests.Core.Models
 		//	Assert.AreEqual(9, actual.RoleId);
 		//}
 
+				
+		//[TestMethod]
+		//public void MemberRole_CreatedAt_Should_DoSomething()
+		//{
+		//	var actual = new MemberRole() { CreatedAt = new DateTime(2000, 1, 1) };
+		//
+		//	Assert.AreEqual(new DateTime(2000, 1, 1), actual.CreatedAt);
+		//}
+
 		
 		#endregion
 	}

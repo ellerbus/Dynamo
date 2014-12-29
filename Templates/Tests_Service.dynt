@@ -1,10 +1,11 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture TEST %}{{ BASECLASS }}ServiceTests{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Core\Services\{{ TEST }}.cs{% endcapture -%}
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,38 +41,38 @@ namespace {{ PROJECT }}.Core.Services
 
 		#region Tests
 		
-		//[TestMethod]
-		//public void {{ SERVICE }}_Should_GetList()
-		//{
-		//	//	arrange
-		//	var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+		[TestMethod]
+		public void {{ SERVICE }}_Should_GetMany()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 		
-		//	MockRepo.Setup(x => x.GetList()).Returns(expected);
+			MockRepo.Setup(x => x.Get()).Returns(expected);
 
-		//	//	act
-		//	var actual = SubjectUnderTest.GetList();
+			//	act
+			var actual = SubjectUnderTest.Get();
 
-		//	//	assert
-		//	CollectionAssert.AreEqual(expected, actual);
+			//	assert
+			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
 
-		//	MockRepo.VerifyAll();
-		//}
+			MockRepo.VerifyAll();
+		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Get()
+		public void {{ SERVICE }}_Should_GetOne()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.name | pascal | remove:BASECLASS }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
 
 			//	act
-			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.name | pascal | remove:BASECLASS }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			//	assert
 			Assert.IsNotNull(actual);			
 			{% for column in table.columns %}
-			Assert.AreEqual(expected.{{ column.name | pascal | remove:BASECLASS }}, actual.{{ column.name | pascal | remove:BASECLASS }});{% endfor %}
+			Assert.AreEqual(expected.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
 
 			MockRepo.VerifyAll();
 		}

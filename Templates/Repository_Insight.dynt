@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Repositories\{{ REPO }}.cs{% endcapture -%}
@@ -14,24 +14,59 @@ namespace {{ PROJECT }}.Repositories
 	///	</summary>
 	public interface {{ REPO }}
 	{
+		/////	<summary>
+		/////	Dynamic SQL Sample
+		/////	</summary>
+		//[Sql("select * from {{ table.name }} where createdAt > @createdAfter")]
+		//IList<{{ BASECLASS }}> GetList(DateTime createdAfter);
+
 		///	<summary>
-		///	Gets a list of {{ BASECLASS | plural }} using SQL
+		///	Gets many {{ BASECLASS | plural }} by calling the
+		///	stored procedure {{ BASECLASS }}SelectMany
 		///	</summary>
-		[Sql("select * from {{ table.name }}")]
-		IList<{{ BASECLASS }}> GetList();
+		[Sql("{{ BASECLASS }}SelectMany")]
+		IList<{{ BASECLASS }}> Get();
 	
 		///	<summary>
 		///	Gets a single {{ BASECLASS }} by primary key calling the
-		///	stored procedure {{ BASECLASS }}Select
+		///	stored procedure {{ BASECLASS }}SelectOne
 		///	</summary>
-		[Sql("{{ BASECLASS }}Select")]
-		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+		[Sql("{{ BASECLASS }}SelectOne")]
+		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %});
+
+		///	<summary>
+		///	Inserts a single {{ BASECLASS }} calling the
+		///	stored procedure {{ BASECLASS }}InsertOne
+		///	</summary>
+		[Sql("{{ BASECLASS }}InsertOne")]
+		void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
+
+		///	<summary>
+		///	Inserts many {{ BASECLASS | plural }} calling the
+		///	stored procedure {{ BASECLASS }}InsertMany
+		///	</summary>
+		[Sql("{{ BASECLASS }}InsertMany")]
+		void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
+
+		///	<summary>
+		///	Updates a single {{ BASECLASS }} calling the
+		///	stored procedure {{ BASECLASS }}UpdateOne
+		///	</summary>
+		[Sql("{{ BASECLASS }}UpdateOne")]
+		void Update({{ BASECLASS }} {{ BASECLASS | camel }});
+
+		///	<summary>
+		///	Updates many {{ BASECLASS | plural }} calling the
+		///	stored procedure {{ BASECLASS }}UpdateMany
+		///	</summary>
+		[Sql("{{ BASECLASS }}UpdateMany")]
+		void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
 
 		///	<summary>
 		///	Deletes a single {{ BASECLASS }} calling the
-		///	stored procedure {{ BASECLASS }}Delete
+		///	stored procedure {{ BASECLASS }}DeleteOne
 		///	</summary>
-		[Sql("{{ BASECLASS }}Delete")]
+		[Sql("{{ BASECLASS }}DeleteOne")]
 		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>
@@ -43,9 +78,9 @@ namespace {{ PROJECT }}.Repositories
 
 		///	<summary>
 		///	Saves a single {{ BASECLASS }} calling the
-		///	stored procedure {{ BASECLASS }}Upsert
+		///	stored procedure {{ BASECLASS }}UpsertOne
 		///	</summary>
-		[Sql("{{ BASECLASS }}Upsert")]
+		[Sql("{{ BASECLASS }}UpsertOne")]
 		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
 
 		///	<summary>

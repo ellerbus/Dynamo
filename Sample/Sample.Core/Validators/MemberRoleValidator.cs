@@ -15,6 +15,8 @@ namespace Sample.Core.Validators
 		public MemberRoleValidator()
 		{
 			CascadeMode = CascadeMode.StopOnFirstFailure;
+
+			//	strings
 					
 			//	unique keys
 					

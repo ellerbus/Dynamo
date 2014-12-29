@@ -39,7 +39,7 @@ namespace Sample.WebMvc.Controllers
 		// GET: /Member/Index
 		public ActionResult Index()
 		{
-			return View(_service.GetList());
+			return View(_service.Get());
 		}
 		
 		#endregion
@@ -78,9 +78,9 @@ namespace Sample.WebMvc.Controllers
 
 		//
 		// GET: /Member/Edit/5
-		public ActionResult Edit(int memberId)
+		public ActionResult Edit(int id)
 		{
-			Member model = _service.Get(memberId);
+			Member model = _service.Get(id);
 			
 			if (model == null)
 			{
@@ -121,9 +121,9 @@ namespace Sample.WebMvc.Controllers
 
 		//
 		// GET: /Member/Delete/5
-		public ActionResult Delete(int memberId)
+		public ActionResult Delete(int id)
 		{
-			Member model = _service.Get(memberId);
+			Member model = _service.Get(id);
 			
 			if (model == null)
 			{

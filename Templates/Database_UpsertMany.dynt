@@ -7,16 +7,15 @@ if object_id('dbo.{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
 go
 
 create procedure dbo.{{ PROC }}
-	@{{ 'items' | r_pad:30 }} {{ BASECLASS }}TableType readonly
+	@{{ 'items' | r_pad:30 }} dbo.{{ BASECLASS }}TableType readonly
 as
 
 update	t
 set		{% for column in table.columns %}{% if column.is_primary_key == false %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %},
 		{% endif %}{% endif %}{% endfor %}
-from	dbo.{{ table.name }} t,
-		@items x
-where	{% for column in table.primary_keys %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %}
-  and	{% endif %}{% endfor %}
+from	dbo.{{ table.name }} t inner join @items x
+			on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{%if forloop.last == false %}
+			and	{% endif %}{% endfor %}
 
 insert into dbo.{{ table.name }}
 	(
@@ -26,7 +25,7 @@ insert into dbo.{{ table.name }}
 	select	{% for column in table.columns %}{% if column.is_identity == false %}x.{{ column.name }}{%if forloop.last == false %},
 			{% endif %}{% endif %}{% endfor %}
 	from	@items x left join dbo.{{ table.name }} t
-				on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:27 }} = t.{{ column.name }}{%if forloop.last == false %}
+				on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{%if forloop.last == false %}
 				and	{% endif %}{% endfor %}
-				and	{% for column in table.primary_keys %}{%if forloop.first == true %}t.{{ column.name | r_pad:27 }} is null{% endif %}{% endfor %}
+				and	{% for column in table.primary_keys %}{%if forloop.first == true %}t.{{ column.name | r_pad:19 }} is null{% endif %}{% endfor %}
 go

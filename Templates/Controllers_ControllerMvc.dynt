@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
@@ -46,7 +46,7 @@ namespace {{ PROJECT }}.Controllers
 		// GET: /{{ BASECLASS }}/Index
 		public ActionResult Index()
 		{
-			return View(_service.GetList());
+			return View(_service.Get());
 		}
 		
 		#endregion
@@ -85,9 +85,9 @@ namespace {{ PROJECT }}.Controllers
 
 		//
 		// GET: /{{ BASECLASS }}/Edit/5
-		public ActionResult Edit({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		public ActionResult Edit({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
-			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 			
 			if (model == null)
 			{
@@ -127,9 +127,9 @@ namespace {{ PROJECT }}.Controllers
 
 		//
 		// GET: /{{ BASECLASS }}/Delete/5
-		public ActionResult Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		public ActionResult Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
-			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 			
 			if (model == null)
 			{

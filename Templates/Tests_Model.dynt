@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture TEST %}{{ BASECLASS }}ModelTests{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ TEST }}.cs{% endcapture -%}
@@ -16,11 +16,11 @@ namespace {{ PROJECT }}.Core.Models
 		#region Property Tests
 		{% for column in table.columns %}		
 		//[TestMethod]
-		//public void {{ BASECLASS }}_{{ column.name | pascal | remove:BASECLASS }}_Should_DoSomething()
+		//public void {{ BASECLASS }}_{{ column.property_name }}_Should_DoSomething()
 		//{
-		//	var actual = new {{ BASECLASS }}() { {{ column.name | pascal | remove:BASECLASS }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %} };
+		//	var actual = new {{ BASECLASS }}() { {{ column.property_name }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %} };
 		//
-		//	Assert.AreEqual({% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %}, actual.{{ column.name | pascal | remove:BASECLASS }});
+		//	Assert.AreEqual({% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %}, actual.{{ column.property_name }});
 		//}
 
 		{% endfor -%}

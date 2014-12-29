@@ -17,7 +17,7 @@ namespace Sample.Core.Services
 		/// Gets a list of MemberRoles
 		/// </summary>
 		/// <returns></returns>
-		IList<MemberRole> GetList();
+		IList<MemberRole> Get();
 
 		/// <summary>
 		/// Gets a singe MemberRole based on the given primary key
@@ -35,11 +35,31 @@ namespace Sample.Core.Services
 		void Save(IEnumerable<MemberRole> memberRoles);
 		
 		///// <summary>
+		///// Inserts a MemberRole
+		///// </summary>
+		//void Insert(MemberRole memberRole);
+
+		///// <summary>
+		///// Inserts a list of MemberRole
+		///// </summary>
+		//void Insert(IEnumerable<MemberRole> memberRoles);
+		
+		///// <summary>
+		///// Updates a MemberRole
+		///// </summary>
+		//void Update(MemberRole memberRole);
+
+		///// <summary>
+		///// Updates a list of MemberRole
+		///// </summary>
+		//void Update(IEnumerable<MemberRole> memberRoles);
+		
+		///// <summary>
 		///// Deletes a MemberRole
 		///// </summary>
 		//void Delete(MemberRole memberRole);
-		//
-		/// <summary>
+
+		///// <summary>
 		///// Deletes a list of MemberRole
 		///// </summary>
 		//void Delete(IEnumerable<MemberRole> memberRoles);
@@ -76,9 +96,9 @@ namespace Sample.Core.Services
 		/// Gets a list of MemberRoles
 		/// </summary>
 		/// <returns></returns>
-		public IList<MemberRole> GetList()
+		public IList<MemberRole> Get()
 		{
-			return _repository.GetList();
+			return _repository.Get();
 		}
 
 		/// <summary>
@@ -107,6 +127,38 @@ namespace Sample.Core.Services
 		public void Save(IEnumerable<MemberRole> memberRoles)
 		{
 			_repository.Save(memberRoles);
+		}
+		
+		/// <summary>
+		/// Inserts a MemberRole
+		/// </summary>
+		public void Insert(MemberRole memberRole)
+		{
+			_repository.Insert(memberRole);
+		}
+		
+		/// <summary>
+		/// Inserts a list of MemberRole
+		/// </summary>
+		public void Insert(IEnumerable<MemberRole> memberRoles)
+		{
+			_repository.Insert(memberRoles);
+		}
+		
+		/// <summary>
+		/// Updates a MemberRole
+		/// </summary>
+		public void Update(MemberRole memberRole)
+		{
+			_repository.Update(memberRole);
+		}
+		
+		/// <summary>
+		/// Updates a list of MemberRole
+		/// </summary>
+		public void Update(IEnumerable<MemberRole> memberRoles)
+		{
+			_repository.Update(memberRoles);
 		}
 		
 		/// <summary>

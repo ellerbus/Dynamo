@@ -10,24 +10,59 @@ namespace Sample.Core.Repositories
 	///	</summary>
 	public interface IMemberRepository
 	{
+		/////	<summary>
+		/////	Dynamic SQL Sample
+		/////	</summary>
+		//[Sql("select * from Member where createdAt > @createdAfter")]
+		//IList<Member> GetList(DateTime createdAfter);
+
 		///	<summary>
-		///	Gets a list Members using SQL
+		///	Gets many Members by calling the
+		///	stored procedure MemberSelectMany
 		///	</summary>
-		[Sql("select * from Member")]
-		IList<Member> GetList();
+		[Sql("MemberSelectMany")]
+		IList<Member> Get();
 	
 		///	<summary>
 		///	Gets a single Member by primary key calling the
-		///	stored procedure MemberSelect
+		///	stored procedure MemberSelectOne
 		///	</summary>
-		[Sql("MemberSelect")]
-		Member Get(int memberId);
+		[Sql("MemberSelectOne")]
+		Member Get(int id);
+
+		///	<summary>
+		///	Inserts a single Member calling the
+		///	stored procedure MemberInsertOne
+		///	</summary>
+		[Sql("MemberInsertOne")]
+		void Insert(Member member);
+
+		///	<summary>
+		///	Inserts many Members calling the
+		///	stored procedure MemberInsertMany
+		///	</summary>
+		[Sql("MemberInsertMany")]
+		void Insert(IEnumerable<Member> members);
+
+		///	<summary>
+		///	Updates a single Member calling the
+		///	stored procedure MemberUpdateOne
+		///	</summary>
+		[Sql("MemberUpdateOne")]
+		void Update(Member member);
+
+		///	<summary>
+		///	Updates many Members calling the
+		///	stored procedure MemberUpdateMany
+		///	</summary>
+		[Sql("MemberUpdateMany")]
+		void Update(IEnumerable<Member> members);
 
 		///	<summary>
 		///	Deletes a single Member calling the
-		///	stored procedure MemberDelete
+		///	stored procedure MemberDeleteOne
 		///	</summary>
-		[Sql("MemberDelete")]
+		[Sql("MemberDeleteOne")]
 		void Delete(Member member);
 
 		///	<summary>
@@ -39,9 +74,9 @@ namespace Sample.Core.Repositories
 
 		///	<summary>
 		///	Saves a single Member calling the
-		///	stored procedure MemberUpsert
+		///	stored procedure MemberUpsertOne
 		///	</summary>
-		[Sql("MemberUpsert")]
+		[Sql("MemberUpsertOne")]
 		void Save(Member member);
 
 		///	<summary>

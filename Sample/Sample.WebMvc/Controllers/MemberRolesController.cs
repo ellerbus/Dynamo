@@ -39,7 +39,7 @@ namespace Sample.WebMvc.Controllers
 		// GET: /MemberRole/Index
 		public ActionResult Index()
 		{
-			return View(_service.GetList());
+			return View(_service.Get());
 		}
 		
 		#endregion
@@ -97,6 +97,7 @@ namespace Sample.WebMvc.Controllers
 		{
 			MemberRole memberRole = _service.Get(model.MemberId, model.RoleId);
 			
+			memberRole.CreatedAt = model.CreatedAt;
 
 			ValidationResult vr = _validator.Validate(memberRole);
 

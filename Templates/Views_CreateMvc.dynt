@@ -1,7 +1,7 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Views\{{ BASECLASS | plural }}\Create.cshtml{% endcapture -%}
-{% capture PRIMARY_KEY %}{% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS | camel }} = item.{{ column.name | pascal | remove:BASECLASS }}{%if forloop.last == false %}, {% endif %}{% endfor %}{% endcapture -%}
+{% capture PRIMARY_KEY %}{% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS | camel }} = item.{{ column.name | pascal | remove:BASECLASS }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endcapture -%}
 
 @model Sample.Core.Models.Member
 

@@ -15,6 +15,8 @@ namespace Sample.Core.Validators
 		public MemberValidator()
 		{
 			CascadeMode = CascadeMode.StopOnFirstFailure;
+
+			//	strings
 			
 			RuleFor(x => x.Name).NotNull().NotEmpty().Length(0, 50);
 					

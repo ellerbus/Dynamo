@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -34,25 +35,25 @@ namespace Sample.Tests.Core.Services
 
 		#region Tests
 		
-		//[TestMethod]
-		//public void RoleService_Should_GetList()
-		//{
-		//	//	arrange
-		//	var expected = Builder<Role>.CreateListOfSize(10).Build(); 
+		[TestMethod]
+		public void RoleService_Should_GetMany()
+		{
+			//	arrange
+			var expected = Builder<Role>.CreateListOfSize(10).Build(); 
 		
-		//	MockRepo.Setup(x => x.GetList()).Returns(expected);
+			MockRepo.Setup(x => x.Get()).Returns(expected);
 
-		//	//	act
-		//	var actual = SubjectUnderTest.GetList();
+			//	act
+			var actual = SubjectUnderTest.Get();
 
-		//	//	assert
-		//	CollectionAssert.AreEqual(expected, actual);
+			//	assert
+			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
 
-		//	MockRepo.VerifyAll();
-		//}
+			MockRepo.VerifyAll();
+		}
 
 		[TestMethod]
-		public void RoleService_Should_Get()
+		public void RoleService_Should_GetOne()
 		{
 			//	arrange
 			var expected = Builder<Role>.CreateNew().Build();

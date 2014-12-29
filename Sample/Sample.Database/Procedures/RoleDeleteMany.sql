@@ -3,12 +3,11 @@ if object_id('dbo.RoleDeleteMany', 'P') is not null drop procedure dbo.RoleDelet
 go
 
 create procedure dbo.RoleDeleteMany
-	@items                          RoleTableType readonly
+	@items                          dbo.RoleTableType readonly
 as
 
 delete	t
-from	dbo.Role t,
-		@items x
-where	t.roleID                      = x.roleID
+from	dbo.Role t inner join @items x
+			on	x.roleID              = t.roleID
 
 go

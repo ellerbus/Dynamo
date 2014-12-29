@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Validators\{{ VALIDATOR }}.cs{% endcapture -%}
@@ -19,13 +19,15 @@ namespace {{ PROJECT }}.Validators
 		public {{ VALIDATOR }}()
 		{
 			CascadeMode = CascadeMode.StopOnFirstFailure;
+
+			//	strings
 			{% for column in table.columns %}{% if column.clr_type == 'string' %}
-			RuleFor(x => x.{{ column.name | pascal | remove:BASECLASS }}).NotNull().NotEmpty().Length(0, {{ column.length }});
+			RuleFor(x => x.{{ column.property_name }}).NotNull().NotEmpty().Length(0, {{ column.length }});
 			{% endif %}{% endfor -%}
 		
 			//	unique keys
 			{% for column in table.unique_keys %}
-			RuleFor(x => x.{{ column.name | pascal | remove:BASECLASS }}).NotEmpty();
+			RuleFor(x => x.{{ column.property_name }}).NotEmpty();
 			{% endfor -%}
 		
 			//	foreign keys

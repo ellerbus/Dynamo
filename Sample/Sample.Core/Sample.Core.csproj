@@ -58,9 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Generated\Member.cs" />
-    <Compile Include="Models\Generated\MemberRole.cs" />
-    <Compile Include="Models\Generated\Role.cs" />
+    <Compile Include="Models\Generated\MemberEntity.cs" />
+    <Compile Include="Models\Generated\MemberRoleEntity.cs" />
+    <Compile Include="Models\Generated\RoleEntity.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\MemberCollection.cs" />
     <Compile Include="Models\MemberRole.cs" />

@@ -22,9 +22,9 @@ namespace {{ PROJECT }}.Models
 		{
 			get
 			{
-				string pk = "[" + {% for column in table.primary_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
+				string pk = "[" + {% for column in table.primary_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{% if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
 				
-				string uq = "[" + {% for column in table.unique_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{%if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
+				string uq = "[" + {% for column in table.unique_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{% if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
 				
 				return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
 			}

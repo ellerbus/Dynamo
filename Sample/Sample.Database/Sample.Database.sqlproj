@@ -68,24 +68,38 @@
     <None Include="Tables\Role.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Procedures\MemberDelete.sql" />
-    <None Include="Procedures\MemberRoleDelete.sql" />
-    <None Include="Procedures\MemberRoleSelect.sql" />
-    <None Include="Procedures\MemberRoleTableType.sql" />
-    <None Include="Procedures\MemberSelect.sql" />
-    <None Include="Procedures\MemberTableType.sql" />
-    <None Include="Procedures\MemberUpsert.sql" />
-    <None Include="Procedures\RoleDelete.sql" />
-    <None Include="Procedures\RoleSelect.sql" />
     <None Include="Procedures\MemberDeleteMany.sql" />
+    <None Include="Procedures\MemberDeleteOne.sql" />
+    <None Include="Procedures\MemberInsertMany.sql" />
+    <None Include="Procedures\MemberInsertOne.sql" />
     <None Include="Procedures\MemberRoleDeleteMany.sql" />
-    <None Include="Procedures\MemberRoleUpsert.sql" />
+    <None Include="Procedures\MemberRoleDeleteOne.sql" />
+    <None Include="Procedures\MemberRoleInsertMany.sql" />
+    <None Include="Procedures\MemberRoleInsertOne.sql" />
+    <None Include="Procedures\MemberRoleSelectOne.sql" />
+    <None Include="Procedures\MemberRoleTableType.sql" />
+    <None Include="Procedures\MemberRoleUpdateMany.sql" />
+    <None Include="Procedures\MemberRoleUpdateOne.sql" />
     <None Include="Procedures\MemberRoleUpsertMany.sql" />
+    <None Include="Procedures\MemberRoleUpsertOne.sql" />
+    <None Include="Procedures\MemberSelectOne.sql" />
+    <None Include="Procedures\MemberTableType.sql" />
+    <None Include="Procedures\MemberUpdateMany.sql" />
+    <None Include="Procedures\MemberUpdateOne.sql" />
     <None Include="Procedures\MemberUpsertMany.sql" />
+    <None Include="Procedures\MemberUpsertOne.sql" />
     <None Include="Procedures\RoleDeleteMany.sql" />
-    <None Include="Procedures\RolesUpsert.sql" />
+    <None Include="Procedures\RoleDeleteOne.sql" />
+    <None Include="Procedures\RoleInsertMany.sql" />
+    <None Include="Procedures\RoleInsertOne.sql" />
+    <None Include="Procedures\RoleSelectOne.sql" />
     <None Include="Procedures\RoleTableType.sql" />
-    <None Include="Procedures\RoleUpsert.sql" />
+    <None Include="Procedures\RoleUpdateMany.sql" />
+    <None Include="Procedures\RoleUpdateOne.sql" />
     <None Include="Procedures\RoleUpsertMany.sql" />
+    <None Include="Procedures\RoleUpsertOne.sql" />
+    <None Include="Procedures\MemberRoleSelectMany.sql" />
+    <None Include="Procedures\MemberSelectMany.sql" />
+    <None Include="Procedures\RoleSelectMany.sql" />
   </ItemGroup>
 </Project>

@@ -1,13 +1,13 @@
 
-if object_id('dbo.MemberRoleSelect', 'P') is not null drop procedure dbo.MemberRoleSelect
+if object_id('dbo.MemberRoleDeleteOne', 'P') is not null drop procedure dbo.MemberRoleDeleteOne
 go
 
-create procedure dbo.MemberRoleSelect
+create procedure dbo.MemberRoleDeleteOne
 	@memberID                       int,
 	@roleID                         int
 as
 
-select	*
+delete
 from	dbo.MemberRole
 where	memberID                    = @memberID
   and	roleID                      = @roleID

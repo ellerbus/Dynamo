@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
@@ -22,12 +22,12 @@ namespace {{ PROJECT }}.Services
 		/// Gets a list of {{ BASECLASS | plural }}
 		/// </summary>
 		/// <returns></returns>
-		IList<{{ BASECLASS }}> GetList();
+		IList<{{ BASECLASS }}> Get();
 
 		/// <summary>
 		/// Gets a singe {{ BASECLASS }} based on the given primary key
 		/// </summary>
-		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 		
 		/// <summary>
 		/// Saves a {{ BASECLASS }}
@@ -40,11 +40,31 @@ namespace {{ PROJECT }}.Services
 		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 		
 		///// <summary>
+		///// Inserts a {{ BASECLASS }}
+		///// </summary>
+		//void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
+
+		///// <summary>
+		///// Inserts a list of {{ BASECLASS }}
+		///// </summary>
+		//void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		
+		///// <summary>
+		///// Updates a {{ BASECLASS }}
+		///// </summary>
+		//void Update({{ BASECLASS }} {{ BASECLASS | camel }});
+
+		///// <summary>
+		///// Updates a list of {{ BASECLASS }}
+		///// </summary>
+		//void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		
+		///// <summary>
 		///// Deletes a {{ BASECLASS }}
 		///// </summary>
 		//void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
-		//
-		/// <summary>
+
+		///// <summary>
 		///// Deletes a list of {{ BASECLASS }}
 		///// </summary>
 		//void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
@@ -81,17 +101,17 @@ namespace {{ PROJECT }}.Services
 		/// Gets a list of {{ BASECLASS | plural }}
 		/// </summary>
 		/// <returns></returns>
-		public IList<{{ BASECLASS }}> GetList()
+		public IList<{{ BASECLASS }}> Get()
 		{
-			return _repository.GetList();
+			return _repository.Get();
 		}
 
 		/// <summary>
 		/// Gets a singe {{ BASECLASS }} based on the given primary key
 		/// </summary>
-		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %})
 		{
-			{{ BASECLASS }} {{ BASECLASS | camel }} = _repository.Get({% for column in table.primary_keys %}{{ column.name | camel }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			{{ BASECLASS }} {{ BASECLASS | camel }} = _repository.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %});
 			
 			return {{ BASECLASS | camel }};
 		}
@@ -112,6 +132,38 @@ namespace {{ PROJECT }}.Services
 		public void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }})
 		{
 			_repository.Save({{ BASECLASS | plural | camel }});
+		}
+		
+		/// <summary>
+		/// Inserts a {{ BASECLASS }}
+		/// </summary>
+		public void Insert({{ BASECLASS }} {{ BASECLASS | camel }})
+		{
+			_repository.Insert({{ BASECLASS | camel }});
+		}
+		
+		/// <summary>
+		/// Inserts a list of {{ BASECLASS }}
+		/// </summary>
+		public void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		{
+			_repository.Insert({{ BASECLASS | plural | camel }});
+		}
+		
+		/// <summary>
+		/// Updates a {{ BASECLASS }}
+		/// </summary>
+		public void Update({{ BASECLASS }} {{ BASECLASS | camel }})
+		{
+			_repository.Update({{ BASECLASS | camel }});
+		}
+		
+		/// <summary>
+		/// Updates a list of {{ BASECLASS }}
+		/// </summary>
+		public void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		{
+			_repository.Update({{ BASECLASS | plural | camel }});
 		}
 		
 		/// <summary>

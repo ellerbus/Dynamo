@@ -39,13 +39,13 @@ namespace Sample.WebApi.Controllers
 		// GET: api/Member
 		public IEnumerable<Role> Get()
 		{
-			return _service.GetList();
+			return _service.Get();
 		}
 
 		// GET: api/Member/5
-		public Role Get(int roleId)
+		public Role Get(int id)
 		{
-			Role role = _service.Get(roleId);
+			Role role = _service.Get(id);
 			
 			return role;
 		}
@@ -66,9 +66,9 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// PUT: api/Member/5
-		public void Put(int roleId, [FromBody]Role role)
+		public void Put(int id, [FromBody]Role role)
 		{
-			Role model = _service.Get(roleId);
+			Role model = _service.Get(id);
 			
 			model.Name = role.Name;
 			model.CreatedAt = role.CreatedAt;
@@ -87,9 +87,9 @@ namespace Sample.WebApi.Controllers
 		}
 
 		// DELETE: api/Member/5
-		public void Delete(int roleId)
+		public void Delete(int id)
 		{
-			Role model = _service.Get(roleId);
+			Role model = _service.Get(id);
 
 			_service.Delete(model);
 		}

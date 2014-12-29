@@ -1,8 +1,8 @@
 
-if object_id('dbo.RoleUpsert', 'P') is not null drop procedure dbo.RoleUpsert
+if object_id('dbo.RoleUpsertOne', 'P') is not null drop procedure dbo.RoleUpsertOne
 go
 
-create procedure dbo.RoleUpsert
+create procedure dbo.RoleUpsertOne
 	@roleID                         int,
 	@roleName                       varchar,
 	@createdAt                      datetime,
