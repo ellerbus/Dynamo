@@ -2,7 +2,7 @@
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Controllers\{{ CONTROLLER }}.cs{% endcapture -%}
 using System;
@@ -21,6 +21,7 @@ namespace {{ PROJECT }}.Controllers
 	///	<summary>
 	/// Represents a basic controller for {{ BASECLASS }}
 	///	</summary>
+	[RoutePrefix("{{ BASECLASS | plural }}"), Route("{action=Index}")]
 	public class {{ CONTROLLER }} : Controller
 	{
 		#region Members

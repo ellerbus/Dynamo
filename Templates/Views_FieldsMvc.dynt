@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Views\{{ BASECLASS | plural }}\Fields.cshtml{% endcapture -%}
 @model {{ BASECLASS }}
 

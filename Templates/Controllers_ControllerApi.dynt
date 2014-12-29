@@ -2,9 +2,9 @@
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Controllers\{{ CONTROLLER }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\ApiControllers\{{ CONTROLLER }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +17,12 @@ using {{ CORE }}.Models;
 using {{ CORE }}.Services;
 using {{ CORE }}.Validators;
 
-namespace {{ PROJECT }}.Controllers
+namespace {{ PROJECT }}.ApiControllers
 {
 	///	<summary>
 	/// Represents a basic controller for {{ BASECLASS }}
 	///	</summary>
+	[RoutePrefix("api/{{ BASECLASS | camel | plural }}")]
 	public class {{ CONTROLLER }} : ApiController
 	{
 		#region Members
@@ -43,21 +44,29 @@ namespace {{ PROJECT }}.Controllers
 		
 		#region Verb Actions
 
-		// GET: api/Member
-		public IEnumerable<{{ BASECLASS }}> Get()
+		// GET: api/{{ BASECLASS | camel }}
+		[HttpGet, Route("")]
+		public IEnumerable<{{ BASECLASS }}> GetAll()
 		{
 			return _service.Get();
 		}
 
-		// GET: api/Member/5
+		// GET: api/{{ BASECLASS | camel }}/5
+		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
 		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
 			{{ BASECLASS }} {{ BASECLASS | camel }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 			
+			if ({{ BASECLASS | camel }} == null)
+			{
+			
+			}
+
 			return {{ BASECLASS | camel }};
 		}
 
-		// POST: api/Member
+		// POST: api/{{ BASECLASS | camel }}
+		[HttpPost, Route("")]
 		public void Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
 		{
 			ValidationResult vr = _validator.Validate({{ BASECLASS | camel }});
@@ -72,7 +81,8 @@ namespace {{ PROJECT }}.Controllers
 			throw new NotImplementedException();
 		}
 
-		// PUT: api/Member/5
+		// PUT: api/{{ BASECLASS | camel }}/5
+		[HttpPut, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
 		public void Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
 		{
 			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
@@ -92,7 +102,8 @@ namespace {{ PROJECT }}.Controllers
 			throw new NotImplementedException();
 		}
 
-		// DELETE: api/Member/5
+		// DELETE: api/{{ BASECLASS | camel }}/5
+		[HttpDelete, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
 		public void Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
 			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});

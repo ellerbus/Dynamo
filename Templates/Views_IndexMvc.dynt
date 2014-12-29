@@ -1,5 +1,5 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Views\{{ BASECLASS | plural }}\Index.cshtml{% endcapture -%}
 {% capture PRIMARY_KEY %}{% for column in table.primary_keys %}{{ column.name | pascal | remove:BASECLASS | camel }} = item.{{ column.name | pascal | remove:BASECLASS }}{% if forloop.last == false %}, {% endif %}{% endfor %}{% endcapture -%}
 @model IEnumerable<{{ BASECLASS }}>

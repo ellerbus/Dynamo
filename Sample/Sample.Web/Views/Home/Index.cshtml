@@ -1,0 +1,11 @@
+@model IEnumerable<Member>
+
+@{
+	ViewBag.Title = "Home";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+	@Html.ActionLink("Members", "Index", "Members")
+</p>
