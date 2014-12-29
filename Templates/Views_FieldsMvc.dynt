@@ -1,0 +1,12 @@
+{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.WebMvc{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Views\{{ BASECLASS | plural }}\Fields.cshtml{% endcapture -%}
+@model {{ BASECLASS }}
+
+	{% for column in table.columns %}{% if column.is_primary_key == false %}
+		<div class="form-group">
+    @Html.LabelFor(model => model.{{ column.name | pascal | remove:BASECLASS }}, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+      @Html.EditorFor(model => model.{{ column.name | pascal | remove:BASECLASS }}, new { htmlAttributes = new { @class = "form-control" } })
+      @Html.ValidationMessageFor(model => model.{{ column.name | pascal | remove:BASECLASS }}, "", new { @class = "text-danger" })
+    </div>{% endif %}{% endfor -%}

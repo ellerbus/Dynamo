@@ -8,7 +8,7 @@ namespace Sample.Core.Models
 	///
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial class Member
+	public class Member : Entities.MemberEntity
 	{	
 		#region ToString/DebuggerDisplay
 

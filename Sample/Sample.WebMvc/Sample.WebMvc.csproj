@@ -146,6 +146,8 @@
     <Content Include="Views\MemberRoles\Index.cshtml" />
     <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Members\Create.cshtml" />
+    <Content Include="Views\MemberRoles\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

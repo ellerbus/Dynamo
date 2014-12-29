@@ -1,12 +1,13 @@
 using System;
 using Insight.Database;
 
-namespace Sample.Core.Models
+namespace Sample.Core.Models.Entities
 {
 	///	<summary>
-	///
+	/// Base Entity class that represents MemberRole - Intended to be extended
+	///	for business rule implementation
 	///	</summary>
-	public partial class MemberRole
+	public abstract class MemberRoleEntity
 	{
 		#region Primary Key Properties
 		

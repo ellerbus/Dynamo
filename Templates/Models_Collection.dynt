@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal | singular }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture COLLECTION %}{{ BASECLASS }}Collection{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\{{ COLLECTION }}.cs{% endcapture -%}

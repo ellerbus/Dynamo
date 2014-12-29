@@ -1,15 +1,16 @@
-{% capture BASECLASS %}{{ table.name | pascal | singular }}{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}Entity{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
 using Insight.Database;
 
-namespace {{ PROJECT }}.Models
+namespace {{ PROJECT }}.Models.Entities
 {
 	///	<summary>
-	///
+	/// Base Entity class that represents {{ table.name }} - Intended to be extended
+	///	for business rule implementation
 	///	</summary>
-	public partial class {{ BASECLASS }}
+	public abstract class {{ BASECLASS }}
 	{
 		#region Primary Key Properties
 		{% for column in table.primary_keys %}
@@ -17,7 +18,7 @@ namespace {{ PROJECT }}.Models
 		///	Gets / Sets database column '{{ column.name }}' (primary key)
 		///	</summary>
 		[Column("{{ column.name }}")]
-		public virtual {{ column.clr_type }} {{ column.name | pascal | remove:BASECLASS }} { get; set; }
+		public virtual {{ column.clr_type }} {{ column.property_name }} { get; set; }
 		
 		{% endfor -%}
 		
@@ -29,7 +30,7 @@ namespace {{ PROJECT }}.Models
 		///	Gets / Sets database column '{{ column.name }}'
 		///	</summary>
 		[Column("{{ column.name }}")]
-		public virtual {{ column.clr_type }} {{ column.name | pascal | remove:BASECLASS }} { get; set; }
+		public virtual {{ column.clr_type }} {{ column.property_name }} { get; set; }
 
 		{% endif %}{% endfor -%}
 
