@@ -1,23 +1,24 @@
-{% capture BASECLASS %}{{ table.name | camel }}{% endcapture -%}
-{% capture API %}/api/{{ BASECLASS | pascal | plural }}{% endcapture -%}
-{% capture SERVICE %}{{ BASECLASS | pascal | plural }}DataService{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
-{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | pascal | plural }}\{{ BASECLASS | plural }}.dataService.js{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% capture SERVICE %}{{ BASECLASS }}DataService{% endcapture -%}
+{% capture API %}/api/{{ BASECLASS | plural }}{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.dataService.js{% endcapture -%}
 
 (function() {
 	'use strict';
 
+	//	setup the data service factory to call the ASP.NET API
 	angular
-		.module('app')
+		.module('app.{{ CAMELCLASS | plural }}')
 		.factory('{{ SERVICE }}', {{ SERVICE }});
 
-	{{ SERVICE }}.$inject = ['$http', 'logger'];
+	{{ SERVICE }}.$inject = ['$http', '$log'];
 
-	function {{ SERVICE }}($http, logger) {
+	function {{ SERVICE }}($http, $log) {
 		return {
-			get{{ BASECLASS | pascal | plural }}: get{{ BASECLASS | pascal | plural }},
-			get{{ BASECLASS | pascal }}: get{{ BASECLASS | pascal }},
+			get{{ BASECLASS | plural }}: get{{ BASECLASS | plural }},
+			get{{ BASECLASS }}: get{{ BASECLASS }},
 		};
 		
 		function responseComplete(caller, response) {
@@ -25,17 +26,19 @@
 		}
 		
 		function responseFailed(caller, error) {
-			logger.error('XHR Failed for ' + caller + ': ' + error.data);
+			$log.error('XHR Failed for ' + caller + ': ' + error.data);
 		}
 
-		function get{{ BASECLASS | pascal | plural }}() {
+		function get{{ BASECLASS | plural }}() {
 			return $http.get('{{ API }}')
-				.then(function (response) { responseComplete('get{{ BASECLASS | pascal | plural }}', response); })
-				.catch(function (error) { responseFailed('get{{ BASECLASS | pascal | plural }}', error); });
+				.then(function (response) { return responseComplete('get{{ BASECLASS | plural }}', response); })
+				.catch(function (error) { responseFailed('get{{ BASECLASS | plural }}', error); });
 		}
 
-		function get{{ BASECLASS | pascal }}({% for column in table.primary_keys %}{{ column.name}}{%if forloop.last == false %}, {% endif %}{% endfor %}) {
-			return $http.get('{{ API }}')
+		function get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
+			var pk = {% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %} + '/' + {% endif %}{% endfor %};
+			
+			return $http.get('{{ API }}/' + pk)
 				.then(function (response) { responseComplete('get{{ BASECLASS | pascal }}', response); })
 				.catch(function (error) { responseFailed('get{{ BASECLASS | pascal }}', error); });
 		}

@@ -3,4 +3,4 @@
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\app.module.js{% endcapture -%}
 
-angular.module('app', ['ngRoute']);
+angular.module('app', ['ngRoute' /* list out each app."table" */]);

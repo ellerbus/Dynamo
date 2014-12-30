@@ -1,30 +1,36 @@
-{% capture BASECLASS %}{{ table.name | camel }}{% endcapture -%}
-{% capture CONFIG %}{{ BASECLASS | pascal | plural }}Config{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebApi{% endcapture -%}
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% capture PATH %}/App/{{ BASECLASS | plural }}{% endcapture -%}
+{% capture CONFIG %}{{ BASECLASS }}Config{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | pascal | plural }}\{{ BASECLASS | plural }}.route.js{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.route.js{% endcapture -%}
 
 (function() {
 	'use strict';
 	
-	angular.module('app').config({{ CONFIG }});
+	//	initialize the app for {{ CAMELCLASS | plural }}
+	angular.modeule('app.{{ CAMELCLASS | plural }}', []);
 
-	{{ CONFIG }}.$inject = ['ngRoute'];
+	//	setup the application routing for {{ CAMELCLASS | plural }}
+	angular.module('app.{{ CAMELCLASS | plural }}').config({{ CONFIG }});
+
+	{{ CONFIG }}.$inject = ['$routeProvider'];
 	
 	function {{ CONFIG }}($routeProvider) {
 		$routeProvider
-			.when('/', {
-				templateUrl: '{{ BASECLASS | camel | plural }}.html',
-				controller: '{{ BASECLASS | pascal | plural }}Controller',
+			.when('/{{ CAMELCLASS | plural }}', {
+				templateUrl: '{{ PATH }}/{{ CAMELCLASS | plural }}.html',
+				controller: '{{ BASECLASS | plural }}Controller',
 				controllerAs: 'vm'
 			})
-			.when('/{{ BASECLASS | camel }}/:id', {
-				templateUrl: '{{ BASECLASS | camel }}.html',
-				controller: '{{ BASECLASS | pascal }}Controller',
+			.when('/{{ CAMELCLASS }}/{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.ast == false %}/{% endif %}{% endfor %}', {
+				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
+				controller: '{{ BASECLASS }}Controller',
 				controllerAs: 'vm'
 			})
 			.otherwise({
-				redirectTo: '/'
+				redirectTo: '/{{ CAMELCLASS | plural }}'
 			});
 	};
 })();
