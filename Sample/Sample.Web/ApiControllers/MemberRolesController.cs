@@ -20,14 +20,14 @@ namespace Sample.Web.ApiControllers
 	{
 		#region Members
 	
-		private MemberRoleService _service;
+		private IMemberRoleService _service;
 		private IValidator<MemberRole> _validator;
 		
 		#endregion
 		
 		#region Contructors
 
-		public MemberRolesController(MemberRoleService service, IValidator<MemberRole> validator)
+		public MemberRolesController(IMemberRoleService service, IValidator<MemberRole> validator)
 		{
 			_service = service;
 			_validator = validator;
@@ -66,7 +66,7 @@ namespace Sample.Web.ApiControllers
 
 			if (vr.IsValid)
 			{
-				_service.Save(memberRole);
+				_service.Insert(memberRole);
 
 				return;
 			}
@@ -86,7 +86,7 @@ namespace Sample.Web.ApiControllers
 
 			if (vr.IsValid)
 			{
-				_service.Save(model);
+				_service.Update(model);
 
 				return;
 			}

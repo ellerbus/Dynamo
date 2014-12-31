@@ -19,6 +19,9 @@
 		return {
 			get{{ BASECLASS | plural }}: get{{ BASECLASS | plural }},
 			get{{ BASECLASS }}: get{{ BASECLASS }},
+			insert{{ BASECLASS }}: insert{{ BASECLASS }},
+			update{{ BASECLASS }}: update{{ BASECLASS }},
+			delete{{ BASECLASS }}: delete{{ BASECLASS }}
 		};
 		
 		function responseComplete(caller, response) {
@@ -41,6 +44,28 @@
 			return $http.get('{{ API }}/' + pk)
 				.then(function (response) { responseComplete('get{{ BASECLASS | pascal }}', response); })
 				.catch(function (error) { responseFailed('get{{ BASECLASS | pascal }}', error); });
+		}
+
+		function insert{{ BASECLASS }}(data) {			
+			return $http.post('{{ API }}/', data)
+				.then(function (response) { responseComplete('insert{{ BASECLASS | pascal }}', response); })
+				.catch(function (error) { responseFailed('insert{{ BASECLASS | pascal }}', error); });
+		}
+
+		function update{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}, data) {
+			var pk = {% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %} + '/' + {% endif %}{% endfor %};
+			
+			return $http.put('{{ API }}/' + pk, data)
+				.then(function (response) { responseComplete('update{{ BASECLASS | pascal }}', response); })
+				.catch(function (error) { responseFailed('update{{ BASECLASS | pascal }}', error); });
+		}
+
+		function delete{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}) {
+			var pk = {% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %} + '/' + {% endif %}{% endfor %};
+			
+			return $http.delete('{{ API }}/' + pk)
+				.then(function (response) { responseComplete('delete{{ BASECLASS | pascal }}', response); })
+				.catch(function (error) { responseFailed('delete{{ BASECLASS | pascal }}', error); });
 		}
 	}
 

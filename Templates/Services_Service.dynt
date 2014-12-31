@@ -39,35 +39,35 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 		
-		///// <summary>
-		///// Inserts a {{ BASECLASS }}
-		///// </summary>
-		//void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
+		/// <summary>
+		/// Inserts a {{ BASECLASS }}
+		/// </summary>
+		void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
 
-		///// <summary>
-		///// Inserts a list of {{ BASECLASS }}
-		///// </summary>
-		//void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		/// <summary>
+		/// Inserts a list of {{ BASECLASS }}
+		/// </summary>
+		void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 		
-		///// <summary>
-		///// Updates a {{ BASECLASS }}
-		///// </summary>
-		//void Update({{ BASECLASS }} {{ BASECLASS | camel }});
+		/// <summary>
+		/// Updates a {{ BASECLASS }}
+		/// </summary>
+		void Update({{ BASECLASS }} {{ BASECLASS | camel }});
 
-		///// <summary>
-		///// Updates a list of {{ BASECLASS }}
-		///// </summary>
-		//void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		/// <summary>
+		/// Updates a list of {{ BASECLASS }}
+		/// </summary>
+		void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 		
-		///// <summary>
-		///// Deletes a {{ BASECLASS }}
-		///// </summary>
-		//void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
+		/// <summary>
+		/// Deletes a {{ BASECLASS }}
+		/// </summary>
+		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
 
-		///// <summary>
-		///// Deletes a list of {{ BASECLASS }}
-		///// </summary>
-		//void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		/// <summary>
+		/// Deletes a list of {{ BASECLASS }}
+		/// </summary>
+		void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 	}
 	
 	#endregion

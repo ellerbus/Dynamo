@@ -33,11 +33,36 @@
 	{
 		var vm = this;
 		
+		vm.insert = insert;
+		vm.update = update;
+		vm.delete = delete;
+		
 		{{ SERVICE | camel }}
 			.get{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %})
 			.then(function (data)
 			{
 				vm.{{ CAMELCLASS }} = data;
 			});
+
+		function insert(data)
+		{
+			{{ SERVICE | camel }}
+				.insert{{ BASECLASS }}(data)
+				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
+		}
+
+		function update(data)
+		{
+			{{ SERVICE | camel }}
+				.update{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}, data)
+				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
+		}
+
+		function delete()
+		{
+			{{ SERVICE | camel }}
+				.delete{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %},)
+				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
+		}
 	}
 })();

@@ -34,35 +34,35 @@ namespace Sample.Core.Services
 		/// </summary>
 		void Save(IEnumerable<MemberRole> memberRoles);
 		
-		///// <summary>
-		///// Inserts a MemberRole
-		///// </summary>
-		//void Insert(MemberRole memberRole);
+		/// <summary>
+		/// Inserts a MemberRole
+		/// </summary>
+		void Insert(MemberRole memberRole);
 
-		///// <summary>
-		///// Inserts a list of MemberRole
-		///// </summary>
-		//void Insert(IEnumerable<MemberRole> memberRoles);
+		/// <summary>
+		/// Inserts a list of MemberRole
+		/// </summary>
+		void Insert(IEnumerable<MemberRole> memberRoles);
 		
-		///// <summary>
-		///// Updates a MemberRole
-		///// </summary>
-		//void Update(MemberRole memberRole);
+		/// <summary>
+		/// Updates a MemberRole
+		/// </summary>
+		void Update(MemberRole memberRole);
 
-		///// <summary>
-		///// Updates a list of MemberRole
-		///// </summary>
-		//void Update(IEnumerable<MemberRole> memberRoles);
+		/// <summary>
+		/// Updates a list of MemberRole
+		/// </summary>
+		void Update(IEnumerable<MemberRole> memberRoles);
 		
-		///// <summary>
-		///// Deletes a MemberRole
-		///// </summary>
-		//void Delete(MemberRole memberRole);
+		/// <summary>
+		/// Deletes a MemberRole
+		/// </summary>
+		void Delete(MemberRole memberRole);
 
-		///// <summary>
-		///// Deletes a list of MemberRole
-		///// </summary>
-		//void Delete(IEnumerable<MemberRole> memberRoles);
+		/// <summary>
+		/// Deletes a list of MemberRole
+		/// </summary>
+		void Delete(IEnumerable<MemberRole> memberRoles);
 	}
 	
 	#endregion

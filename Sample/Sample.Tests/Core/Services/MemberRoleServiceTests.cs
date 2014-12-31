@@ -106,6 +106,70 @@ namespace Sample.Tests.Core.Services
 		}
 
 		[TestMethod]
+		public void MemberRoleService_Should_Insert()
+		{
+			//	arrange
+			var expected = Builder<MemberRole>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Insert(expected));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void MemberRoleService_Should_Insert_Many()
+		{
+			//	arrange
+			var expected = Builder<MemberRole>.CreateListOfSize(10).Build(); 
+			
+			MockRepo.Setup(x => x.Insert(expected));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void MemberRoleService_Should_Update()
+		{
+			//	arrange
+			var expected = Builder<MemberRole>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Update(expected));
+
+			//	act
+			SubjectUnderTest.Update(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void MemberRoleService_Should_Update_Many()
+		{
+			//	arrange
+			var expected = Builder<MemberRole>.CreateListOfSize(10).Build(); 
+			
+			MockRepo.Setup(x => x.Update(expected));
+
+			//	act
+			SubjectUnderTest.Update(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
 		public void MemberRoleService_Should_Delete()
 		{
 			//	arrange

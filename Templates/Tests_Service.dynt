@@ -110,6 +110,70 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
+		public void {{ SERVICE }}_Should_Insert()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Insert(expected));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Insert_Many()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			
+			MockRepo.Setup(x => x.Insert(expected));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Update()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			
+			MockRepo.Setup(x => x.Update(expected));
+
+			//	act
+			SubjectUnderTest.Update(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
+		public void {{ SERVICE }}_Should_Update_Many()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			
+			MockRepo.Setup(x => x.Update(expected));
+
+			//	act
+			SubjectUnderTest.Update(expected);
+
+			//	assert
+
+			MockRepo.VerifyAll();
+		}
+
+		[TestMethod]
 		public void {{ SERVICE }}_Should_Delete()
 		{
 			//	arrange

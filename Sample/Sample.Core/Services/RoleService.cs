@@ -34,35 +34,35 @@ namespace Sample.Core.Services
 		/// </summary>
 		void Save(IEnumerable<Role> roles);
 		
-		///// <summary>
-		///// Inserts a Role
-		///// </summary>
-		//void Insert(Role role);
+		/// <summary>
+		/// Inserts a Role
+		/// </summary>
+		void Insert(Role role);
 
-		///// <summary>
-		///// Inserts a list of Role
-		///// </summary>
-		//void Insert(IEnumerable<Role> roles);
+		/// <summary>
+		/// Inserts a list of Role
+		/// </summary>
+		void Insert(IEnumerable<Role> roles);
 		
-		///// <summary>
-		///// Updates a Role
-		///// </summary>
-		//void Update(Role role);
+		/// <summary>
+		/// Updates a Role
+		/// </summary>
+		void Update(Role role);
 
-		///// <summary>
-		///// Updates a list of Role
-		///// </summary>
-		//void Update(IEnumerable<Role> roles);
+		/// <summary>
+		/// Updates a list of Role
+		/// </summary>
+		void Update(IEnumerable<Role> roles);
 		
-		///// <summary>
-		///// Deletes a Role
-		///// </summary>
-		//void Delete(Role role);
+		/// <summary>
+		/// Deletes a Role
+		/// </summary>
+		void Delete(Role role);
 
-		///// <summary>
-		///// Deletes a list of Role
-		///// </summary>
-		//void Delete(IEnumerable<Role> roles);
+		/// <summary>
+		/// Deletes a list of Role
+		/// </summary>
+		void Delete(IEnumerable<Role> roles);
 	}
 	
 	#endregion

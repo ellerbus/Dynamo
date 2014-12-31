@@ -1,6 +1,6 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
-{% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
+{% capture SERVICE %}I{{ BASECLASS }}Service{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
@@ -73,7 +73,7 @@ namespace {{ PROJECT }}.ApiControllers
 
 			if (vr.IsValid)
 			{
-				_service.Save({{ BASECLASS | camel }});
+				_service.Insert({{ BASECLASS | camel }});
 
 				return;
 			}
@@ -94,7 +94,7 @@ namespace {{ PROJECT }}.ApiControllers
 
 			if (vr.IsValid)
 			{
-				_service.Save(model);
+				_service.Update(model);
 
 				return;
 			}

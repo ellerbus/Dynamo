@@ -34,35 +34,35 @@ namespace Sample.Core.Services
 		/// </summary>
 		void Save(IEnumerable<Member> members);
 		
-		///// <summary>
-		///// Inserts a Member
-		///// </summary>
-		//void Insert(Member member);
+		/// <summary>
+		/// Inserts a Member
+		/// </summary>
+		void Insert(Member member);
 
-		///// <summary>
-		///// Inserts a list of Member
-		///// </summary>
-		//void Insert(IEnumerable<Member> members);
+		/// <summary>
+		/// Inserts a list of Member
+		/// </summary>
+		void Insert(IEnumerable<Member> members);
 		
-		///// <summary>
-		///// Updates a Member
-		///// </summary>
-		//void Update(Member member);
+		/// <summary>
+		/// Updates a Member
+		/// </summary>
+		void Update(Member member);
 
-		///// <summary>
-		///// Updates a list of Member
-		///// </summary>
-		//void Update(IEnumerable<Member> members);
+		/// <summary>
+		/// Updates a list of Member
+		/// </summary>
+		void Update(IEnumerable<Member> members);
 		
-		///// <summary>
-		///// Deletes a Member
-		///// </summary>
-		//void Delete(Member member);
+		/// <summary>
+		/// Deletes a Member
+		/// </summary>
+		void Delete(Member member);
 
-		///// <summary>
-		///// Deletes a list of Member
-		///// </summary>
-		//void Delete(IEnumerable<Member> members);
+		/// <summary>
+		/// Deletes a list of Member
+		/// </summary>
+		void Delete(IEnumerable<Member> members);
 	}
 	
 	#endregion
