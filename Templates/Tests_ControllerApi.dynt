@@ -10,6 +10,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
 using FizzWare.NBuilder;
@@ -20,219 +24,284 @@ using {{ CORE }}.Models;
 using {{ CORE }}.Services;
 using {{ CORE }}.Validators;
 using {{ SOLUTION }}.Web.ApiControllers;
-
+ 
 namespace {{ PROJECT }}.ApiControllers
 {
 	[TestClass]
 	public class {{ TEST }}
 	{
 		#region Helpers/Test Initializers
-
+ 
 		private AutoMoqer Mocker { get; set; }
 		private Mock<{{ SERVICE }}> MockService { get; set; }
 		private Mock<{{ VALIDATOR }}> MockValidator { get; set; }
 		private {{ CONTROLLER }} SubjectUnderTest { get; set; }
-
+ 
 		[TestInitialize]
 		public void TestInitialize()
 		{
 			Mocker = new AutoMoqer();
-
+ 
 			SubjectUnderTest = Mocker.Create<{{ CONTROLLER }}>();
-			
+			       
+			SubjectUnderTest.Request = new HttpRequestMessage();
+			SubjectUnderTest.Configuration = new HttpConfiguration();
+ 
 			MockService = Mocker.GetMock<{{ SERVICE }}>();
 			MockValidator = Mocker.GetMock<{{ VALIDATOR }}>();
 		}
-
+ 
 		#endregion
-
+ 
 		#region Tests - Get All
-		
+		       
 		[TestMethod]
 		public void {{ CONTROLLER }}_Should_GetAll()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build();
-
+ 
 			MockService.Setup(x => x.Get()).Returns(expected);
-
-			//	act
+ 
+			//	    act
 			var actual = SubjectUnderTest.GetAll();
-
-			//	assert
+ 
+			//	    assert
 			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
-			
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+ 
 		#endregion
-
+ 
 		#region Tests - Get One
-		
+		       
 		[TestMethod]
 		public void {{ CONTROLLER }}_Should_GetOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-			
+			       
 			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
-
-			//	act
-			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
-
-			//	assert
-			Assert.IsNotNull(actual);			
+ 
+			//	    act
+			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+ 
+			{{ BASECLASS }} actual = null;
+ 
+			Assert.IsTrue(response.Result.TryGetContentValue<{{ BASECLASS }}>(out actual));
 			{% for column in table.columns %}
 			Assert.AreEqual(expected.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
-			
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void {{ CONTROLLER }}_Should_GetOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+ 
+			//	    act
+			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Post One
-		
+		       
 		[TestMethod]
 		public void {{ CONTROLLER }}_Should_PostOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-
+ 
 			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new ValidationFailure[0]));
-			
+			       
 			MockService.Setup(x => x.Insert(expected));
-
-			//	act
-			SubjectUnderTest.Post(expected);
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Post(expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void {{ CONTROLLER }}_Should_PostOne_BadRequest()
+		{
+			//	    arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+ 
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new []{ new ValidationFailure("", "") }));
+ 
+			//	    act
+			var result = SubjectUnderTest.Post(expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.BadRequest);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Put One
-		
+		       
 		[TestMethod]
 		public void {{ CONTROLLER }}_Should_PutOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-
+ 
 			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new ValidationFailure[0]));
-			
+			       
 			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
-			
+			       
 			MockService.Setup(x => x.Update(expected));
-
-			//	act
-			SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void {{ CONTROLLER }}_Should_PutOne_BadRequest()
+		{
+			//	    arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+ 
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new []{ new ValidationFailure("", "") }));
+			       
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+ 
+			//	    act
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.BadRequest);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+		       
+		[TestMethod]
+		public void {{ CONTROLLER }}_Should_PutOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+ 
+			//	    act
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Delete One
-		
+		       
 		[TestMethod]
 		public void {{ CONTROLLER }}_Should_DeleteOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
-			
+			       
 			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
-			
+			       
 			MockService.Setup(x => x.Delete(expected));
-
-			//	act
-			SubjectUnderTest.Delete({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void {{ CONTROLLER }}_Should_DeleteOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+ 
+			//	    act
+			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-/*		
-		#region Verb Actions
-
-		// GET: api/{{ BASECLASS | camel }}
-		[HttpGet, Route("")]
-		public IEnumerable<{{ BASECLASS }}> GetAll()
-		{
-			return _service.Get();
-		}
-
-		// GET: api/{{ BASECLASS | camel }}/5
-		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
-		{
-			{{ BASECLASS }} {{ BASECLASS | camel }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
-			
-			if ({{ BASECLASS | camel }} == null)
-			{
-			
-			}
-
-			return {{ BASECLASS | camel }};
-		}
-
-		// POST: api/{{ BASECLASS | camel }}
-		[HttpPost, Route("")]
-		public void Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
-		{
-			ValidationResult vr = _validator.Validate({{ BASECLASS | camel }});
-
-			if (vr.IsValid)
-			{
-				_service.Save({{ BASECLASS | camel }});
-
-				return;
-			}
-			
-			throw new NotImplementedException();
-		}
-
-		// PUT: api/{{ BASECLASS | camel }}/5
-		[HttpPut, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public void Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
-		{
-			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
-			{% for column in table.columns %}{% if column.is_primary_key == false %}
-			model.{{ column.name | pascal | remove:BASECLASS }} = {{ BASECLASS | camel }}.{{ column.name | pascal | remove:BASECLASS }};{% endif %}{% endfor -%}
-
-
-			ValidationResult vr = _validator.Validate(model);
-
-			if (vr.IsValid)
-			{
-				_service.Save(model);
-
-				return;
-			}
-			
-			throw new NotImplementedException();
-		}
-
-		// DELETE: api/{{ BASECLASS | camel }}/5
-		[HttpDelete, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public void Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
-		{
-			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
-
-			_service.Delete(model);
-		}
-		
-		#endregion
-		*/
 	}
 }

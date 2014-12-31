@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using FluentValidation;
 using FluentValidation.Results;
 using {{ CORE }}.Models;
@@ -52,22 +53,22 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		// GET: api/{{ BASECLASS | camel }}/5
-		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}"), ResponseType(typeof({{ BASECLASS }}))]
+		public IHttpActionResult Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
 			{{ BASECLASS }} {{ BASECLASS | camel }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 			
 			if ({{ BASECLASS | camel }} == null)
 			{
-			
+				return NotFound();
 			}
 
-			return {{ BASECLASS | camel }};
+			return Ok({{ BASECLASS | camel }});
 		}
 
 		// POST: api/{{ BASECLASS | camel }}
 		[HttpPost, Route("")]
-		public void Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
+		public IHttpActionResult Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
 		{
 			ValidationResult vr = _validator.Validate({{ BASECLASS | camel }});
 
@@ -75,17 +76,22 @@ namespace {{ PROJECT }}.ApiControllers
 			{
 				_service.Insert({{ BASECLASS | camel }});
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// PUT: api/{{ BASECLASS | camel }}/5
 		[HttpPut, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public void Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
+		public IHttpActionResult Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
 		{
 			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+
+			if (model == null)
+			{
+				return NotFound();
+			}
 			{% for column in table.columns %}{% if column.is_primary_key == false %}
 			model.{{ column.name | pascal | remove:BASECLASS }} = {{ BASECLASS | camel }}.{{ column.name | pascal | remove:BASECLASS }};{% endif %}{% endfor -%}
 
@@ -96,19 +102,40 @@ namespace {{ PROJECT }}.ApiControllers
 			{
 				_service.Update(model);
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// DELETE: api/{{ BASECLASS | camel }}/5
 		[HttpDelete, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public void Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		public IHttpActionResult Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
 			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
+			if (model == null)
+			{
+				return NotFound();
+			}
+
 			_service.Delete(model);
+			
+			return Ok();
+		}
+		
+		#endregion
+
+		#region Helpers
+
+		private IHttpActionResult BadRequest(ValidationResult vr)
+		{
+			foreach (ValidationFailure vf in vr.Errors)
+			{
+				ModelState.AddModelError(vf.PropertyName, vf.ErrorMessage);
+			}
+		
+			return BadRequest(ModelState);
 		}
 		
 		#endregion
