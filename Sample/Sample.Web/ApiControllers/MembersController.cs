@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using FluentValidation;
 using FluentValidation.Results;
 using Sample.Core.Models;
@@ -45,22 +46,22 @@ namespace Sample.Web.ApiControllers
 		}
 
 		// GET: api/member/5
-		[HttpGet, Route("{id}")]
-		public Member Get(int id)
+		[HttpGet, Route("{id}"), ResponseType(typeof(Member))]
+		public IHttpActionResult Get(int id)
 		{
 			Member member = _service.Get(id);
 			
 			if (member == null)
 			{
-			
+				return NotFound();
 			}
 
-			return member;
+			return Ok(member);
 		}
 
 		// POST: api/member
 		[HttpPost, Route("")]
-		public void Post([FromBody]Member member)
+		public IHttpActionResult Post([FromBody]Member member)
 		{
 			ValidationResult vr = _validator.Validate(member);
 
@@ -68,17 +69,22 @@ namespace Sample.Web.ApiControllers
 			{
 				_service.Insert(member);
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// PUT: api/member/5
 		[HttpPut, Route("{id}")]
-		public void Put(int id, [FromBody]Member member)
+		public IHttpActionResult Put(int id, [FromBody]Member member)
 		{
 			Member model = _service.Get(id);
+
+			if (model == null)
+			{
+				return NotFound();
+			}
 			
 			model.Name = member.Name;
 			model.CreatedAt = member.CreatedAt;
@@ -90,19 +96,40 @@ namespace Sample.Web.ApiControllers
 			{
 				_service.Update(model);
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// DELETE: api/member/5
 		[HttpDelete, Route("{id}")]
-		public void Delete(int id)
+		public IHttpActionResult Delete(int id)
 		{
 			Member model = _service.Get(id);
 
+			if (model == null)
+			{
+				return NotFound();
+			}
+
 			_service.Delete(model);
+			
+			return Ok();
+		}
+		
+		#endregion
+
+		#region Helpers
+
+		private IHttpActionResult BadRequest(ValidationResult vr)
+		{
+			foreach (ValidationFailure vf in vr.Errors)
+			{
+				ModelState.AddModelError(vf.PropertyName, vf.ErrorMessage);
+			}
+		
+			return BadRequest(ModelState);
 		}
 		
 		#endregion

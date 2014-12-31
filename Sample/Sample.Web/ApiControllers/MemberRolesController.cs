@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using FluentValidation;
 using FluentValidation.Results;
 using Sample.Core.Models;
@@ -45,22 +46,22 @@ namespace Sample.Web.ApiControllers
 		}
 
 		// GET: api/memberRole/5
-		[HttpGet, Route("{memberId}/{roleId}")]
-		public MemberRole Get(int memberId, int roleId)
+		[HttpGet, Route("{memberId}/{roleId}"), ResponseType(typeof(MemberRole))]
+		public IHttpActionResult Get(int memberId, int roleId)
 		{
 			MemberRole memberRole = _service.Get(memberId, roleId);
 			
 			if (memberRole == null)
 			{
-			
+				return NotFound();
 			}
 
-			return memberRole;
+			return Ok(memberRole);
 		}
 
 		// POST: api/memberRole
 		[HttpPost, Route("")]
-		public void Post([FromBody]MemberRole memberRole)
+		public IHttpActionResult Post([FromBody]MemberRole memberRole)
 		{
 			ValidationResult vr = _validator.Validate(memberRole);
 
@@ -68,17 +69,22 @@ namespace Sample.Web.ApiControllers
 			{
 				_service.Insert(memberRole);
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// PUT: api/memberRole/5
 		[HttpPut, Route("{memberId}/{roleId}")]
-		public void Put(int memberId, int roleId, [FromBody]MemberRole memberRole)
+		public IHttpActionResult Put(int memberId, int roleId, [FromBody]MemberRole memberRole)
 		{
 			MemberRole model = _service.Get(memberId, roleId);
+
+			if (model == null)
+			{
+				return NotFound();
+			}
 			
 			model.CreatedAt = memberRole.CreatedAt;
 
@@ -88,19 +94,40 @@ namespace Sample.Web.ApiControllers
 			{
 				_service.Update(model);
 
-				return;
+				return Ok();
 			}
 			
-			throw new NotImplementedException();
+			return BadRequest(vr);
 		}
 
 		// DELETE: api/memberRole/5
 		[HttpDelete, Route("{memberId}/{roleId}")]
-		public void Delete(int memberId, int roleId)
+		public IHttpActionResult Delete(int memberId, int roleId)
 		{
 			MemberRole model = _service.Get(memberId, roleId);
 
+			if (model == null)
+			{
+				return NotFound();
+			}
+
 			_service.Delete(model);
+			
+			return Ok();
+		}
+		
+		#endregion
+
+		#region Helpers
+
+		private IHttpActionResult BadRequest(ValidationResult vr)
+		{
+			foreach (ValidationFailure vf in vr.Errors)
+			{
+				ModelState.AddModelError(vf.PropertyName, vf.ErrorMessage);
+			}
+		
+			return BadRequest(ModelState);
 		}
 		
 		#endregion

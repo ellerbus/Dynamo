@@ -2,6 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
 using FizzWare.NBuilder;
@@ -12,223 +16,287 @@ using Sample.Core.Models;
 using Sample.Core.Services;
 using Sample.Core.Validators;
 using Sample.Web.ApiControllers;
-
+ 
 namespace Sample.Tests.ApiControllers
 {
 	[TestClass]
 	public class RolesControllerTests
 	{
 		#region Helpers/Test Initializers
-
+ 
 		private AutoMoqer Mocker { get; set; }
 		private Mock<IRoleService> MockService { get; set; }
 		private Mock<IValidator<Role>> MockValidator { get; set; }
 		private RolesController SubjectUnderTest { get; set; }
-
+ 
 		[TestInitialize]
 		public void TestInitialize()
 		{
 			Mocker = new AutoMoqer();
-
+ 
 			SubjectUnderTest = Mocker.Create<RolesController>();
-			
+			       
+			SubjectUnderTest.Request = new HttpRequestMessage();
+			SubjectUnderTest.Configuration = new HttpConfiguration();
+ 
 			MockService = Mocker.GetMock<IRoleService>();
 			MockValidator = Mocker.GetMock<IValidator<Role>>();
 		}
-
+ 
 		#endregion
-
+ 
 		#region Tests - Get All
-		
+		       
 		[TestMethod]
 		public void RolesController_Should_GetAll()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<Role>.CreateListOfSize(10).Build();
-
+ 
 			MockService.Setup(x => x.Get()).Returns(expected);
-
-			//	act
+ 
+			//	    act
 			var actual = SubjectUnderTest.GetAll();
-
-			//	assert
+ 
+			//	    assert
 			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
-			
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+ 
 		#endregion
-
+ 
 		#region Tests - Get One
-		
+		       
 		[TestMethod]
 		public void RolesController_Should_GetOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<Role>.CreateNew().Build();
-			
+			       
 			MockService.Setup(x => x.Get(expected.Id)).Returns(expected);
-
-			//	act
-			var actual = SubjectUnderTest.Get(expected.Id);
-
-			//	assert
-			Assert.IsNotNull(actual);			
+ 
+			//	    act
+			var result = SubjectUnderTest.Get(expected.Id);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+ 
+			Role actual = null;
+ 
+			Assert.IsTrue(response.Result.TryGetContentValue<Role>(out actual));
 			
 			Assert.AreEqual(expected.Id, actual.Id);
 			Assert.AreEqual(expected.Name, actual.Name);
 			Assert.AreEqual(expected.CreatedAt, actual.CreatedAt);
 			Assert.AreEqual(expected.UpdatedAt, actual.UpdatedAt);
-			
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void RolesController_Should_GetOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<Role>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get(expected.Id)).Returns(null as Role);
+ 
+			//	    act
+			var result = SubjectUnderTest.Get(expected.Id);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Post One
-		
+		       
 		[TestMethod]
 		public void RolesController_Should_PostOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<Role>.CreateNew().Build();
-
+ 
 			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new ValidationFailure[0]));
-			
+			       
 			MockService.Setup(x => x.Insert(expected));
-
-			//	act
-			SubjectUnderTest.Post(expected);
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Post(expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void RolesController_Should_PostOne_BadRequest()
+		{
+			//	    arrange
+			var expected = Builder<Role>.CreateNew().Build();
+ 
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new []{ new ValidationFailure("", "") }));
+ 
+			//	    act
+			var result = SubjectUnderTest.Post(expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.BadRequest);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Put One
-		
+		       
 		[TestMethod]
 		public void RolesController_Should_PutOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<Role>.CreateNew().Build();
-
+ 
 			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new ValidationFailure[0]));
-			
+			       
 			MockService.Setup(x => x.Get(expected.Id)).Returns(expected);
-			
+			       
 			MockService.Setup(x => x.Update(expected));
-
-			//	act
-			SubjectUnderTest.Put(expected.Id, expected);
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Put(expected.Id, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void RolesController_Should_PutOne_BadRequest()
+		{
+			//	    arrange
+			var expected = Builder<Role>.CreateNew().Build();
+ 
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new []{ new ValidationFailure("", "") }));
+			       
+			MockService.Setup(x => x.Get(expected.Id)).Returns(expected);
+ 
+			//	    act
+			var result = SubjectUnderTest.Put(expected.Id, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.BadRequest);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+		       
+		[TestMethod]
+		public void RolesController_Should_PutOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<Role>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get(expected.Id)).Returns(null as Role);
+ 
+			//	    act
+			var result = SubjectUnderTest.Put(expected.Id, expected);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-
+ 
 		#region Tests - Delete One
-		
+		       
 		[TestMethod]
 		public void RolesController_Should_DeleteOne()
 		{
-			//	arrange
+			//	    arrange
 			var expected = Builder<Role>.CreateNew().Build();
-			
+			       
 			MockService.Setup(x => x.Get(expected.Id)).Returns(expected);
-			
+			       
 			MockService.Setup(x => x.Delete(expected));
-
-			//	act
-			SubjectUnderTest.Delete(expected.Id);
-
-			//	assert
-			
+ 
+			//	    act
+			var result = SubjectUnderTest.Delete(expected.Id);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.OK);
+			       
 			MockService.VerifyAll();
 			MockValidator.VerifyAll();
 		}
-
+		       
+		[TestMethod]
+		public void RolesController_Should_DeleteOne_NotFound()
+		{
+			//	    arrange
+			var expected = Builder<Role>.CreateNew().Build();
+			       
+			MockService.Setup(x => x.Get(expected.Id)).Returns(null as Role);
+ 
+			//	    act
+			var result = SubjectUnderTest.Delete(expected.Id);
+ 
+			var response = result.ExecuteAsync(CancellationToken.None);
+ 
+			response.Wait();
+ 
+			//	    assert
+			Assert.IsTrue(response.Result.StatusCode == HttpStatusCode.NotFound);
+			       
+			MockService.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+ 
 		#endregion
-/*		
-		#region Verb Actions
-
-		// GET: api/role
-		[HttpGet, Route("")]
-		public IEnumerable<Role> GetAll()
-		{
-			return _service.Get();
-		}
-
-		// GET: api/role/5
-		[HttpGet, Route("{id}")]
-		public Role Get(int id)
-		{
-			Role role = _service.Get(id);
-			
-			if (role == null)
-			{
-			
-			}
-
-			return role;
-		}
-
-		// POST: api/role
-		[HttpPost, Route("")]
-		public void Post([FromBody]Role role)
-		{
-			ValidationResult vr = _validator.Validate(role);
-
-			if (vr.IsValid)
-			{
-				_service.Save(role);
-
-				return;
-			}
-			
-			throw new NotImplementedException();
-		}
-
-		// PUT: api/role/5
-		[HttpPut, Route("{id}")]
-		public void Put(int id, [FromBody]Role role)
-		{
-			Role model = _service.Get(id);
-			
-			model.Name = role.Name;
-			model.CreatedAt = role.CreatedAt;
-			model.UpdatedAt = role.UpdatedAt;
-
-			ValidationResult vr = _validator.Validate(model);
-
-			if (vr.IsValid)
-			{
-				_service.Save(model);
-
-				return;
-			}
-			
-			throw new NotImplementedException();
-		}
-
-		// DELETE: api/role/5
-		[HttpDelete, Route("{id}")]
-		public void Delete(int id)
-		{
-			Role model = _service.Get(id);
-
-			_service.Delete(model);
-		}
-		
-		#endregion
-		*/
 	}
 }
