@@ -10,8 +10,8 @@ Solution](https://github.com/ellerbus/Dynamo/tree/master/Sample).
 
 #### Helpful WIKI Pages
 
-- [Template Generator's API](https://github.com/ellerbus/Dynamo/wiki/Template-Generator-API)
-- [Template Generator's Filters](https://github.com/ellerbus/Dynamo/wiki/Template-Generator-Filters)
+- [Dynamo's API](https://github.com/ellerbus/Dynamo/wiki/Dynamo-API)
+- [Dynamo's Filters](https://github.com/ellerbus/Dynamo/wiki/Dynamo-Filters)
 
 #### SQL Databases Currently Supported
 via [DB Schema Reader](http://dbschemareader.codeplex.com/)
