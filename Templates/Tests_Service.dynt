@@ -26,7 +26,7 @@ namespace {{ PROJECT }}.Core.Services
 
 		private AutoMoqer Mocker { get; set; }
 		private Mock<{{ REPO }}> MockRepo { get; set; }
-		private Mock<IValidator<Account>> MockValidator { get; set; }
+		private Mock<IValidator<{{ BASECLASS }}>> MockValidator { get; set; }
 		private {{ SERVICE }} SubjectUnderTest { get; set; }
 
 		[TestInitialize]
@@ -38,7 +38,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo = Mocker.GetMock<{{ REPO }}>();
 
-			MockValidator = Mocker.GetMock<IValidator<Account>>();
+			MockValidator = Mocker.GetMock<IValidator<{{ BASECLASS }}>>();
 		}
 
 		#endregion
@@ -107,7 +107,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Save(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
 
 			//	act
 			SubjectUnderTest.Save(expected);
@@ -143,7 +143,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Insert(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
 
 			//	act
 			SubjectUnderTest.Insert(expected);
@@ -179,7 +179,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Update(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
 
 			//	act
 			SubjectUnderTest.Update(expected);
