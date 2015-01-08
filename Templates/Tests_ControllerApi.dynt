@@ -1,4 +1,6 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture ITEM %}{{ BASECLASS | camel }}{% endcapture -%}
+{% capture ITEMS %}{{ ITEM | plural }}{% endcapture -%}
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}I{{ BASECLASS }}Service{% endcapture -%}
 {% capture TEST %}{{ CONTROLLER }}Tests{% endcapture -%}
@@ -55,15 +57,15 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_GetAll_Should_SendOk()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build();
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build();
 
-			MockService.Setup(x => x.GetList()).Returns(expected);
+			MockService.Setup(x => x.GetList()).Returns({{ ITEMS }});
 
 			//		act
 			var actual = SubjectUnderTest.GetAll();
 
 			//		assert
-			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
+			CollectionAssert.AreEqual({{ ITEMS }} as ICollection, actual as ICollection);
 	
 			MockService.VerifyAll();
 		}
@@ -76,12 +78,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_GetOne_Should_SendOk()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ ITEM }});
 
 			//		act
-			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -93,7 +95,7 @@ namespace {{ PROJECT }}.ApiControllers
 
 			Assert.IsTrue(response.Result.TryGetContentValue<{{ BASECLASS }}>(out actual));
 			{% for column in table.columns %}
-			Assert.AreEqual(expected.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
+			Assert.AreEqual({{ ITEM }}.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
 	
 			MockService.VerifyAll();
 		}
@@ -102,12 +104,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_GetOne_Should_SendNotFound()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 	
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
 
 			//		act
-			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var result = SubjectUnderTest.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -127,12 +129,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_PostOne_Should_SendOk()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 	
-			MockService.Setup(x => x.Insert(expected));
+			MockService.Setup(x => x.Insert({{ ITEM }}));
 
 			//		act
-			var result = SubjectUnderTest.Post(expected);
+			var result = SubjectUnderTest.Post({{ ITEM }});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -148,12 +150,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_PostOne_Should_SendBadRequest()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockService.Setup(x => x.Insert(expected)).Throws(new ValidationException(new []{ new ValidationFailure("", "") }));
+			MockService.Setup(x => x.Insert({{ ITEM }})).Throws(new ValidationException(new []{ new ValidationFailure("", "") }));
 
 			//		act
-			var result = SubjectUnderTest.Post(expected);
+			var result = SubjectUnderTest.Post({{ ITEM }});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -173,14 +175,14 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_PutOne_Should_SendOk()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 	
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ ITEM }});
 	
-			MockService.Setup(x => x.Update(expected));
+			MockService.Setup(x => x.Update({{ ITEM }}));
 
 			//		act
-			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, {{ ITEM }});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -196,14 +198,14 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_PutOne_Should_SendBadRequest()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 	
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ ITEM }});
 
-			MockService.Setup(x => x.Update(expected)).Throws(new ValidationException(new[] { new ValidationFailure("", "") }));
+			MockService.Setup(x => x.Update({{ ITEM }})).Throws(new ValidationException(new[] { new ValidationFailure("", "") }));
 
 			//		act
-			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, {{ ITEM }});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -219,12 +221,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_PutOne_Should_SendNotFound()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 	
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
 
 			//		act
-			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, expected);
+			var result = SubjectUnderTest.Put({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, {{ ITEM }});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -244,14 +246,14 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_DeleteOne_Should_SendOk()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ ITEM }});
 
-			MockService.Setup(x => x.Delete(expected));
+			MockService.Setup(x => x.Delete({{ ITEM }}));
 
 			//		act
-			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 
@@ -267,12 +269,12 @@ namespace {{ PROJECT }}.ApiControllers
 		public void {{ CONTROLLER }}_DeleteOne_Should_SendNotFound()
 		{
 			//		arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockService.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
+			MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(null as {{ BASECLASS }});
 
 			//		act
-			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var result = SubjectUnderTest.Delete({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			var response = result.ExecuteAsync(CancellationToken.None);
 

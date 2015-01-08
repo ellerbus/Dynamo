@@ -1,4 +1,6 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture ITEM %}{{ BASECLASS | camel }}{% endcapture -%}
+{% capture ITEMS %}{{ ITEM | plural }}{% endcapture -%}
 {% capture TEST %}{{ BASECLASS }}ServiceTests{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
@@ -50,15 +52,15 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_GetMany_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 		
-			MockRepo.Setup(x => x.GetList()).Returns(expected);
+			MockRepo.Setup(x => x.GetList()).Returns({{ ITEMS }});
 
 			//	act
 			var actual = SubjectUnderTest.GetList();
 
 			//	assert
-			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
+			CollectionAssert.AreEqual({{ ITEMS }} as ICollection, actual as ICollection);
 
 			MockRepo.VerifyAll();
 		}
@@ -67,17 +69,17 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_GetOne_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns(expected);
+			MockRepo.Setup(x => x.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ ITEM }});
 
 			//	act
-			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}expected.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			var actual = SubjectUnderTest.Get({% for column in table.primary_keys %}{{ ITEM }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
 			//	assert
 			Assert.IsNotNull(actual);			
 			{% for column in table.columns %}
-			Assert.AreEqual(expected.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
+			Assert.AreEqual({{ ITEM }}.{{ column.property_name }}, actual.{{ column.property_name }});{% endfor %}
 
 			MockRepo.VerifyAll();
 		}
@@ -90,14 +92,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Save_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Save(expected));
+			MockRepo.Setup(x => x.Save({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Save(expected);
+			SubjectUnderTest.Save({{ ITEM }});
 
 			//	assert
 
@@ -109,28 +111,28 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Save_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockRepo.Setup(x => x.Insert(expected));
+			MockRepo.Setup(x => x.Insert({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Save(expected);
+			SubjectUnderTest.Save({{ ITEM }});
 		}
 
 		[TestMethod]
 		public void {{ SERVICE }}_SaveMany_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
-			MockRepo.Setup(x => x.Save(expected));
+			MockRepo.Setup(x => x.Save({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Save(expected);
+			SubjectUnderTest.Save({{ ITEMS }});
 
 			//	assert
 
@@ -142,14 +144,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_SaveMany_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 
-			MockRepo.Setup(x => x.Save(expected));
+			MockRepo.Setup(x => x.Save({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Save(expected);
+			SubjectUnderTest.Save({{ ITEMS }});
 		}
 		
 		#endregion
@@ -160,14 +162,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Insert_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Insert(expected));
+			MockRepo.Setup(x => x.Insert({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Insert(expected);
+			SubjectUnderTest.Insert({{ ITEM }});
 
 			//	assert
 
@@ -179,28 +181,28 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Insert_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockRepo.Setup(x => x.Insert(expected));
+			MockRepo.Setup(x => x.Insert({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Insert(expected);
+			SubjectUnderTest.Insert({{ ITEM }});
 		}
 
 		[TestMethod]
 		public void {{ SERVICE }}_InsertMany_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
-			MockRepo.Setup(x => x.Insert(expected));
+			MockRepo.Setup(x => x.Insert({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Insert(expected);
+			SubjectUnderTest.Insert({{ ITEMS }});
 
 			//	assert
 
@@ -212,14 +214,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_InsertMany_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 
-			MockRepo.Setup(x => x.Insert(expected));
+			MockRepo.Setup(x => x.Insert({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Insert(expected);
+			SubjectUnderTest.Insert({{ ITEMS }});
 		}
 		
 		#endregion
@@ -230,14 +232,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Update_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Update(expected));
+			MockRepo.Setup(x => x.Update({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Update(expected);
+			SubjectUnderTest.Update({{ ITEM }});
 
 			//	assert
 
@@ -249,28 +251,28 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Update_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 
-			MockRepo.Setup(x => x.Update(expected));
+			MockRepo.Setup(x => x.Update({{ ITEM }}));
 
-			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+			MockValidator.Setup(x => x.Validate({{ ITEM }})).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Update(expected);
+			SubjectUnderTest.Update({{ ITEM }});
 		}
 
 		[TestMethod]
 		public void {{ SERVICE }}_UpdateMany_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
-			MockRepo.Setup(x => x.Update(expected));
+			MockRepo.Setup(x => x.Update({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
-			SubjectUnderTest.Update(expected);
+			SubjectUnderTest.Update({{ ITEMS }});
 
 			//	assert
 
@@ -282,14 +284,14 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_UpdateMany_Should_ThrowException()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 
-			MockRepo.Setup(x => x.Update(expected));
+			MockRepo.Setup(x => x.Update({{ ITEMS }}));
 
 			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
 
 			//	act
-			SubjectUnderTest.Update(expected);
+			SubjectUnderTest.Update({{ ITEMS }});
 		}
 		
 		#endregion
@@ -300,12 +302,12 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_Delete_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+			var {{ ITEM }} = Builder<{{ BASECLASS }}>.CreateNew().Build();
 			
-			MockRepo.Setup(x => x.Delete(expected));
+			MockRepo.Setup(x => x.Delete({{ ITEM }}));
 
 			//	act
-			SubjectUnderTest.Delete(expected);
+			SubjectUnderTest.Delete({{ ITEM }});
 
 			//	assert
 
@@ -316,12 +318,12 @@ namespace {{ PROJECT }}.Core.Services
 		public void {{ SERVICE }}_DeleteMany_Should_Succeed()
 		{
 			//	arrange
-			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+			var {{ ITEMS }} = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
-			MockRepo.Setup(x => x.Delete(expected));
+			MockRepo.Setup(x => x.Delete({{ ITEMS }}));
 
 			//	act
-			SubjectUnderTest.Delete(expected);
+			SubjectUnderTest.Delete({{ ITEMS }});
 
 			//	assert
 
