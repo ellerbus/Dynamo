@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
+using FluentValidation;
 using FizzWare.NBuilder;
 using Moq;
 using {{ SOLUTION }}.Core.Models;
@@ -25,6 +26,7 @@ namespace {{ PROJECT }}.Core.Services
 
 		private AutoMoqer Mocker { get; set; }
 		private Mock<{{ REPO }}> MockRepo { get; set; }
+		private Mock<IValidator<Account>> MockValidator { get; set; }
 		private {{ SERVICE }} SubjectUnderTest { get; set; }
 
 		[TestInitialize]
@@ -35,6 +37,8 @@ namespace {{ PROJECT }}.Core.Services
 			SubjectUnderTest = Mocker.Create<{{ SERVICE }}>();
 			
 			MockRepo = Mocker.GetMock<{{ REPO }}>();
+
+			MockValidator = Mocker.GetMock<IValidator<Account>>();
 		}
 
 		#endregion
@@ -47,10 +51,10 @@ namespace {{ PROJECT }}.Core.Services
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 		
-			MockRepo.Setup(x => x.Get()).Returns(expected);
+			MockRepo.Setup(x => x.GetList()).Returns(expected);
 
 			//	act
-			var actual = SubjectUnderTest.Get();
+			var actual = SubjectUnderTest.GetList();
 
 			//	assert
 			CollectionAssert.AreEqual(expected as ICollection, actual as ICollection);
@@ -85,6 +89,8 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Save(expected));
 
+			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+
 			//	act
 			SubjectUnderTest.Save(expected);
 
@@ -100,6 +106,8 @@ namespace {{ PROJECT }}.Core.Services
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
 			MockRepo.Setup(x => x.Save(expected));
+
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
 
 			//	act
 			SubjectUnderTest.Save(expected);
@@ -117,6 +125,8 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Insert(expected));
 
+			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+
 			//	act
 			SubjectUnderTest.Insert(expected);
 
@@ -132,6 +142,8 @@ namespace {{ PROJECT }}.Core.Services
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
 			MockRepo.Setup(x => x.Insert(expected));
+
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
 
 			//	act
 			SubjectUnderTest.Insert(expected);
@@ -149,6 +161,8 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Update(expected));
 
+			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+
 			//	act
 			SubjectUnderTest.Update(expected);
 
@@ -164,6 +178,8 @@ namespace {{ PROJECT }}.Core.Services
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
 			
 			MockRepo.Setup(x => x.Update(expected));
+
+			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<Account>()));
 
 			//	act
 			SubjectUnderTest.Update(expected);

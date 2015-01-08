@@ -1,68 +1,162 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
-{% capture SERVICE %}{{ BASECLASS }}DataService{% endcapture -%}
-{% capture API %}/api/{{ BASECLASS | plural }}{% endcapture -%}
+{% capture FACTORY %}{{ BASECLASS }}Factory{% endcapture -%}
+{% capture FORM %}{{ CAMELCLASS }}Form{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.controller.js{% endcapture -%}
 
-(function() {
+(function ()
+{
 	'use strict';
 
-	//	setup the application for multiple and single interactions
+	//	setup the application controllers for multiple and single interactions
 	angular
 		.module('app.{{ CAMELCLASS | plural }}')
 		.controller('{{ BASECLASS | plural }}Controller', {{ BASECLASS | plural }}Controller)
 		.controller('{{ BASECLASS }}Controller', {{ BASECLASS }}Controller);
 
-	{{ BASECLASS | plural }}Controller.$inject = ['{{ SERVICE }}', '$log'];
-	{{ BASECLASS }}Controller.$inject = ['{{ SERVICE }}', '$routeParams', '$log'];
+	{{ BASECLASS | plural }}Controller.$inject = ['{{ FACTORY }}', '$log'];
+	{{ BASECLASS }}Controller.$inject = ['{{ FACTORY }}', '$routeParams', '$scope', '$location', '$log'];
 
-	function {{ BASECLASS | plural }}Controller({{ SERVICE | camel }}, $log)
+	function {{ BASECLASS | plural }}Controller({{ FACTORY }}, $log)
 	{
 		var vm = this;
 		
-		{{ SERVICE | camel }}
-			.get{{ BASECLASS | plural }}()
-			.then(function (data)
-			{
-				vm.{{ CAMELCLASS | plural }} = data;
-			});
-	}
+		vm.hasData = false;
 		
-	function {{ BASECLASS }}Controller({{ SERVICE | camel }}, $routeParams, $log)
+		var queryParams = {};
+
+		{{ FACTORY }}.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
+		
+		function handleQuerySuccess(data)
+		{
+			vm.{{ CAMELCLASS | plural }} = data;
+			
+			vm.hasData = true;
+		}
+		
+		function handleQueryError(error)
+		{
+		
+		}
+	}
+
+	function {{ BASECLASS }}Controller({{ FACTORY }}, $routeParams, $scope, $location, $log)
 	{
 		var vm = this;
 		
-		vm.insert = insert;
-		vm.update = update;
-		vm.delete = delete;
+		vm.hasData = false;
+			
+		vm.serverErrorSummary = [];
+
+		vm.serverErrors = {};
 		
-		{{ SERVICE | camel }}
-			.get{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %})
-			.then(function (data)
+		vm.action = $routeParams.action;
+		
+		vm.save = save;
+		
+		if (vm.action == 'create')
+		{
+			vm.{{ CAMELCLASS }} = {};
+				
+			vm.hasData = true;
+		}
+		else
+		{
+			var pk =
 			{
-				vm.{{ CAMELCLASS }} = data;
-			});
-
-		function insert(data)
-		{
-			{{ SERVICE | camel }}
-				.insert{{ BASECLASS }}(data)
-				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
+				{% for column in table.primary_keys %}{{ column.parameter_name }}: $routeParams.{{ column.parameter_name }}{% if forloop.last == false %},
+				{% endif %}{% endfor %}
+			};
+			
+			{{ FACTORY }}.get(pk).$promise.then(handleGetSuccess, handleGetError);
 		}
 
-		function update(data)
+		function save(data)
 		{
-			{{ SERVICE | camel }}
-				.update{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}, data)
-				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
-		}
+			if (vm.action == 'create')
+			{
+				{{ FACTORY }}.save(data).$promise.then(handleSaveSuccess, handleSaveError);
+			}
+			else
+			{
+				var pk =
+				{
+					{% for column in table.primary_keys %}{{ column.parameter_name }}: $routeParams.{{ column.parameter_name }}{% if forloop.last == false %},
+					{% endif %}{% endfor %}
+				};
 
-		function delete()
+				if (vm.action == 'update')
+				{
+					{{ FACTORY }}.update(pk, data).$promise.then(handleSaveSuccess, handleSaveError);
+				}
+				else if (vm.action == 'delete')
+				{
+					{{ FACTORY }}.delete(pk).$promise.then(handleSaveSuccess, handleSaveError);
+				}
+			}
+		}
+		
+		function handleSaveSuccess(data)
 		{
-			{{ SERVICE | camel }}
-				.delete{{ BASECLASS }}({% for column in table.primary_keys %}$routeParams.{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %},)
-				.then(function () { $location.path('#/{{ CAMELCLASS | plural }}'); });
+			$location.path('#/{{ CAMELCLASS | plural }}');
+		}
+		
+		function handleSaveError(error)
+		{
+		    var d = error.data;
+			
+			vm.serverErrorSummary = [];
+
+		    for (var prop in vm.user)
+		    {
+		        if ($scope.{{ FORM }}[prop])
+		        {
+		            $scope.{{ FORM }}[prop].$setValidity('server', true);
+		        }
+		    }
+
+		    if (d && d.modelState)
+		    {
+		        for (var key in d.modelState)
+		        {
+		            var msg = d.modelState[key];
+
+		            if ($scope.{{ FORM }}[key])
+		            {
+		                $scope.{{ FORM }}[key].$setValidity('server', false);
+					
+						var x = Array.isArray(msg) ? msg.join(' ') : msg;
+
+		                vm.serverErrors[key] = x;
+		            }
+
+					if (Array.isArray(msg))
+					{
+						for (var msgKey in msg)
+						{
+							vm.serverErrorSummary[vm.serverErrorSummary.length] = msg[msgKey];
+						}
+					}
+					else
+					{
+						vm.serverErrorSummary[vm.serverErrorSummary.length] = msg;
+					}
+		        }
+		    }
+		}
+		
+		function handleGetSuccess(data)
+		{
+			vm.{{ CAMELCLASS }} = data;
+			
+			vm.hasData = true;
+		}
+		
+		function handleGetError(error)
+		{
+		
 		}
 	}
+
 })();

@@ -1,30 +1,35 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
-{% capture PATH %}/App/{{ BASECLASS | plural }}{% endcapture -%}
+{% capture PATH %}/App/{{ BASECLASS | plural }}{% endcapture %}
 {% capture CONFIG %}{{ BASECLASS }}Config{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.WebApp{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.route.js{% endcapture -%}
 
 (function() {
 	'use strict';
 	
-	//	initialize the app for {{ CAMELCLASS | plural }}
-	angular.modeule('app.{{ CAMELCLASS | plural }}', []);
-
+	//	initialize the application for {{ CAMELCLASS | plural }}
+	angular.module('app.{{ CAMELCLASS | plural }}', []);
+	
 	//	setup the application routing for {{ CAMELCLASS | plural }}
 	angular.module('app.{{ CAMELCLASS | plural }}').config({{ CONFIG }});
 
 	{{ CONFIG }}.$inject = ['$routeProvider'];
 	
-	function {{ CONFIG }}($routeProvider) {
+	function {{ CONFIG }}($routeProvider)
+	{
 		$routeProvider
 			.when('/{{ CAMELCLASS | plural }}', {
-				templateUrl: '{{ PATH }}/{{ CAMELCLASS | plural }}.html',
+				templateUrl: '{{PATH}}/{{ CAMELCLASS | plural }}.html',
 				controller: '{{ BASECLASS | plural }}Controller',
 				controllerAs: 'vm'
 			})
-			.when('/{{ CAMELCLASS }}/{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.ast == false %}/{% endif %}{% endfor %}', {
+			.when('/{{ CAMELCLASS }}/:action', {
+				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
+				controller: '{{ BASECLASS }}Controller',
+				controllerAs: 'vm'
+			})
+			.when('/{{ CAMELCLASS }}/:action/{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}', {
 				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
 				controller: '{{ BASECLASS }}Controller',
 				controllerAs: 'vm'
@@ -33,4 +38,5 @@
 				redirectTo: '/{{ CAMELCLASS | plural }}'
 			});
 	};
+
 })();

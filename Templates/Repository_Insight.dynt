@@ -25,7 +25,7 @@ namespace {{ PROJECT }}.Repositories
 		///	stored procedure {{ BASECLASS }}SelectMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}SelectMany")]
-		IList<{{ BASECLASS }}> Get();
+		IList<{{ BASECLASS }}> GetList();
 	
 		///	<summary>
 		///	Gets a single {{ BASECLASS }} by primary key calling the

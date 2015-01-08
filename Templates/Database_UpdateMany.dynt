@@ -1,7 +1,7 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROC %}{{ BASECLASS }}UpdateMany{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ PROC }}.sql{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
 
 if object_id('dbo.{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
 go

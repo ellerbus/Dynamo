@@ -1,11 +1,13 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
+{% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Services\{{ SERVICE }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentValidation;
 using {{ PROJECT }}.Repositories;
 using {{ PROJECT }}.Models;
 
@@ -22,22 +24,22 @@ namespace {{ PROJECT }}.Services
 		/// Gets a list of {{ BASECLASS | plural }}
 		/// </summary>
 		/// <returns></returns>
-		IList<{{ BASECLASS }}> Get();
+		IList<{{ BASECLASS }}> GetList();
 
 		/// <summary>
 		/// Gets a singe {{ BASECLASS }} based on the given primary key
 		/// </summary>
 		{{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 		
-		/// <summary>
-		/// Saves a {{ BASECLASS }}
-		/// </summary>
-		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
+		///// <summary>
+		///// Saves a {{ BASECLASS }}
+		///// </summary>
+		//void Save({{ BASECLASS }} {{ BASECLASS | camel }});
 		
-		/// <summary>
-		/// Saves a list of {{ BASECLASS }}
-		/// </summary>
-		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		///// <summary>
+		///// Saves a list of {{ BASECLASS }}
+		///// </summary>
+		//void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
 		
 		/// <summary>
 		/// Inserts a {{ BASECLASS }}
@@ -80,6 +82,7 @@ namespace {{ PROJECT }}.Services
 		#region Members
 
 		private {{ REPO }} _repository;
+		private {{ VALIDATOR }} _validator;
 
 		#endregion
 
@@ -88,9 +91,10 @@ namespace {{ PROJECT }}.Services
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
-		public {{ SERVICE }}({{ REPO }} repository)
+		public {{ SERVICE }}({{ REPO }} repository, {{ VALIDATOR }} validator)
 		{
 			_repository = repository;
+			_validator = validator;
 		}
 
 		#endregion
@@ -101,9 +105,9 @@ namespace {{ PROJECT }}.Services
 		/// Gets a list of {{ BASECLASS | plural }}
 		/// </summary>
 		/// <returns></returns>
-		public IList<{{ BASECLASS }}> Get()
+		public IList<{{ BASECLASS }}> GetList()
 		{
-			return _repository.Get();
+			return _repository.GetList();
 		}
 
 		/// <summary>
@@ -122,6 +126,8 @@ namespace {{ PROJECT }}.Services
 		/// <returns></returns>
 		public void Save({{ BASECLASS }} {{ BASECLASS | camel }})
 		{
+			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+
 			_repository.Save({{ BASECLASS | camel }});
 		}
 		
@@ -131,6 +137,11 @@ namespace {{ PROJECT }}.Services
 		/// <returns></returns>
 		public void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }})
 		{
+			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			{
+				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			}
+
 			_repository.Save({{ BASECLASS | plural | camel }});
 		}
 		
@@ -139,6 +150,8 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		public void Insert({{ BASECLASS }} {{ BASECLASS | camel }})
 		{
+			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+
 			_repository.Insert({{ BASECLASS | camel }});
 		}
 		
@@ -147,6 +160,11 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		public void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
 		{
+			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			{
+				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			}
+
 			_repository.Insert({{ BASECLASS | plural | camel }});
 		}
 		
@@ -155,6 +173,8 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		public void Update({{ BASECLASS }} {{ BASECLASS | camel }})
 		{
+			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+
 			_repository.Update({{ BASECLASS | camel }});
 		}
 		
@@ -163,6 +183,11 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		public void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
 		{
+			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			{
+				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			}
+
 			_repository.Update({{ BASECLASS | plural | camel }});
 		}
 		

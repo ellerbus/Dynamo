@@ -18,7 +18,7 @@ namespace {{ PROJECT }}.Validators
 	{
 		public {{ VALIDATOR }}()
 		{
-			CascadeMode = CascadeMode.StopOnFirstFailure;
+			CascadeMode = CascadeMode.Continue;
 
 			//	strings
 			{% for column in table.columns %}{% if column.clr_type == 'string' %}

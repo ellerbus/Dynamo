@@ -1,7 +1,6 @@
 {% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
 {% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
 {% capture SERVICE %}I{{ BASECLASS }}Service{% endcapture -%}
-{% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\ApiControllers\{{ CONTROLLER }}.cs{% endcapture -%}
@@ -29,16 +28,14 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Members
 	
 		private {{ SERVICE }} _service;
-		private {{ VALIDATOR }} _validator;
 		
 		#endregion
 		
 		#region Contructors
 
-		public {{ CONTROLLER }}({{ SERVICE }} service, {{ VALIDATOR }} validator)
+		public {{ CONTROLLER }}({{ SERVICE }} service)
 		{
 			_service = service;
-			_validator = validator;
 		}
 		
 		#endregion
@@ -49,7 +46,7 @@ namespace {{ PROJECT }}.ApiControllers
 		[HttpGet, Route("")]
 		public IEnumerable<{{ BASECLASS }}> GetAll()
 		{
-			return _service.Get();
+			return _service.GetList();
 		}
 
 		// GET: api/{{ BASECLASS | camel }}/5
@@ -70,16 +67,16 @@ namespace {{ PROJECT }}.ApiControllers
 		[HttpPost, Route("")]
 		public IHttpActionResult Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
 		{
-			ValidationResult vr = _validator.Validate({{ BASECLASS | camel }});
-
-			if (vr.IsValid)
+			try
 			{
 				_service.Insert({{ BASECLASS | camel }});
 
 				return Ok();
 			}
-			
-			return BadRequest(vr);
+			catch (ValidationException ve)
+			{
+				return BadRequest(ve.Errors);
+			}
 		}
 
 		// PUT: api/{{ BASECLASS | camel }}/5
@@ -95,17 +92,16 @@ namespace {{ PROJECT }}.ApiControllers
 			{% for column in table.columns %}{% if column.is_primary_key == false %}
 			model.{{ column.name | pascal | remove:BASECLASS }} = {{ BASECLASS | camel }}.{{ column.name | pascal | remove:BASECLASS }};{% endif %}{% endfor -%}
 
-
-			ValidationResult vr = _validator.Validate(model);
-
-			if (vr.IsValid)
+			try
 			{
 				_service.Update(model);
 
 				return Ok();
 			}
-			
-			return BadRequest(vr);
+			catch (ValidationException ve)
+			{
+				return BadRequest(ve.Errors);
+			}
 		}
 
 		// DELETE: api/{{ BASECLASS | camel }}/5
@@ -118,19 +114,26 @@ namespace {{ PROJECT }}.ApiControllers
 			{
 				return NotFound();
 			}
-
-			_service.Delete(model);
 			
-			return Ok();
+			try
+			{
+				_service.Delete(model);
+			
+				return Ok();
+			}
+			catch (ValidationException ve)
+			{
+				return BadRequest(ve.Errors);
+			}
 		}
 		
 		#endregion
 
 		#region Helpers
 
-		private IHttpActionResult BadRequest(ValidationResult vr)
+		private IHttpActionResult BadRequest(IEnumerable<ValidationFailure> errors)
 		{
-			foreach (ValidationFailure vf in vr.Errors)
+			foreach (ValidationFailure vf in errors)
 			{
 				ModelState.AddModelError(vf.PropertyName, vf.ErrorMessage);
 			}

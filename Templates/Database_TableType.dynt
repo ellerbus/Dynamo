@@ -1,7 +1,7 @@
 {% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture TYPE %}{{ BASECLASS }}TableType{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ TYPE }}.sql{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ TYPE }}.sql{% endcapture -%}
 
 if type_id('dbo.{{ TYPE }}') is not null drop type  dbo.{{ TYPE }}
 go

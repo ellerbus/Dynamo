@@ -1,6 +1,36 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture CORE %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\app.module.js{% endcapture -%}
 
-angular.module('app', ['ngRoute' /* list out each app."table" */]);
+angular.module('app', ['ngRoute', 'ngResource', 'ngMessage' /* list out each app."table" here */]);
+
+angular.module('app').directive('toggleHasError', function ($compile)
+{
+    return {
+        restrict: 'A',
+        require: '^form',
+        link: function (scope, element, attrs, formCtrl)
+        {
+            // find the text box element, which has the 'name' attribute
+            var inputEl = element[0].querySelector('[name]');
+
+            // convert the native text box element to an angular element
+            var inputNgEl = angular.element(inputEl);
+
+            // get the name on the text box so we know the property to check
+            // on the form controller
+            var inputName = inputNgEl.attr('name');
+
+            var formName = formCtrl.$name;
+
+            var hasWarningExpr = '%form.%input.$invalid'.replace(/%form/g, formName).replace(/%input/g, inputName);
+
+            var hasErrorExpr = '%form.%input.$invalid && %form.%input.$touched'.replace(/%form/g, formName).replace(/%input/g, inputName);
+
+            element.attr('ng-class', "{ 'has-warning': " + hasWarningExpr + ", 'has-error': " + hasErrorExpr + ' }');
+
+            element.removeAttr('toggle-has-error');
+
+            $compile(element)(scope);
+        }
+    }
+});
