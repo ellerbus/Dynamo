@@ -1,0 +1,29 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% capture FACTORY %}{{ BASECLASS }}Factory{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.factory.js{% endcapture -%}
+
+(function() {
+	'use strict';
+
+	//	setup the data service factory to call the ASP.NET API
+	angular.module('app.{{ CAMELCLASS | plural }}').factory('{{ FACTORY }}', {{ FACTORY }});
+
+	{{ FACTORY }}.$inject = ['$resource'];
+	
+	function {{ FACTORY }}($resource)
+	{
+		var pkPattern = '{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}';
+		
+		var pkInputs = { {% for column in table.primary_keys %}{{ column.parameter_name }}: '@{{ column.parameter_name }}'{% if forloop.last == false %}, {% endif %}{% endfor %} };
+		
+		var cfg =
+		{
+			update: { method: 'PUT' }
+		};
+
+		return $resource('/api/{{ CAMELCLASS | plural }}/' + pkPattern, pkInputs, cfg);
+	}
+
+})();
