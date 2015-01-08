@@ -52,7 +52,7 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Tests - Get Many/List
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_GetAll()
+		public void {{ CONTROLLER }}_GetAll_Should_SendOk()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build();
@@ -73,7 +73,7 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Tests - Get One
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_GetOne()
+		public void {{ CONTROLLER }}_GetOne_Should_SendOk()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -99,7 +99,7 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_GetOne_NotFound()
+		public void {{ CONTROLLER }}_GetOne_Should_SendNotFound()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -124,7 +124,7 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Tests - Post One
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_PostOne()
+		public void {{ CONTROLLER }}_PostOne_Should_SendOk()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -145,7 +145,7 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_PostOne_BadRequest()
+		public void {{ CONTROLLER }}_PostOne_Should_SendBadRequest()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -170,7 +170,7 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Tests - Put One
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_PutOne()
+		public void {{ CONTROLLER }}_PutOne_Should_SendOk()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -193,7 +193,7 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_PutOne_BadRequest()
+		public void {{ CONTROLLER }}_PutOne_Should_SendBadRequest()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -216,7 +216,7 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_PutOne_NotFound()
+		public void {{ CONTROLLER }}_PutOne_Should_SendNotFound()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -241,7 +241,7 @@ namespace {{ PROJECT }}.ApiControllers
 		#region Tests - Delete One
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_DeleteOne()
+		public void {{ CONTROLLER }}_DeleteOne_Should_SendOk()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -264,7 +264,7 @@ namespace {{ PROJECT }}.ApiControllers
 		}
 
 		[TestMethod]
-		public void {{ CONTROLLER }}_Should_DeleteOne_NotFound()
+		public void {{ CONTROLLER }}_DeleteOne_Should_SendNotFound()
 		{
 			//		arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();

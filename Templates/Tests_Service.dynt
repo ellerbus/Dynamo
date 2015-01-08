@@ -47,7 +47,7 @@ namespace {{ PROJECT }}.Core.Services
 		#region Tests - Get
 		
 		[TestMethod]
-		public void {{ SERVICE }}_Should_GetMany()
+		public void {{ SERVICE }}_GetMany_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -64,7 +64,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_GetOne()
+		public void {{ SERVICE }}_GetOne_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -87,7 +87,7 @@ namespace {{ PROJECT }}.Core.Services
 		#region Tests - Save
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Save()
+		public void {{ SERVICE }}_Save_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -106,7 +106,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_SaveWithException()
+		public void {{ SERVICE }}_Save_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -120,7 +120,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Save_Many()
+		public void {{ SERVICE }}_SaveMany_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -139,7 +139,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_Save_ManyWithException()
+		public void {{ SERVICE }}_SaveMany_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -157,7 +157,7 @@ namespace {{ PROJECT }}.Core.Services
 		#region Tests - Insert
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Insert()
+		public void {{ SERVICE }}_Insert_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -176,7 +176,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_InsertWithException()
+		public void {{ SERVICE }}_Insert_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -190,7 +190,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Insert_Many()
+		public void {{ SERVICE }}_InsertMany_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -209,7 +209,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_Insert_ManyWithException()
+		public void {{ SERVICE }}_InsertMany_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -227,7 +227,7 @@ namespace {{ PROJECT }}.Core.Services
 		#region Tests - Update
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Update()
+		public void {{ SERVICE }}_Update_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -246,7 +246,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_UpdateWithException()
+		public void {{ SERVICE }}_Update_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -260,7 +260,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Update_Many()
+		public void {{ SERVICE }}_UpdateMany_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -279,7 +279,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod, ExpectedException(typeof(ValidationException))]
-		public void {{ SERVICE }}Service_Should_Update_ManyWithException()
+		public void {{ SERVICE }}_UpdateMany_Should_ThrowException()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
@@ -297,7 +297,7 @@ namespace {{ PROJECT }}.Core.Services
 		#region Tests - Delete
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Delete()
+		public void {{ SERVICE }}_Delete_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
@@ -313,7 +313,7 @@ namespace {{ PROJECT }}.Core.Services
 		}
 
 		[TestMethod]
-		public void {{ SERVICE }}_Should_Delete_Many()
+		public void {{ SERVICE }}_DeleteMany_Should_Succeed()
 		{
 			//	arrange
 			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
