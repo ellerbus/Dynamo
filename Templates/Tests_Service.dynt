@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
 using FluentValidation;
+using FluentValidation.Results;
 using FizzWare.NBuilder;
 using Moq;
 using {{ SOLUTION }}.Core.Models;
@@ -43,7 +44,7 @@ namespace {{ PROJECT }}.Core.Services
 
 		#endregion
 
-		#region Tests
+		#region Tests - Get
 		
 		[TestMethod]
 		public void {{ SERVICE }}_Should_GetMany()
@@ -80,6 +81,10 @@ namespace {{ PROJECT }}.Core.Services
 
 			MockRepo.VerifyAll();
 		}
+		
+		#endregion
+		
+		#region Tests - Save
 
 		[TestMethod]
 		public void {{ SERVICE }}_Should_Save()
@@ -89,7 +94,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Save(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Save(expected);
@@ -97,6 +102,21 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_SaveWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+
+			MockRepo.Setup(x => x.Insert(expected));
+
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Save(expected);
 		}
 
 		[TestMethod]
@@ -107,7 +127,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Save(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Save(expected);
@@ -115,7 +135,26 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
 		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_Save_ManyWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+
+			MockRepo.Setup(x => x.Save(expected));
+
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Save(expected);
+		}
+		
+		#endregion
+		
+		#region Tests - Insert
 
 		[TestMethod]
 		public void {{ SERVICE }}_Should_Insert()
@@ -125,7 +164,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Insert(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Insert(expected);
@@ -133,6 +172,21 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_InsertWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+
+			MockRepo.Setup(x => x.Insert(expected));
+
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
 		}
 
 		[TestMethod]
@@ -143,7 +197,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Insert(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Insert(expected);
@@ -151,7 +205,26 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
 		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_Insert_ManyWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+
+			MockRepo.Setup(x => x.Insert(expected));
+
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Insert(expected);
+		}
+		
+		#endregion
+		
+		#region Tests - Update
 
 		[TestMethod]
 		public void {{ SERVICE }}_Should_Update()
@@ -161,7 +234,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Update(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(expected));
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Update(expected);
@@ -169,6 +242,21 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
+		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_UpdateWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateNew().Build();
+
+			MockRepo.Setup(x => x.Update(expected));
+
+			MockValidator.Setup(x => x.Validate(expected)).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Update(expected);
 		}
 
 		[TestMethod]
@@ -179,7 +267,7 @@ namespace {{ PROJECT }}.Core.Services
 			
 			MockRepo.Setup(x => x.Update(expected));
 
-			MockValidator.Setup(x => x.ValidateAndThrow(It.IsAny<{{ BASECLASS }}>()));
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult());
 
 			//	act
 			SubjectUnderTest.Update(expected);
@@ -187,7 +275,26 @@ namespace {{ PROJECT }}.Core.Services
 			//	assert
 
 			MockRepo.VerifyAll();
+			MockValidator.VerifyAll();
 		}
+
+		[TestMethod, ExpectedException(typeof(ValidationException))]
+		public void {{ SERVICE }}Service_Should_Update_ManyWithException()
+		{
+			//	arrange
+			var expected = Builder<{{ BASECLASS }}>.CreateListOfSize(10).Build(); 
+
+			MockRepo.Setup(x => x.Update(expected));
+
+			MockValidator.Setup(x => x.Validate(It.IsAny<{{ BASECLASS }}>())).Returns(new ValidationResult(new[] { new ValidationFailure("", "") }));
+
+			//	act
+			SubjectUnderTest.Update(expected);
+		}
+		
+		#endregion
+		
+		#region Tests - Delete
 
 		[TestMethod]
 		public void {{ SERVICE }}_Should_Delete()
