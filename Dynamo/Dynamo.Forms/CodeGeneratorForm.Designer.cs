@@ -45,8 +45,8 @@
             this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateCodeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateCodeFilesToolStripMenuItem = new BindableToolStripMenuItem();
+            this.refreshToolStripMenuItem = new BindableToolStripMenuItem();
             this.solutionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.viewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -619,9 +619,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel templateLinkLabel;
-        private System.Windows.Forms.ToolStripMenuItem generateCodeFilesToolStripMenuItem;
+        private BindableToolStripMenuItem generateCodeFilesToolStripMenuItem;
         private System.Windows.Forms.Button generateButton;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private BindableToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage tableTabPage;
         private System.Windows.Forms.TabPage templateTabPage;

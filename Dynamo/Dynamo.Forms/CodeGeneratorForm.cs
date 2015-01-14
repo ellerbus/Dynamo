@@ -38,6 +38,10 @@ namespace Dynamo.Forms
             LinesOfCodeViewModel.ProgressChanged += LinesOfCodeViewModel_ProgressChanged;
 
             ReloadRecentFiles();
+
+            generateCodeFilesToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
+
+            refreshToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
         }
 
         #endregion
