@@ -291,8 +291,8 @@ namespace Dynamo.Core
         {
             get
             {
-                if (!File.Exists(Project.SolutionFile)) return false;
-                if (!Directory.Exists(Project.TemplateFolder)) return false;
+                if (!File.Exists(SolutionFile)) return false;
+                if (!Directory.Exists(TemplateFolder)) return false;
                 if (!IsConnectionStringValid) return false;
 
                 return true;
