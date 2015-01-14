@@ -37,16 +37,40 @@ namespace Dynamo.Forms
 
             LinesOfCodeViewModel.ProgressChanged += LinesOfCodeViewModel_ProgressChanged;
 
-            ReloadRecentFiles();
-
             generateCodeFilesToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
 
             refreshToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
+
+            RecentlyUsedFiles = new MostRecentlyUsedFileMenu(
+                recentFilesToolStripMenuItem, MostRecentlyUsedFileMenu_ClickedHandler,
+                "Dynamo.RecentFiles", true, 7
+                );
         }
 
         #endregion
 
         #region Events
+
+        private void MostRecentlyUsedFileMenu_ClickedHandler(int number, string filename)
+        {
+            bool? op = CheckForSave();
+
+            if (op == null)
+            {
+                return;
+            }
+
+            if (File.Exists(filename))
+            {
+                OpenProject(filename);
+            }
+            else
+            {
+                MessageBox.Show(this, "Selected File does not exist", "Invalid File");
+
+                RecentlyUsedFiles.RemoveFile(number);
+            }
+        }
 
         private void templateLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -189,27 +213,8 @@ namespace Dynamo.Forms
             if (f != null)
             {
                 GeneratorViewModel.SaveAsProject(f);
-            }
-        }
 
-        private void recentFilesToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            bool? op = CheckForSave();
-
-            if (op == null)
-            {
-                return;
-            }
-
-            string file = e.ClickedItem.Tag as string;
-
-            if (File.Exists(file))
-            {
-                OpenProject(file);
-            }
-            else
-            {
-                MessageBox.Show(this, "Selected File does not exist", "Invalid File");
+                UpdateRecentlyUsedFiles(f);
             }
         }
 
@@ -303,12 +308,12 @@ namespace Dynamo.Forms
 
                 mainTabControl.SelectedTab = tableTabPage;
 
+                UpdateRecentlyUsedFiles(fileName);
+
                 Cursor = Cursors.Default;
 
                 Application.DoEvents();
             });
-
-            ReloadRecentFiles();
 
             Application.DoEvents();
 
@@ -324,29 +329,6 @@ namespace Dynamo.Forms
             Invoke(loc);
 
             Application.DoEvents();
-        }
-
-        private void ReloadRecentFiles()
-        {
-            recentFilesToolStripMenuItem.DropDownItems.Clear();
-
-            IList<string> files = GeneratorViewModel.RecentFiles;
-
-            for (int i = 0; i < files.Count; i++)
-            {
-                string file = files[i];
-
-                if (File.Exists(file))
-                {
-                    ToolStripMenuItem recentMenu = new ToolStripMenuItem()
-                    {
-                        Text = "&{0} {1}".FormatArgs(i + 1, file),
-                        Tag = file
-                    };
-
-                    recentFilesToolStripMenuItem.DropDownItems.Add(recentMenu);
-                }
-            }
         }
 
         /// <summary>
@@ -417,9 +399,18 @@ namespace Dynamo.Forms
             }
         }
 
+        private void UpdateRecentlyUsedFiles(string fileName)
+        {
+            RecentlyUsedFiles.AddFile(fileName);
+
+            RecentlyUsedFiles.SaveToRegistry();
+        }
+
         #endregion
 
         #region Properties
+
+        private MostRecentlyUsedFileMenu RecentlyUsedFiles { get; set; }
 
         private GeneratorViewModel GeneratorViewModel
         {

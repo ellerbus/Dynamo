@@ -111,6 +111,7 @@
     </Compile>
     <Compile Include="DictionaryBindingList.cs" />
     <Compile Include="DictionaryBindingPair.cs" />
+    <Compile Include="MostRecentlyUsedFileMenu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CodeGeneratorForm.resx">
