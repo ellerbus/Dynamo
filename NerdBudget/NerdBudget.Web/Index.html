@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nerd Budget</title>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="Content/Site.css" />
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-resource.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-messages.min.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+
+</head>
+<body>
+  <br/>
+  <div class="container">
+    <div ng-app="app">
+      <div ng-view=""></div>
+    </div>
+  </div>
+
+  <script src="App/nb.js"></script>
+
+  <script src="App/Accounts/account.route.js"></script>
+  <script src="App/Accounts/account.factory.js"></script>
+  <script src="App/Accounts/account.controller.js"></script>
+
+  <script src="App/Categories/category.route.js"></script>
+  <script src="App/Categories/category.factory.js"></script>
+  <script src="App/Categories/category.controller.js"></script>
+
+  <script src="App/app.module.js"></script>
+</body>
+</html>

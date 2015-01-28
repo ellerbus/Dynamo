@@ -1,0 +1,33 @@
+<div class="btn-group btn-breadcrumb">
+  <a href="#/accounts" nb-crumb-home></a>
+  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+</div>
+<br />
+<br />
+<p ng-show="!vm.hasData">
+  <i class="fa fa-spinner fa-spin"></i> Gathering the requested list of Categories...
+</p>
+<table nb-table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="icons">
+        <a href="#/category/create/{{ vm.account.id }}" nb-create-icon></a>
+      </th>
+    </tr>
+  </thead>
+  <tbody ui-sortable="{stop: vm.updateSequences}" ng-model="vm.account.categories">
+    <tr ng-repeat="category in vm.account.categories">
+      <td ng-bind="category.name" style="cursor: move;"></td>
+      <td class="icons">
+        <a href="#/category/update/{{ category.accountId }}/{{ category.id }}" nb-edit-icon></a>
+        <a href="#/category/delete/{{ category.accountId }}/{{ category.id }}" nb-delete-icon></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<div class="row text-right">
+  <a href="#/category/delete/{{ category.accountId }}/{{ category.id }}" nb-next-icon></a>
+</div>

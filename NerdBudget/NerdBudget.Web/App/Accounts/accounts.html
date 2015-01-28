@@ -1,0 +1,32 @@
+<div class="btn-group btn-breadcrumb">
+  <a href="#/accounts" nb-crumb-home></a>
+  <a href="#/accounts" nb-crumb>Accounts</a>
+</div>
+<br />
+<br />
+<p ng-show="!vm.hasData">
+  <i class="fa fa-spinner fa-spin"></i> Gathering the requested list of Accounts...
+</p>
+<table nb-table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="icons">
+      </th>
+      <th class="icons">
+        <a href="#/account/create" nb-create-icon></a>
+      </th>
+    </tr>
+  </thead>
+  <tr ng-repeat="account in vm.accounts">
+    <td ng-bind="account.name"></td>
+    <td class="icons">
+      <a href="#/categories/{{ account.id }}" nb-list-icon></a>
+      <a href="#/categories/{{ account.id }}" nb-dollar-icon></a>
+    </td>
+    <td class="icons">
+      <a href="#/account/update/{{ account.id }}" nb-edit-icon></a>
+      <a href="#/account/delete/{{ account.id }}" nb-delete-icon></a>
+    </td>
+  </tr>
+</table>

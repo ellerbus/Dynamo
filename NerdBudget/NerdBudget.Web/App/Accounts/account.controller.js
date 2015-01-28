@@ -1,0 +1,118 @@
+
+(function ()
+{
+	'use strict';
+
+	//	setup the application controllers for multiple and single interactions
+	angular
+		.module('app.accounts')
+		.controller('AccountsController', AccountsController)
+		.controller('AccountController', AccountController);
+
+	AccountsController.$inject = ['AccountFactory', '$log'];
+	AccountController.$inject = ['AccountFactory', '$routeParams', '$scope', '$location', '$log'];
+
+	function AccountsController(AccountFactory, $log)
+	{
+	    var vm = this;
+		
+		var queryParams = {};
+
+		AccountFactory.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
+		
+		function handleQuerySuccess(data)
+		{
+			vm.accounts = data;
+			
+			vm.hasData = true;
+		}
+		
+		function handleQueryError(error)
+		{
+		    vm.serverErrorSummary = NB.buildError(error);
+			
+			vm.hasData = true;
+		}
+	}
+
+	function AccountController(AccountFactory, $routeParams, $scope, $location, $log)
+	{
+	    var vm = this;
+		
+		vm.action = $routeParams.action;
+		
+		vm.save = save;
+		
+		if (vm.action == 'create')
+		{
+		    handleGetSuccess({ });
+				
+			vm.hasData = true;
+		}
+		else
+		{
+			var pk =
+			{
+				id: $routeParams.id
+			};
+			
+			AccountFactory.get(pk).$promise.then(handleGetSuccess, handleGetError);
+		}
+
+		function save(data)
+		{
+			if (vm.action == 'create')
+			{
+				AccountFactory.save(data).$promise.then(handleSaveSuccess, handleSaveError);
+			}
+			else
+			{
+				var pk =
+				{
+					id: $routeParams.id
+				};
+
+				if (vm.action == 'update')
+				{
+					AccountFactory.update(pk, data).$promise.then(handleSaveSuccess, handleSaveError);
+				}
+				else if (vm.action == 'delete')
+				{
+					AccountFactory.delete(pk).$promise.then(handleSaveSuccess, handleSaveError);
+				}
+			}
+		}
+		
+		function handleSaveSuccess(data)
+		{
+		    if (vm.action == 'delete')
+		    {
+		        $location.path('/accounts/');
+		    }
+		    else
+		    {
+		        $location.path('/categories/' + data.id);
+		    }
+		}
+		
+		function handleSaveError(error)
+		{
+		    NB.applyError(vm, $scope.accountForm, error);
+		}
+		
+		function handleGetSuccess(data)
+		{
+			vm.account = data;
+			
+			vm.hasData = true;
+		}
+		
+		function handleGetError(error)
+		{
+		    vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
+			
+			vm.hasData = true;
+		}
+	}
+
+})();

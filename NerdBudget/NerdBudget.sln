@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NerdBudget.Database", "NerdBudget.Database\NerdBudget.Database.sqlproj", "{E83F2E75-5875-4666-B733-018B3447CEBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DBA05A97-276D-4083-87E1-F48B74709D19}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdBudget.Web", "NerdBudget.Web\NerdBudget.Web.csproj", "{40016679-AE60-44C3-81D3-ECD3B2CAD34D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdBudget.Tests", "NerdBudget.Tests\NerdBudget.Tests.csproj", "{7219F528-FA43-4B1E-94F8-9A0F649B878C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdBudget.Core", "NerdBudget.Core\NerdBudget.Core.csproj", "{F34167E1-858C-4B3E-A85D-1AA1A21880ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E83F2E75-5875-4666-B733-018B3447CEBF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{40016679-AE60-44C3-81D3-ECD3B2CAD34D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40016679-AE60-44C3-81D3-ECD3B2CAD34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40016679-AE60-44C3-81D3-ECD3B2CAD34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40016679-AE60-44C3-81D3-ECD3B2CAD34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7219F528-FA43-4B1E-94F8-9A0F649B878C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7219F528-FA43-4B1E-94F8-9A0F649B878C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7219F528-FA43-4B1E-94F8-9A0F649B878C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7219F528-FA43-4B1E-94F8-9A0F649B878C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F34167E1-858C-4B3E-A85D-1AA1A21880ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F34167E1-858C-4B3E-A85D-1AA1A21880ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F34167E1-858C-4B3E-A85D-1AA1A21880ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F34167E1-858C-4B3E-A85D-1AA1A21880ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

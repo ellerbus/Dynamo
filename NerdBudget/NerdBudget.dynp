@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GeneratorProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SolutionFile>NerdBudget.sln</SolutionFile>
+  <TemplateFolder>..\Templates</TemplateFolder>
+  <DataProvider>System.Data.SqlClient</DataProvider>
+  <ConnectionString>Data Source=.;Initial Catalog=NERD_BUDGET;Integrated Security=True</ConnectionString>
+</GeneratorProject>
