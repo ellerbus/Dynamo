@@ -38,7 +38,7 @@
         </th>
       </tr>
     </thead>
-    <tbody ui-sortable="{stop: vm.updateSequences(category)}" ng-model="category.budgets">
+    <tbody ui-sortable="{stop: vm.updateSequences}" ng-model="category.budgets">
       <tr ng-repeat="budget in category.budgets">
         <td ng-bind="budget.name" style="cursor: move;"></td>
         <th class="icons">

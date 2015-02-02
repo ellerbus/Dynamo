@@ -130,48 +130,8 @@ namespace NerdBudget.Web.ApiControllers
             }
         }
 
-        // PUT: api/budget/5/sequences
-        [HttpPut, Route("{accountId}/sequences")]
-        public IHttpActionResult PutSequences(string accountId, string categoryId, [FromBody]string[] ids)
-        {
-            Account account = _accountService.Get(accountId);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                Category category = account.Categories[categoryId];
-
-                int seq = 0;
-
-                foreach (string id in ids)
-                {
-                    Budget b = category.Budgets[id];
-
-                    b.Sequence = seq;
-
-                    seq += 10;
-                }
-
-                _budgetService.Update(category.Budgets);
-
-                return Ok();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (ValidationException ve)
-            {
-                return BadRequest(ve.Errors);
-            }
-        }
-
         // PUT: api/budget/5
-        [HttpPut, Route("{accountId}/{id}")]
+        [HttpPut, Route(@"{accountId}/{id:regex([A-Z0-9]\{2\})}")]
         public IHttpActionResult Put(string accountId, string id, [FromBody]Budget item)
         {
             Budget budget = GetBudget(accountId, id);
@@ -193,6 +153,59 @@ namespace NerdBudget.Web.ApiControllers
                 _budgetService.Update(budget);
 
                 return Ok(budget);
+            }
+            catch (ValidationException ve)
+            {
+                return BadRequest(ve.Errors);
+            }
+        }
+
+        // PUT: api/budget/5/sequences
+        [HttpPut, Route("{accountId}/sequences")]
+        public IHttpActionResult PutSequences(string accountId, [FromBody]string[] ids)
+        {
+            Account account = _accountService.Get(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                List<Budget> budgets = new List<Budget>();
+
+                foreach (Category cat in account.Categories)
+                {
+                    int seq = 0;
+
+                    foreach (string id in ids)
+                    {
+                        if (cat.Budgets.Contains(id))
+                        {
+                            Budget bud = cat.Budgets[id];
+
+                            bud.Sequence = seq;
+
+                            seq += 10;
+
+                            budgets.Add(bud);
+                        }
+                    }
+
+                    if (seq > 0)
+                    {
+                        cat.Budgets.Resort();
+                    }
+                }
+
+                _budgetService.Update(budgets);
+
+                return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (ValidationException ve)
             {

@@ -36,19 +36,23 @@
             vm.hasData = true;
         }
 
-        function updateSequences(category)
+        function updateSequences()
         {
             var pk = {
                 accountId: $routeParams.accountId,
-                categoryId: category.id,
                 action: 'sequences'
             };
 
             var ids = [];
 
-            for (var key in category.budgets)
+            for (var kc in vm.categories)
             {
-                ids[ids.length] = category.budgets[key].id;
+                var cat = vm.categories[kc];
+
+                for (var kb in cat.budgets)
+                {
+                    ids[ids.length] = cat.budgets[kb].id;
+                }
             }
 
             BudgetFactory.update(pk, ids).$promise.then(function () { }, handleQueryError);
