@@ -16,6 +16,8 @@
     {
         var vm = this;
 
+        vm.updateSequences = updateSequences;
+
         var queryParams = { accountId: $routeParams.accountId };
 
         var assignData = function (data)
@@ -32,6 +34,24 @@
             vm.serverErrorSummary = NB.buildError(error);
             
             vm.hasData = true;
+        }
+
+        function updateSequences(category)
+        {
+            var pk = {
+                accountId: $routeParams.accountId,
+                categoryId: category.id,
+                action: 'sequences'
+            };
+
+            var ids = [];
+
+            for (var key in category.budgets)
+            {
+                ids[ids.length] = category.budgets[key].id;
+            }
+
+            BudgetFactory.update(pk, ids).$promise.then(function () { }, handleQueryError);
         }
     }
 
@@ -103,6 +123,11 @@
         
         function handleGetError(error)
         {
+            if (typeof vm.serverErrorSummary === 'undefined')
+            {
+                vm.serverErrorSummary = [];
+            }
+
             vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
             
             vm.hasData = true;

@@ -107,6 +107,11 @@
 		
 		function handleGetError(error)
 		{
+		    if (typeof vm.serverErrorSummary === 'undefined')
+		    {
+		        vm.serverErrorSummary = [];
+		    }
+
 		    vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
 			
 			vm.hasData = true;

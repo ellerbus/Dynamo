@@ -2,6 +2,7 @@
   <a href="#/accounts" nb-crumb-home></a>
   <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
   <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+  <a href="#/budgets/{{ vm.account.id }}" nb-crumb>Budgets</a>
 </div>
 <br />
 <br />
@@ -16,7 +17,7 @@
 <table nb-table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Categories</th>
       <th class="icons">
         <a href="#/category/create/{{ vm.account.id }}" nb-create-icon></a>
       </th>

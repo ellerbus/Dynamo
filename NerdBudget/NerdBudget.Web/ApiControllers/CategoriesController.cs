@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FluentValidation;
@@ -63,22 +63,24 @@ namespace NerdBudget.Web.ApiControllers
         [HttpGet, Route("{accountId}/{id}"), ResponseType(typeof(Category))]
         public IHttpActionResult Get(string accountId, string id)
         {
-            Category category = GetCategory(accountId, id);
+            try
+            {
+                Category category = GetCategory(accountId, id);
 
-            if (category == null)
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                var model = new
+                {
+                    account = category.Account,
+                    category = category
+                };
+
+                return Json(model, jss);
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            JsonSerializerSettings jss = GetPayloadSettings();
-
-            var model = new
-            {
-                account = category.Account,
-                category = category
-            };
-
-            return Json(model, jss);
         }
 
         #endregion
@@ -150,22 +152,21 @@ namespace NerdBudget.Web.ApiControllers
         [HttpPut, Route("{accountId}/{id}")]
         public IHttpActionResult Put(string accountId, string id, [FromBody]Category item)
         {
-            Category category = GetCategory(accountId, id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            category.Name = item.Name;
-
             try
             {
+                Category category = GetCategory(accountId, id);
+
+                category.Name = item.Name;
+
                 _categoryService.Update(category);
 
                 JsonSerializerSettings jss = GetPayloadSettings();
 
                 return Json(category, jss);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (ValidationException ve)
             {
@@ -177,18 +178,17 @@ namespace NerdBudget.Web.ApiControllers
         [HttpDelete, Route("{accountId}/{id}")]
         public IHttpActionResult Delete(string accountId, string id)
         {
-            Category category = GetCategory(accountId, id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
             try
             {
+                Category category = GetCategory(accountId, id);
+
                 _categoryService.Delete(category);
 
                 return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (ValidationException ve)
             {
@@ -209,7 +209,7 @@ namespace NerdBudget.Web.ApiControllers
                 return null;
             }
 
-            Category category = account.Categories.FirstOrDefault(x => x.Id == categoryId);
+            Category category = account.Categories[categoryId];
 
             return category;
         }

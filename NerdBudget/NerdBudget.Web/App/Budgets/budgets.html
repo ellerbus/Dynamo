@@ -38,9 +38,9 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody ui-sortable="{stop: vm.updateSequences(category)}" ng-model="category.budgets">
       <tr ng-repeat="budget in category.budgets">
-        <td>{{ budget.name }}</td>
+        <td ng-bind="budget.name" style="cursor: move;"></td>
         <th class="icons">
           <a href="#/budget/update/{{ budget.accountId }}/{{ budget.id }}" n nb-edit-icon></a>
           <a href="#/budget/delete/{{ budget.accountId }}/{{ budget.id }}" nb-delete-icon></a>

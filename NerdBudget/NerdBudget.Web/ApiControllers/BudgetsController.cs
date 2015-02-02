@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FluentValidation;
@@ -112,18 +112,17 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            Category category = account.Categories.FirstOrDefault(x => x.Id == budget.CategoryId);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
             try
             {
+                Category category = account.Categories[budget.CategoryId];
+
                 _budgetService.Insert(category, budget);
 
                 return Ok(budget);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (ValidationException ve)
             {
@@ -132,7 +131,7 @@ namespace NerdBudget.Web.ApiControllers
         }
 
         // PUT: api/budget/5/sequences
-        [HttpPut, Route("{accountId}/{categoryId}/sequences")]
+        [HttpPut, Route("{accountId}/sequences")]
         public IHttpActionResult PutSequences(string accountId, string categoryId, [FromBody]string[] ids)
         {
             Account account = _accountService.Get(accountId);
@@ -142,15 +141,10 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            Category category = account.Categories.FirstOrDefault(x => x.Id == categoryId);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
             try
             {
+                Category category = account.Categories[categoryId];
+
                 int seq = 0;
 
                 foreach (string id in ids)
@@ -165,6 +159,10 @@ namespace NerdBudget.Web.ApiControllers
                 _budgetService.Update(category.Budgets);
 
                 return Ok();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
             catch (ValidationException ve)
             {
@@ -185,6 +183,7 @@ namespace NerdBudget.Web.ApiControllers
 
             budget.Name = item.Name;
             budget.CategoryId = item.CategoryId;
+            budget.Frequency = item.Frequency;
             budget.Amount = item.Amount;
             budget.StartDate = item.StartDate;
             budget.EndDate = item.EndDate;
