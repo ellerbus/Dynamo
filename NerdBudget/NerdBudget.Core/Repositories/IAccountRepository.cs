@@ -22,6 +22,7 @@ namespace NerdBudget.Core.Repositories
         ///	</summary>
         [Sql("AccountSelectOne")]
         [Recordset(1, typeof(Category), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllCategories")]
+        [Recordset(2, typeof(Budget), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBudgets")]
         Account Get(string account_id);
 
         ///	<summary>

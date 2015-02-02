@@ -16,3 +16,18 @@ deliverables.
 - [Dynamo's API](https://github.com/ellerbus/Dynamo/wiki/Dynamo-API)
 - [Dynamo's Filters](https://github.com/ellerbus/Dynamo/wiki/Dynamo-Filters)
 - [Provided Templates](https://github.com/ellerbus/Dynamo/tree/master/Templates)
+
+#### List of Github/NuGet Packages Utilized
+
+https://github.com/darrencauthon/AutoMoq
+
+https://github.com/JeremySkinner/FluentValidation
+
+https://github.com/ellerbus/Augment
+
+https://github.com/jonwagner/Insight.Database
+
+https://github.com/garethdown44/nbuilder/
+
+https://github.com/Moq/moq4
+

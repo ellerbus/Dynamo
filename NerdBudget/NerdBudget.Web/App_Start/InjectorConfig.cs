@@ -31,6 +31,10 @@ namespace NerdBudget.Web
             c.Register<ICategoryService, CategoryService>();
             c.Register<IValidator<Category>, CategoryValidator>();
 
+            c.RegisterWebApiRequest<IBudgetRepository>(() => GetRepository<IBudgetRepository>(), true);
+            c.Register<IBudgetService, BudgetService>();
+            c.Register<IValidator<Budget>, BudgetValidator>();
+
             c.Verify();
 
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(c);

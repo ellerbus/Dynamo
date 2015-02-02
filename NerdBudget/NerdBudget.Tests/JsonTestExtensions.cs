@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -51,6 +52,8 @@ namespace NerdBudget.Tests
 
             var actual = JsonConvert.DeserializeObject(json) as JArray;
 
+            Assert.IsNotNull(actual, "Expected JArray on deserialize");
+
             return actual;
         }
 
@@ -58,7 +61,11 @@ namespace NerdBudget.Tests
         {
             var json = JsonConvert.SerializeObject(expected, settings);
 
-            return JsonConvert.DeserializeObject(json) as JArray;
+            var array= JsonConvert.DeserializeObject(json) as JArray;
+
+            Assert.IsNotNull(array, "Expected JArray on deserialize");
+
+            return array;
         }
 
         public static JObject ToJsonObject(this HttpContent content)

@@ -89,17 +89,60 @@ namespace NerdBudget.Tests.Core.Models
         #region Collection Tests
 
         [TestMethod]
-        public void Category_Account_Should_AssignAccountId()
+        public void CategoryCollection_Should_AssignAccountId()
         {
+            //  assign 
             var account = Builder<Account>.CreateNew().Build();
 
-            var collection = new CategoryCollection(account, new Category[0]);
+            var category = Builder<Category>.CreateNew().Build();
 
-            var actual = Builder<Category>.CreateNew().Build();
+            //  act
+            account.Categories.Add(category);
 
-            collection.Add(actual);
+            //  assert
+            Assert.AreEqual(account.Id, category.AccountId);
+        }
 
-            Assert.AreEqual(account.Id, actual.AccountId);
+        [TestMethod]
+        public void CategoryCollection_Should_Resort()
+        {
+            //  assign 
+            var account = Builder<Account>.CreateNew().Build();
+
+            var c1 = Builder<Category>.CreateNew()
+                .With(x => x.Id = "C1")
+                .With(x => x.Sequence = 99)
+                .Build();
+
+            var c2 = Builder<Category>.CreateNew()
+                .With(x => x.Id = "C2")
+                .With(x => x.Sequence = 11)
+                .Build();
+
+            //  act
+            account.Categories.Add(c1);
+            account.Categories.Add(c2);
+
+            account.Categories.Resort();
+
+            //  assert
+            Assert.AreEqual(c2, account.Categories[0]);
+            Assert.AreEqual(c1, account.Categories[1]);
+        }
+
+        [TestMethod]
+        public void CategoryCollection_Should_LookupUsingId()
+        {
+            //  assign 
+            var account = Builder<Account>.CreateNew().Build();
+
+            var c1 = Builder<Category>.CreateNew().Build();
+
+            //  act
+            account.Categories.Add(c1);
+
+            //  assert
+            Assert.AreEqual(c1, account.Categories[c1.Id]);
         }
 
         #endregion

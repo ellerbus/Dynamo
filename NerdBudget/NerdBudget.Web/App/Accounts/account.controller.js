@@ -16,16 +16,15 @@
 	{
 	    var vm = this;
 		
-		var queryParams = {};
+	    var queryParams = {};
 
-		AccountFactory.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
-		
-		function handleQuerySuccess(data)
-		{
-			vm.accounts = data;
-			
-			vm.hasData = true;
-		}
+	    var assignData = function (data)
+	    {
+	        vm.accounts = data;
+	        vm.hasData = true;
+	    };
+
+	    AccountFactory.query(queryParams).$promise.then(assignData, handleQueryError);
 		
 		function handleQueryError(error)
 		{
@@ -45,7 +44,7 @@
 		
 		if (vm.action == 'create')
 		{
-		    handleGetSuccess({ });
+		    vm.account = {};
 				
 			vm.hasData = true;
 		}
@@ -55,8 +54,14 @@
 			{
 				id: $routeParams.id
 			};
+
+			var assignData = function (data)
+			{
+			    vm.account = data;
+			    vm.hasData = true;
+			};
 			
-			AccountFactory.get(pk).$promise.then(handleGetSuccess, handleGetError);
+			AccountFactory.get(pk).$promise.then(assignData, handleGetError);
 		}
 
 		function save(data)
@@ -98,13 +103,6 @@
 		function handleSaveError(error)
 		{
 		    NB.applyError(vm, $scope.accountForm, error);
-		}
-		
-		function handleGetSuccess(data)
-		{
-			vm.account = data;
-			
-			vm.hasData = true;
 		}
 		
 		function handleGetError(error)

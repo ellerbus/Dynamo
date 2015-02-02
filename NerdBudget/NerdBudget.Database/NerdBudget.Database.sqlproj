@@ -63,6 +63,7 @@
     <Folder Include="Tasks" />
     <Folder Include="Procedures\Account" />
     <Folder Include="Procedures\Category" />
+    <Folder Include="Procedures\Budget" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\ACCOUNT.sql" />
@@ -106,5 +107,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Procedures\Category\CategoryUpdateMany.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Budget\BudgetDeleteOne.sql" />
+    <None Include="Procedures\Budget\BudgetInsertOne.sql" />
+    <None Include="Procedures\Budget\BudgetUpdateOne.sql" />
   </ItemGroup>
 </Project>

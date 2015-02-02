@@ -19,12 +19,7 @@
 				controller: 'CategoriesController',
 				controllerAs: 'vm'
 			})
-			.when('/category/:action/:accountId', {
-				templateUrl: '/App/Categories/category.html',
-				controller: 'CategoryController',
-				controllerAs: 'vm'
-			})
-			.when('/category/:action/:accountId/:id', {
+			.when('/category/:action/:accountId/:id?', {
 				templateUrl: '/App/Categories/category.html',
 				controller: 'CategoryController',
 				controllerAs: 'vm'

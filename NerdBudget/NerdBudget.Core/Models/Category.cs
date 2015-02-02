@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -67,6 +68,10 @@ namespace NerdBudget.Core.Models
             set { base.UpdatedAt = value == null ? null as DateTime? : value.Value.ToUniversalTime(); }
         }
 
+        #endregion
+
+        #region Collections/Children/Foreign Keys
+
         ///	<summary>
         ///	Gets / Sets the foreign key to 'account_id'
         ///	</summary>
@@ -84,6 +89,23 @@ namespace NerdBudget.Core.Models
             }
         }
         private Account _account;
+
+        /// <summary>
+        /// List of Budgets for this Category
+        /// </summary>
+        public BudgetCollection Budgets
+        {
+            get
+            {
+                if (_budgets == null && Account != null)
+                {
+                    _budgets = new BudgetCollection(this, Account.Budgets.Where(x => x.CategoryId == Id));
+                }
+
+                return _budgets;
+            }
+        }
+        private BudgetCollection _budgets;
 
 
         #endregion

@@ -1,0 +1,54 @@
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
+  <a href="#/accounts" nb-crumb-home></a>
+  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+  <a href="#/budgets/{{ vm.account.id }}" nb-crumb>Budgets</a>
+</div>
+<br />
+<br />
+<p ng-show="!vm.hasData">
+  <i class="fa fa-spinner fa-spin"></i> Gathering the requested list of Budgets...
+</p>
+<div class="row alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+  <div class="col-sm-offset-2 col-sm-8 text-center">
+    {{ vm.serverErrorSummary }}
+  </div>
+</div>
+<table nb-table>
+  <thead>
+    <tr>
+      <th>{{ vm.account.name }}</th>
+      <th class="icons">
+        <a href="#/category/create/{{ vm.account.id }}" nb-create-icon></a>
+      </th>
+    </tr>
+  </thead>
+</table>
+<div ng-repeat="category in vm.categories">
+  <table nb-table>
+    <thead>
+      <tr>
+        <th>{{ category.name }}</th>
+        <th class="icons">
+          <a href="#/category/update/{{ category.accountId }}/{{ category.id }}" nb-edit-icon></a>
+          <a href="#/category/delete/{{ category.accountId }}/{{ category.id }}" nb-delete-icon></a>
+        </th>
+        <th class="icons">
+          <a href="#/budget/create/{{ vm.account.id }}?categoryId={{ category.id }}" nb-create-icon></a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="budget in category.budgets">
+        <td>{{ budget.name }}</td>
+        <th class="icons">
+          <a href="#/budget/update/{{ budget.accountId }}/{{ budget.id }}" n nb-edit-icon></a>
+          <a href="#/budget/delete/{{ budget.accountId }}/{{ budget.id }}" nb-delete-icon></a>
+        </th>
+        <th class="icons">
+          &nbsp;
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>

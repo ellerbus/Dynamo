@@ -9,25 +9,25 @@
         .controller('CategoriesController', CategoriesController)
         .controller('CategoryController', CategoryController);
 
-    CategoriesController.$inject = ['AccountFactory', 'CategoryFactory', '$routeParams', '$location', '$log'];
+    CategoriesController.$inject = ['CategoryFactory', '$routeParams', '$location', '$log'];
     CategoryController.$inject = ['AccountFactory', 'CategoryFactory', '$routeParams', '$scope', '$location', '$log'];
 
-    function CategoriesController(AccountFactory, CategoryFactory, $routeParams, $location, $log)
+    function CategoriesController(CategoryFactory, $routeParams, $location, $log)
     {
         var vm = this;
 
         vm.updateSequences = updateSequences;
         
-        var categoryParams = { accountId: $routeParams.accountId };
-
-        CategoryFactory.get(categoryParams).$promise.then(handleQuerySuccess, handleQueryError);
+        var queryParams = { accountId: $routeParams.accountId };
         
-        function handleQuerySuccess(data)
+        var assignData = function (data)
         {
-            vm.account = data;
-            
+            vm.account = data.account;
+            vm.categories = data.categories;
             vm.hasData = true;
-        }
+        };
+
+        CategoryFactory.get(queryParams).$promise.then(assignData, handleQueryError);
         
         function handleQueryError(error)
         {
@@ -42,9 +42,9 @@
 
             var ids = [];
 
-            for (var key in vm.account.categories)
+            for (var key in vm.categories)
             {
-                ids[ids.length] = vm.account.categories[key].id;
+                ids[ids.length] = vm.categories[key].id;
             }
 
             CategoryFactory.update(pk, ids).$promise.then(function () { }, handleQueryError);
@@ -66,20 +66,13 @@
                 id: $routeParams.accountId
             };
 
-            var account = null;
-
-            AccountFactory.get(pk).$promise.then(function (data)
+            var assignData = function (data)
             {
-                account = data;
-
-                handleGetSuccess({
-                    account: account,
-                    accountId: $routeParams.accountId,
-                    name: ''
-                });
-                
+                vm.account = data;
                 vm.hasData = true;
-            }, handleGetError);
+            };
+
+            AccountFactory.get(pk).$promise.then(assignData, handleGetError);
         }
         else
         {
@@ -88,8 +81,15 @@
                 accountId: $routeParams.accountId,
                 id: $routeParams.id
             };
+
+            var assignData = function (data)
+            {
+                vm.account = data.account;
+                vm.category = data.category;
+                vm.hasData = true;
+            };
             
-            CategoryFactory.get(pk).$promise.then(handleGetSuccess, handleGetError);
+            CategoryFactory.get(pk).$promise.then(assignData, handleGetError);
         }
 
         function save(data)
@@ -119,26 +119,12 @@
         
         function handleSaveSuccess(data)
         {
-            if (data && data.accountId)
-            {
-                $location.path('/categories/' + data.accountId);
-            }
-            else
-            {
-                $location.path('/categories/' + vm.category.account.id);
-            }
+            $location.path('/categories/' + vm.account.id);
         }
         
         function handleSaveError(error)
         {
             NB.applyError(vm, $scope.categoryForm, error);
-        }
-        
-        function handleGetSuccess(data)
-        {
-            vm.category = data;
-            
-            vm.hasData = true;
         }
         
         function handleGetError(error)

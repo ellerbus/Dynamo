@@ -25,7 +25,14 @@ var NB =
 
         if (msg === "")
         {
-            msg = "An unexpected error occurred - dang it!  " + error;
+            if (error.status == 404 && error.statusText)
+            {
+                msg = error.statusText;
+            }
+            else
+            {
+                msg = "An unexpected error occurred - dang it!  " + error;
+            }
         }
 
         return msg;

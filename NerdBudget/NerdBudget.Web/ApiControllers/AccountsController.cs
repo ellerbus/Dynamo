@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FluentValidation;
@@ -34,9 +35,11 @@ namespace NerdBudget.Web.ApiControllers
         [HttpGet, Route("")]
         public IHttpActionResult GetAll()
         {
-            JsonSerializerSettings jss = PayloadManager.AddPayload<Account>("Id", "Name").ToSettings();
+            IList<Account> accounts = _service.GetList();
 
-            return Json(_service.GetList(), jss);
+            JsonSerializerSettings jss = GetPayloadSettings();
+
+            return Json(accounts, jss);
         }
 
         #endregion
@@ -54,7 +57,7 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            JsonSerializerSettings jss = PayloadManager.AddPayload<Account>().ToSettings();
+            JsonSerializerSettings jss = GetPayloadSettings();
 
             return Json(account, jss);
         }
@@ -71,7 +74,9 @@ namespace NerdBudget.Web.ApiControllers
             {
                 _service.Insert(account);
 
-                return Ok(account);
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(account, jss);
             }
             catch (ValidationException ve)
             {
@@ -96,7 +101,9 @@ namespace NerdBudget.Web.ApiControllers
             {
                 _service.Update(model);
 
-                return Ok();
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(account, jss);
             }
             catch (ValidationException ve)
             {
@@ -125,6 +132,17 @@ namespace NerdBudget.Web.ApiControllers
             {
                 return BadRequest(ve.Errors);
             }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private JsonSerializerSettings GetPayloadSettings()
+        {
+            JsonSerializerSettings jss = PayloadManager.AddPayload<Account>("Id", "Name").ToSettings();
+
+            return jss;
         }
 
         #endregion

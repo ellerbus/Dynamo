@@ -139,9 +139,9 @@ namespace NerdBudget.Core.Services
         /// </summary>
         public void Update(Account account)
         {
-            account.UpdatedAt = DateTime.UtcNow;
-
             _validator.ValidateAndThrow(account);
+
+            account.UpdatedAt = DateTime.UtcNow;
 
             _repository.Update(account);
 

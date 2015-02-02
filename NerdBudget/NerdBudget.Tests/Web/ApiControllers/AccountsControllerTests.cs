@@ -11,6 +11,7 @@ using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
 using NerdBudget.Web;
 using NerdBudget.Web.ApiControllers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace NerdBudget.Tests.Web.ApiControllers
@@ -37,6 +38,13 @@ namespace NerdBudget.Tests.Web.ApiControllers
             MockService = Mocker.GetMock<IAccountService>();
         }
 
+        private JsonSerializerSettings GetPayloadSettings()
+        {
+            return PayloadManager
+                .AddPayload<Account>("Id", "Name")
+                .ToSettings();
+        }
+
         #endregion
 
         #region Tests - Get Many/List
@@ -47,7 +55,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		arrange
             var accounts = Builder<Account>.CreateListOfSize(10).Build();
 
-            var settings = PayloadManager.AddPayload<Account>("Id", "Name").ToSettings();
+            var settings = GetPayloadSettings();
 
             MockService.Setup(x => x.GetList()).Returns(accounts);
 
@@ -76,7 +84,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		arrange
             var account = Builder<Account>.CreateNew().Build();
 
-            var settings = PayloadManager.AddPayload<Account>().ToSettings();
+            var settings = GetPayloadSettings();
 
             MockService.Setup(x => x.Get(account.Id)).Returns(account);
 
@@ -122,13 +130,21 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		arrange
             var account = Builder<Account>.CreateNew().Build();
 
+            var settings = GetPayloadSettings();
+
             MockService.Setup(x => x.Insert(account));
 
             //		act
             var msg = SubjectUnderTest.Post(account).ToMessage();
 
             //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            var actual = msg.Content.ToJsonObject();
+
+            var expected = account.ToJsonObject(settings);
+
+            Assert.IsTrue(JToken.DeepEquals(actual, expected));
 
             MockService.VerifyAll();
         }
@@ -160,6 +176,8 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		arrange
             var account = Builder<Account>.CreateNew().Build();
 
+            var settings = GetPayloadSettings();
+
             MockService.Setup(x => x.Get(account.Id)).Returns(account);
 
             MockService.Setup(x => x.Update(account));
@@ -168,7 +186,13 @@ namespace NerdBudget.Tests.Web.ApiControllers
             var msg = SubjectUnderTest.Put(account.Id, account).ToMessage();
 
             //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            var actual = msg.Content.ToJsonObject();
+
+            var expected = account.ToJsonObject(settings);
+
+            Assert.IsTrue(JToken.DeepEquals(actual, expected));
 
             MockService.VerifyAll();
         }
@@ -227,7 +251,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             var msg = SubjectUnderTest.Delete(account.Id).ToMessage();
 
             //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.OK);
+            Assert.IsTrue(msg.IsSuccessStatusCode);
 
             MockService.VerifyAll();
         }

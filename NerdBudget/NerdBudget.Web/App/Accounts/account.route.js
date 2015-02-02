@@ -19,15 +19,15 @@
 				controller: 'AccountsController',
 				controllerAs: 'vm'
 			})
-			.when('/account/:action', {
-				templateUrl: '/App/Accounts/account.html',
-				controller: 'AccountController',
-				controllerAs: 'vm'
+			.when('/account/:action/:id?', {
+			    templateUrl: '/App/Accounts/account.html',
+			    controller: 'AccountController',
+			    controllerAs: 'vm'
 			})
-			.when('/account/:action/:id', {
-				templateUrl: '/App/Accounts/account.html',
-				controller: 'AccountController',
-				controllerAs: 'vm'
+			.otherwise({
+			    templateUrl: '/App/Accounts/accounts.html',
+			    controller: 'AccountsController',
+			    controllerAs: 'vm'
 			});
 	};
 

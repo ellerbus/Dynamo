@@ -14,4 +14,8 @@ select	*
 from	dbo.CATEGORY
 where	account_id                  = @account_id
 
+select	*
+from	dbo.BUDGET
+where	account_id                  = @account_id
+
 go

@@ -1,0 +1,132 @@
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
+  <a href="#/accounts" nb-crumb-home></a>
+  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+  <a href="#/budgets/{{ vm.account.id }}" nb-crumb>Budgets</a>
+  <a href="#/budget/{{ vm.action }}/{{ vm.account.id }}/{{ vm.budget.id }}" nb-crumb ng-bind="vm.budget.name"></a>
+</div>
+<br />
+<br />
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="well well-sm">
+      <form name="budgetForm" ng-submit="vm.save(vm.budget)" novalidate>
+        <fieldset>
+          <legend class="text-center">{{ vm.action }} Budget</legend>
+          <p ng-show="!vm.hasData">
+            <i class="fa fa-spinner fa-spin"></i> Gathering the requested Budget Data ...
+          </p>
+          <div class="form-horizontal" role="form" ng-show="vm.hasData">
+
+            <div class="form-group alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+              <ul class="col-sm-offset-4 col-sm-8">
+                <li ng-repeat="msg in vm.serverErrorSummary">{{ msg }}</li>
+              </ul>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label">
+                Id
+              </label>
+              <div class="col-sm-8 form-control-static">
+                <span ng-bind="vm.account.id"></span>
+                <span ng-bind="vm.budget.id"></span>
+              </div>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-error': budgetForm.categoryId.$invalid }">
+              <label class="col-sm-4 control-label">
+                Category Id
+              </label>
+              <div class="col-sm-8">
+                <select class="form-control" ng-model="vm.budget.categoryId"
+                        ng-disabled="vm.action == 'delete'" ng-required="true"
+                        ng-options="category.id as category.name for category in vm.categories"></select>
+                <div class="help-block" ng-messages="budgetForm.categoryId.$error">
+                  <div ng-message="server">{{ vm.serverErrors.categoryId }}</div>
+                  <div ng-message="required">'Category Id' is required</div>
+                  <div ng-message="maxlength">The max length for 'Category Id' is 2 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': budgetForm.name.$invalid }">
+              <label class="col-sm-4 control-label">
+                Name
+              </label>
+              <div class="col-sm-8">
+                <input class="form-control" name="name" ng-model="vm.budget.name"
+                       ng-disabled="vm.action == 'delete'" ng-required="true" ng-maxlength="30" />
+                <div class="help-block" ng-messages="budgetForm.name.$error">
+                  <div ng-message="server">{{ vm.serverErrors.name }}</div>
+                  <div ng-message="required">'Name' is required</div>
+                  <div ng-message="maxlength">The max length for 'Name' is 30 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': budgetForm.frequency.$invalid }">
+              <label class="col-sm-4 control-label">
+                Frequency
+              </label>
+              <div class="col-sm-8">
+                <select class="form-control" ng-model="vm.budget.frequency"
+                        ng-disabled="vm.action == 'delete'" ng-required="true"
+                        ng-options="freq.id as freq.name for freq in vm.frequencies"></select>
+                <div class="help-block" ng-messages="budgetForm.frequency.$error">
+                  <div ng-message="server">{{ vm.serverErrors.frequency }}</div>
+                  <div ng-message="required">'Frequency' is required</div>
+                  <div ng-message="maxlength">The max length for 'Frequency' is 2 characters</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': budgetForm.amount.$invalid }">
+              <label class="col-sm-4 control-label">
+                Amount
+              </label>
+              <div class="col-sm-8">
+                <input class="form-control" name="amount" ng-model="vm.budget.amount"
+                       ng-disabled="vm.action == 'delete'" ng-required="true" />
+                <div class="help-block" ng-messages="budgetForm.amount.$error">
+                  <div ng-message="server">{{ vm.serverErrors.amount }}</div>
+                  <div ng-message="required">'Amount' is required</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': budgetForm.startDate.$invalid && vm.budget.frequency != 'NO' }">
+              <label class="col-sm-4 control-label">
+                Start/End Date
+              </label>
+              <div class="col-sm-4">
+                <input class="form-control" name="startDate" ng-model="vm.budget.startDate"
+                       ng-disabled="vm.action == 'delete'" ng-required="true" />
+                <div class="help-block" ng-messages="budgetForm.startDate.$error">
+                  <div ng-message="server">{{ vm.serverErrors.startDate }}</div>
+                  <div ng-message="required">'Start Date' is required</div>
+
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <input class="form-control" name="endDate" ng-model="vm.budget.endDate"
+                       ng-disabled="vm.action == 'delete'" ng-required="true" />
+                <div class="help-block" ng-messages="budgetForm.endDate.$error">
+                  <div ng-message="server">{{ vm.serverErrors.endDate }}</div>
+                  <div ng-message="required">'End Date' is required</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="submit" class="btn btn-primary" ng-show="vm.action == 'create'">Create</button>
+                <button type="submit" class="btn btn-primary" ng-show="vm.action == 'update'">Update</button>
+                <button type="submit" class="btn btn-danger" ng-show="vm.action == 'delete'">Delete</button>
+                <a href="#/budgets" class="btn btn-default">Cancel</a>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+

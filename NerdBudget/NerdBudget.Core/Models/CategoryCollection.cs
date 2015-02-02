@@ -10,18 +10,14 @@ namespace NerdBudget.Core.Models
     ///
     ///	</summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public partial class CategoryCollection : Collection<Category>
+    public partial class CategoryCollection : KeyedCollection<string, Category>
     {
         #region Constructors
 
-        public CategoryCollection(Account account)
+        internal CategoryCollection(Account account, IEnumerable<Category> categories)
         {
             Account = account;
-        }
 
-        public CategoryCollection(Account account, IEnumerable<Category> categories)
-            : this(account)
-        {
             if (categories != null)
             {
                 foreach (Category c in categories.OrderBy(x => x.Sequence))
@@ -56,7 +52,7 @@ namespace NerdBudget.Core.Models
 
         #region Methods
 
-        public void AddRange(IList<Category> categories)
+        public void AddRange(IEnumerable<Category> categories)
         {
             foreach (Category c in categories)
             {
@@ -76,7 +72,12 @@ namespace NerdBudget.Core.Models
             }
         }
 
-        protected override void InsertItem(int index, NerdBudget.Core.Models.Category item)
+        protected override string GetKeyForItem(Category item)
+        {
+            return item.Id;
+        }
+
+        protected override void InsertItem(int index, Category item)
         {
             base.InsertItem(index, item);
 

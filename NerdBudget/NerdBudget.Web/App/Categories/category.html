@@ -1,8 +1,8 @@
-<div class="btn-group btn-breadcrumb">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
   <a href="#/accounts" nb-crumb-home></a>
-  <a href="#/account/update/{{ vm.category.account.id }}" nb-crumb ng-bind="vm.category.account.name"></a>
-  <a href="#/categories/{{ vm.category.account.id }}" nb-crumb>Categories</a>
-  <a href="#/category/update/{{ vm.category.account.id }}/{{ vm.category.id }}" nb-crumb ng-bind="vm.category.name"></a>
+  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+  <a href="#/category/{{ vm.action }}/{{ vm.account.id }}/{{ vm.category.id }}" nb-crumb ng-bind="vm.category.name"></a>
 </div>
 <br />
 <br />
@@ -28,7 +28,7 @@
                 Id
               </label>
               <div class="col-sm-8 form-control-static">
-                <span ng-bind="vm.category.account.id"></span>
+                <span ng-bind="vm.account.id"></span>,
                 <span ng-bind="vm.category.id"></span>
               </div>
             </div>
@@ -52,7 +52,7 @@
                 <button type="submit" class="btn btn-primary" ng-show="vm.action == 'create'">Create</button>
                 <button type="submit" class="btn btn-primary" ng-show="vm.action == 'update'">Update</button>
                 <button type="submit" class="btn btn-danger" ng-show="vm.action == 'delete'">Delete</button>
-                <a href="#/categories/{{ vm.category.account.id }}" class="btn btn-default">Cancel</a>
+                <a href="#/categories/{{ vm.account.id }}" class="btn btn-default">Cancel</a>
               </div>
             </div>
           </div>

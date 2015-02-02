@@ -1,42 +1,132 @@
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
 {
-	///	<summary>
-	///
-	///	</summary>
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial class BudgetCollection : Collection<Budget>
-	{	
-		#region ToString/DebuggerDisplay
+    ///	<summary>
+    ///
+    ///	</summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    public partial class BudgetCollection : KeyedCollection<string, Budget>
+    {
+        #region Constructors
 
-		///	<summary>
-		///	DebuggerDisplay for this object
-		///	</summary>
-		private string DebuggerDisplay
-		{
-			get { return "Count={0}".FormatArgs(Count); }
-		}
-		
-		#endregion
+        internal BudgetCollection(Account account, IEnumerable<Budget> budgets)
+        {
+            Account = account;
 
-		#region Foreign Key Properties
-		
-		/////	<summary>
-		/////	Gets / Sets the foreign key to 'account_id'
-		/////	</summary>
-		//public Account Account { get; internal set; }
-		
-		
-		/////	<summary>
-		/////	Gets / Sets the foreign key to 'category_id'
-		/////	</summary>
-		//public Category Category { get; internal set; }
-		
-				
-		#endregion
-	}
+            if (budgets != null)
+            {
+                AddRange(budgets.OrderBy(x => x.Sequence));
+            }
+        }
+
+        internal BudgetCollection(Category category, IEnumerable<Budget> budgets)
+        {
+            Account = category.Account;
+
+            Category = category;
+
+            if (budgets != null)
+            {
+                AddRange(budgets.OrderBy(x => x.Sequence));
+            }
+        }
+
+        #endregion
+
+        #region ToString/DebuggerDisplay
+
+        ///	<summary>
+        ///	DebuggerDisplay for this object
+        ///	</summary>
+        private string DebuggerDisplay
+        {
+            get { return "Count={0}".FormatArgs(Count); }
+        }
+
+        #endregion
+
+        #region Foreign Key Properties
+
+        ///	<summary>
+        ///	Gets / Sets the foreign key to 'account_id'
+        ///	</summary>
+        public Account Account { get; private set; }
+
+        ///	<summary>
+        ///	Gets / Sets the foreign key to 'category_id'
+        ///	</summary>
+        public Category Category { get; private set; }
+
+        #endregion
+
+        #region Methods
+
+        public void AddRange(IEnumerable<Budget> budgets)
+        {
+            foreach (Budget bud in budgets)
+            {
+                Add(bud);
+            }
+        }
+
+        public void Resort()
+        {
+            IList<Budget> budget = this.OrderBy(x => x.Sequence).ToList();
+
+            Clear();
+
+            foreach (Budget bud in budget)
+            {
+                Add(bud);
+            }
+        }
+
+        protected override string GetKeyForItem(Budget item)
+        {
+            return item.Id;
+        }
+
+        protected override void InsertItem(int index, Budget item)
+        {
+            base.InsertItem(index, item);
+
+            SetOwner(item);
+        }
+
+        protected override void SetItem(int index, Budget item)
+        {
+            base.SetItem(index, item);
+
+            SetOwner(item);
+        }
+
+        private void SetOwner(Budget bud)
+        {
+            if (Category == null)
+            {
+                bud.Account = Account;
+            }
+            else
+            {
+                bud.Category = Category;
+            }
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// IF true this collection is considered the mother load for
+        /// the Account
+        /// </summary>
+        public bool ContainsAllBudgets { get { return Category == null; } }
+
+        #endregion
+    }
 }

@@ -62,8 +62,18 @@ namespace NerdBudget.Core.Models
             set { base.UpdatedAt = value == null ? null as DateTime? : value.Value.ToUniversalTime(); }
         }
 
+        #endregion
+
+        #region Collections/Children/Foreign Keys
+
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
         private IList<Category> AllCategories { get; set; }
 
+        /// <summary>
+        /// List of all categories for this Account
+        /// </summary>
         public CategoryCollection Categories
         {
             get
@@ -76,6 +86,27 @@ namespace NerdBudget.Core.Models
             }
         }
         private CategoryCollection _categories;
+
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
+        private IList<Budget> AllBudgets { get; set; }
+
+        /// <summary>
+        /// List of all budgets for this Account
+        /// </summary>
+        internal BudgetCollection Budgets
+        {
+            get
+            {
+                if (_budgets == null)
+                {
+                    _budgets = new BudgetCollection(this, AllBudgets);
+                }
+                return _budgets;
+            }
+        }
+        private BudgetCollection _budgets;
 
         #endregion
     }

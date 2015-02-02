@@ -90,9 +90,9 @@ namespace NerdBudget.Core.Services
         /// </summary>
         public void Update(Category category)
         {
-            category.UpdatedAt = DateTime.UtcNow;
-
             _validator.ValidateAndThrow(category);
+
+            category.UpdatedAt = DateTime.UtcNow;
 
             _repository.Update(category);
         }

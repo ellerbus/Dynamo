@@ -34,11 +34,11 @@ namespace NerdBudget.Web
         /// includes all Public|Instance properties that are a Value Type or String
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="names"></param>
+        /// <param name="names">Additional Properties that are not value types or strings</param>
         /// <returns></returns>
-        public static IReducedPayloadContractResolver AddPayload<T>()
+        public static IReducedPayloadContractResolver StandardPayload<T>(params string[] names)
         {
-            return new ReducedPayloadContractResolver().AddPayload<T>();
+            return new ReducedPayloadContractResolver().StandardPayload<T>(names);
         }
 
         /// <summary>
@@ -74,9 +74,9 @@ namespace NerdBudget.Web
         /// includes all Public|Instance properties that are a Value Type or String
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="names"></param>
+        /// <param name="names">Additional Properties that are not value types or strings</param>
         /// <returns></returns>
-        IReducedPayloadContractResolver AddPayload<T>();
+        IReducedPayloadContractResolver StandardPayload<T>(params string[] names);
 
         /// <summary>
         /// Adds a list of property names to be included in the JSON serialization
@@ -131,15 +131,16 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names"></param>
         /// <returns></returns>
-        public IReducedPayloadContractResolver AddPayload<T>()
+        public IReducedPayloadContractResolver StandardPayload<T>(params string[] names)
         {
             Type type = typeof(T);
 
-            IEnumerable<string> names = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            IEnumerable<string> props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.PropertyType.IsValueType || x.PropertyType == typeof(string))
-                .Select(x => x.Name);
+                .Select(x => x.Name)
+                .Union(names);
 
-            return AddPayload<T>(names);
+            return AddPayload<T>(props);
         }
 
         /// <summary>

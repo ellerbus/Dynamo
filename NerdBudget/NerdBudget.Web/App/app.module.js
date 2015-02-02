@@ -2,7 +2,7 @@
 angular.module('app',
 [
     'ngRoute', 'ngResource', 'ngMessages', 'ui',
-    'app.accounts', 'app.categories'
+    'app.accounts', 'app.categories', 'app.budgets'
 ]);
 
 angular.module('app').directive('nbTable', function ()

@@ -105,6 +105,7 @@ namespace NerdBudget.Tests.Core.Services
             SubjectUnderTest.Update(category);
 
             //	assert
+            Assert.AreNotEqual(DateTime.MinValue, category.UpdatedAt);
 
             MockRepo.VerifyAll();
             MockValidator.VerifyAll();

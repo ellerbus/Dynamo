@@ -1,6 +1,6 @@
-<div class="btn-group btn-breadcrumb">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
   <a href="#/accounts" nb-crumb-home></a>
-  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/account/{{ vm.action }}/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
 </div>
 <br />
 <br />

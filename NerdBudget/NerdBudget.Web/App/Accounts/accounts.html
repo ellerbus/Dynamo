@@ -1,4 +1,4 @@
-<div class="btn-group btn-breadcrumb">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
   <a href="#/accounts" nb-crumb-home></a>
   <a href="#/accounts" nb-crumb>Accounts</a>
 </div>
@@ -7,6 +7,11 @@
 <p ng-show="!vm.hasData">
   <i class="fa fa-spinner fa-spin"></i> Gathering the requested list of Accounts...
 </p>
+<div class="row alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+  <div class="col-sm-offset-2 col-sm-8 text-center">
+    {{ vm.serverErrorSummary }}
+  </div>
+</div>
 <table nb-table>
   <thead>
     <tr>
@@ -22,7 +27,7 @@
     <td ng-bind="account.name"></td>
     <td class="icons">
       <a href="#/categories/{{ account.id }}" nb-list-icon></a>
-      <a href="#/categories/{{ account.id }}" nb-dollar-icon></a>
+      <a href="#/budgets/{{ account.id }}" nb-dollar-icon></a>
     </td>
     <td class="icons">
       <a href="#/account/update/{{ account.id }}" nb-edit-icon></a>

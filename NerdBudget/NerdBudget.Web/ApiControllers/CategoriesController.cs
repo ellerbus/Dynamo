@@ -37,11 +37,6 @@ namespace NerdBudget.Web.ApiControllers
         [HttpGet, Route("{accountId}"), ResponseType(typeof(Account))]
         public IHttpActionResult GetAll(string accountId)
         {
-            JsonSerializerSettings jss = PayloadManager
-                .AddPayload<Account>("Id", "Name", "Categories")
-                .AddPayload<Category>("Id", "Name", "AccountId")
-                .ToSettings();
-
             Account account = _accountService.Get(accountId);
 
             if (account == null)
@@ -49,7 +44,15 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            return Json(account, jss);
+            JsonSerializerSettings jss = GetPayloadSettings();
+
+            var model = new
+            {
+                account = account,
+                categories = account.Categories
+            };
+
+            return Json(model, jss);
         }
 
         #endregion
@@ -67,12 +70,15 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            JsonSerializerSettings jss = PayloadManager
-                .AddPayload<Account>("Id", "Name")
-                .AddPayload<Category>("Id", "Name", "Account")
-                .ToSettings();
+            JsonSerializerSettings jss = GetPayloadSettings();
 
-            return Json(category, jss);
+            var model = new
+            {
+                account = category.Account,
+                category = category
+            };
+
+            return Json(model, jss);
         }
 
         #endregion
@@ -94,7 +100,9 @@ namespace NerdBudget.Web.ApiControllers
             {
                 _categoryService.Insert(account, category);
 
-                return Ok(category);
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(category, jss);
             }
             catch (ValidationException ve)
             {
@@ -119,7 +127,7 @@ namespace NerdBudget.Web.ApiControllers
 
                 foreach (string id in ids)
                 {
-                    Category c = account.Categories.First(x => x.Id == id);
+                    Category c = account.Categories[id];
 
                     c.Sequence = seq;
 
@@ -127,6 +135,8 @@ namespace NerdBudget.Web.ApiControllers
                 }
 
                 _categoryService.Update(account.Categories);
+
+                account.Categories.Resort();
 
                 return Ok();
             }
@@ -153,7 +163,9 @@ namespace NerdBudget.Web.ApiControllers
             {
                 _categoryService.Update(category);
 
-                return Ok(category);
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(category, jss);
             }
             catch (ValidationException ve)
             {
@@ -200,6 +212,16 @@ namespace NerdBudget.Web.ApiControllers
             Category category = account.Categories.FirstOrDefault(x => x.Id == categoryId);
 
             return category;
+        }
+
+        private JsonSerializerSettings GetPayloadSettings()
+        {
+            JsonSerializerSettings jss = PayloadManager
+                .AddPayload<Account>("Id", "Name")
+                .AddPayload<Category>("Id", "Name")
+                .ToSettings();
+
+            return jss;
         }
 
         #endregion
