@@ -1,4 +1,4 @@
-# Dynamo's Nerd Budget
+# Dynamo's Nerd Budget (Work in Progress)
 
 Dynamo is a friendly generator that uses [DB Schema Reader](http://dbschemareader.codeplex.com/)
 and [DotLiquid Syntax](https://github.com/formosatek/dotliquid) to generate code files.
