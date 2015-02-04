@@ -26,7 +26,7 @@ angular.module('app').directive('nbCreateIcon', function ()
         link: function (scope, element, attrs)
         {
             element
-                .addClass('btn btn-default btn-sm')
+                .addClass('btn btn-default btn-xs')
                 .html('<i class="fa fa-plus fa-fw text-success"></i>');
         }
     };
@@ -40,7 +40,7 @@ angular.module('app').directive('nbEditIcon', function ()
         link: function (scope, element, attrs)
         {
             element
-                .addClass('btn btn-default btn-sm')
+                .addClass('btn btn-default btn-xs')
                 .html('<i class="fa fa-pencil fa-fw text-primary"></i>');
         }
     };
@@ -54,7 +54,7 @@ angular.module('app').directive('nbDeleteIcon', function ()
         link: function (scope, element, attrs)
         {
             element
-                .addClass('btn btn-default btn-sm')
+                .addClass('btn btn-default btn-xs')
                 .html('<i class="fa fa-times fa-fw text-danger"></i>');
         }
     };
@@ -68,7 +68,7 @@ angular.module('app').directive('nbNextIcon', function ()
         link: function (scope, element, attrs)
         {
             element
-                .addClass('btn btn-default btn-sm')
+                .addClass('btn btn-default btn-xs')
                 .html('Next <i class="fa fa-caret-right fa-fw"></i>');
         }
     };
@@ -82,8 +82,23 @@ angular.module('app').directive('nbBackIcon', function ()
         link: function (scope, element, attrs)
         {
             element
-                .addClass('btn btn-default btn-sm')
+                .addClass('btn btn-default btn-xs')
                 .html('<i class="fa fa-caret-left fa-fw"></i> Back');
+        }
+    };
+});
+
+angular.module('app').directive('nbMoveIcon', function ()
+{
+    return {
+        restrict: 'A',
+        replace: true,
+        link: function (scope, element, attrs)
+        {
+            element
+                .addClass('btn btn-default btn-xs')
+                .css({ cursor: "move" })
+                .html('<i class="fa fa-bars fa-fw"></i>');
         }
     };
 });

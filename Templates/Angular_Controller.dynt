@@ -8,6 +8,28 @@
 (function ()
 {
 	'use strict';
+	
+	function buildGenericError(error)
+	{
+		var msg = "";
+		
+		if (error.data && error.data.message)
+		{
+			msg = error.data.message;
+		}
+		
+		if (error.data && error.data.exceptionMessage)
+		{
+			msg += ": " + error.data.exceptionMessage;
+		}
+		
+		if (msg === "")
+		{
+			msg = "An unexpected error occurred - dang it!";
+		}
+		
+		return msg;
+	}
 
 	//	setup the application controllers for multiple and single interactions
 	angular
@@ -24,6 +46,8 @@
 		
 		vm.hasData = false;
 		
+		vm.serverErrorSummary = "";
+		
 		var queryParams = {};
 
 		{{ FACTORY }}.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
@@ -37,7 +61,9 @@
 		
 		function handleQueryError(error)
 		{
-		
+			vm.serverErrorSummary = buildGenericError(error);
+			
+			vm.hasData = true;
 		}
 	}
 
@@ -57,7 +83,7 @@
 		
 		if (vm.action == 'create')
 		{
-			vm.{{ CAMELCLASS }} = {};
+			handleGetSuccess({ });
 				
 			vm.hasData = true;
 		}
@@ -99,7 +125,7 @@
 		
 		function handleSaveSuccess(data)
 		{
-			$location.path('#/{{ CAMELCLASS | plural }}');
+			$location.path('/{{ CAMELCLASS | plural }}');
 		}
 		
 		function handleSaveError(error)
@@ -144,6 +170,10 @@
 					}
 		        }
 		    }
+			else
+			{
+				vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
+			}
 		}
 		
 		function handleGetSuccess(data)
@@ -155,7 +185,9 @@
 		
 		function handleGetError(error)
 		{
-		
+			vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
+			
+			vm.hasData = true;
 		}
 	}
 

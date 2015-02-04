@@ -2,7 +2,7 @@
 {% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
 {% capture PATH %}/App/{{ BASECLASS | plural }}{% endcapture %}
 {% capture CONFIG %}{{ BASECLASS }}Config{% endcapture -%}
-{% capture PROJECT %}{{ SOLUTION }}.WebApp{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.route.js{% endcapture -%}
 
 (function() {
@@ -33,9 +33,6 @@
 				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
 				controller: '{{ BASECLASS }}Controller',
 				controllerAs: 'vm'
-			})
-			.otherwise({
-				redirectTo: '/{{ CAMELCLASS | plural }}'
 			});
 	};
 

@@ -189,5 +189,77 @@ namespace NerdBudget.Tests.Core.Models
         }
 
         #endregion
+
+        #region Calculations
+
+        [TestMethod]
+        public void Budget_Should_CalculateAmountsCorrectly()
+        {
+            const double amount = 100;
+
+            foreach (BudgetFrequencies b in Enum.GetValues(typeof(BudgetFrequencies)))
+            {
+                Budget bgt = new Budget() { BudgetFrequency = b, Amount = amount };
+
+                Assert.AreEqual(bgt.MonthlyAmount * 12.0, bgt.YearlyAmount);
+                Assert.AreEqual(bgt.MonthlyAmount * 12.0 / 52.0, bgt.WeeklyAmount);
+
+                switch (b)
+                {
+                    case BudgetFrequencies.W1:
+                        //case BudgetFrequencies.XM:
+                        //case BudgetFrequencies.XT:
+                        //case BudgetFrequencies.XW:
+                        //case BudgetFrequencies.XR:
+                        //case BudgetFrequencies.XF:
+                        //case BudgetFrequencies.XS:
+                        //case BudgetFrequencies.XN:
+                        Assert.AreEqual(amount * 52.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.W2:
+                        Assert.AreEqual(amount * 52.0 / 2.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.W3:
+                        Assert.AreEqual(amount * 52.0 / 3.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.W4:
+                        Assert.AreEqual(amount * 52.0 / 4.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.W5:
+                        Assert.AreEqual(amount * 52.0 / 5.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.W6:
+                        Assert.AreEqual(amount * 52.0 / 6.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.M1:
+                        Assert.AreEqual(amount, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.M2:
+                        Assert.AreEqual(amount * 6.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.MT:
+                        Assert.AreEqual(amount * 24.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.Q1:
+                        Assert.AreEqual(amount * 4.0 / 12.0, bgt.MonthlyAmount);
+                        break;
+
+                    case BudgetFrequencies.Y1:
+                        Assert.AreEqual(amount / 12.0, bgt.MonthlyAmount);
+                        break;
+                }
+            }
+        }
+
+        #endregion
     }
 }

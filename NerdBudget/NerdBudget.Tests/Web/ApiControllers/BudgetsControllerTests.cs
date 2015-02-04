@@ -86,9 +86,9 @@ namespace NerdBudget.Tests.Web.ApiControllers
             var account = GetAccount();
 
             var settings = PayloadManager
-                .AddPayload<Account>("Id", "Name")
+                .AddPayload<Account>("Id", "Name", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
                 .AddPayload<Category>("Id", "AccountId", "Name", "Budgets")
-                .AddPayload<Budget>("Id", "AccountId", "Name")
+                .AddPayload<Budget>("Id", "AccountId", "Name", "Frequency", "Amount", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
                 .ToSettings();
 
             var model = new
@@ -345,7 +345,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
 
             //		act
-            var msg = SubjectUnderTest.PutSequences(account.Id,  ids.ToArray()).ToMessage();
+            var msg = SubjectUnderTest.PutSequences(account.Id, ids.ToArray()).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);

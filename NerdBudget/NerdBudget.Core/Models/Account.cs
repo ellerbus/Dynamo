@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -107,6 +108,73 @@ namespace NerdBudget.Core.Models
             }
         }
         private BudgetCollection _budgets;
+
+        #endregion
+
+        #region Amounts
+
+        /// <summary>
+        /// Total variance of weekly budget
+        /// </summary>
+        public double WeeklyAmount
+        {
+            get
+            {
+                double amount = 0;
+
+                foreach (Category cat in Categories)
+                {
+                    foreach (Budget bud in cat.Budgets)
+                    {
+                        amount += bud.WeeklyAmount * cat.Multiplier;
+                    }
+                }
+
+                return amount;
+            }
+        }
+
+        /// <summary>
+        /// Total variance of monthly budget
+        /// </summary>
+        public double MonthlyAmount
+        {
+            get
+            {
+                double amount = 0;
+
+                foreach (Category cat in Categories)
+                {
+                    foreach (Budget bud in cat.Budgets)
+                    {
+                        amount += bud.MonthlyAmount * cat.Multiplier;
+                    }
+                }
+
+                return amount;
+            }
+        }
+
+        /// <summary>
+        /// Total variance of yearly budget
+        /// </summary>
+        public double YearlyAmount
+        {
+            get
+            {
+                double amount = 0;
+
+                foreach (Category cat in Categories)
+                {
+                    foreach (Budget bud in cat.Budgets)
+                    {
+                        amount += bud.YearlyAmount * cat.Multiplier;
+                    }
+                }
+
+                return amount;
+            }
+        }
 
         #endregion
     }

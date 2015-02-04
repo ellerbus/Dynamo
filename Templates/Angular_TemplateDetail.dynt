@@ -26,7 +26,7 @@
 
 		{% for column in table.columns %}{% if column.is_primary_key == false %}
 
-		<div class="form-group" toggle-has-error>{% if column.clr_type == 'bool' %}
+		<div class="form-group" ng-class="{ 'has-error': {{ FORM }}.{{ column.parameter_name }}.$invalid }">{% if column.clr_type == 'bool' %}
 			<div class="checkbox col-sm-offset-4 col-sm-8">
 				<label>
 					<input type="checkbox" name="{{ column.parameter_name }}" ng-model="vm.{{ CAMELCLASS }}.{{ column.parameter_name }}" ng-disabled="vm.action == 'delete'" /> {{ column.property_name | label }}

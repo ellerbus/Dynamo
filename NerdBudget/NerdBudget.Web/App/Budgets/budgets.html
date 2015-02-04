@@ -18,6 +18,10 @@
   <thead>
     <tr>
       <th>{{ vm.account.name }}</th>
+      <th class="text-right" style="width: 75px" ng-bind="vm.account.weeklyAmount | number:0" ng-class="{ danger: vm.account.weeklyAmount < 0 }"></th>
+      <th class="text-right" style="width: 75px" ng-bind="vm.account.monthlyAmount | number:0" ng-class="{ danger: vm.account.monthlyAmount < 0 }"></th>
+      <th class="text-right" style="width: 75px" ng-bind="vm.account.yearlyAmount | number:0" ng-class="{ danger: vm.account.yearlyAmount < 0 }"></th>
+      <th class="icons"></th>
       <th class="icons">
         <a href="#/category/create/{{ vm.account.id }}" nb-create-icon></a>
       </th>
@@ -28,7 +32,12 @@
   <table nb-table>
     <thead>
       <tr>
-        <th>{{ category.name }}</th>
+        <th ng-bind="category.name"></th>
+        <th class="icons"></th>
+        <th style="width: 50px"></th>
+        <th class="text-right" style="width: 75px">W</th>
+        <th class="text-right" style="width: 75px">M</th>
+        <th class="text-right" style="width: 75px">Y</th>
         <th class="icons">
           <a href="#/category/update/{{ category.accountId }}/{{ category.id }}" nb-edit-icon></a>
           <a href="#/category/delete/{{ category.accountId }}/{{ category.id }}" nb-delete-icon></a>
@@ -40,13 +49,18 @@
     </thead>
     <tbody ui-sortable="{stop: vm.updateSequences}" ng-model="category.budgets">
       <tr ng-repeat="budget in category.budgets">
-        <td ng-bind="budget.name" style="cursor: move;"></td>
+        <td ng-bind="budget.name"></td>
+        <td class="text-right">{{ budget.amount | number:0 }}</td>
+        <td class="text-left">x {{ budget.frequency }}</td>
+        <td class="text-right">{{ budget.weeklyAmount | number:0 }}</td>
+        <td class="text-right">{{ budget.monthlyAmount | number:0 }}</td>
+        <td class="text-right">{{ budget.yearlyAmount | number:0 }}</td>
         <th class="icons">
           <a href="#/budget/update/{{ budget.accountId }}/{{ budget.id }}" n nb-edit-icon></a>
           <a href="#/budget/delete/{{ budget.accountId }}/{{ budget.id }}" nb-delete-icon></a>
         </th>
         <th class="icons">
-          &nbsp;
+          <a href="#" nb-move-icon></a>
         </th>
       </tr>
     </tbody>

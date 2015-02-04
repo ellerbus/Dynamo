@@ -46,9 +46,9 @@ namespace NerdBudget.Web.ApiControllers
             }
 
             JsonSerializerSettings jss = PayloadManager
-                .AddPayload<Account>("Id", "Name")
+                .AddPayload<Account>("Id", "Name", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
                 .AddPayload<Category>("Id", "AccountId", "Name", "Budgets")
-                .AddPayload<Budget>("Id", "AccountId", "Name")
+                .AddPayload<Budget>("Id", "AccountId", "Name", "Frequency", "Amount", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
                 .ToSettings();
 
             var model = new
@@ -65,7 +65,7 @@ namespace NerdBudget.Web.ApiControllers
         #region Detail Display
 
         // GET: api/category/5
-        [HttpGet, Route("{accountId}/{id}"), ResponseType(typeof(Budget))]
+        [HttpGet, Route("{accountId}/{id:regex([A-Z0-9]{2})}"), ResponseType(typeof(Budget))]
         public IHttpActionResult Get(string accountId, string id)
         {
             Account account = _accountService.Get(accountId);
@@ -131,7 +131,7 @@ namespace NerdBudget.Web.ApiControllers
         }
 
         // PUT: api/budget/5
-        [HttpPut, Route(@"{accountId}/{id:regex([A-Z0-9]\{2\})}")]
+        [HttpPut, Route("{accountId}/{id:regex([A-Z0-9]{2})}")]
         public IHttpActionResult Put(string accountId, string id, [FromBody]Budget item)
         {
             Budget budget = GetBudget(accountId, id);
@@ -214,7 +214,7 @@ namespace NerdBudget.Web.ApiControllers
         }
 
         // DELETE: api/budget/5/5
-        [HttpDelete, Route("{accountId}/{id}")]
+        [HttpDelete, Route("{accountId}/{id:regex([A-Z0-9]{2})}")]
         public IHttpActionResult Delete(string accountId, string id)
         {
             Budget budget = GetBudget(accountId, id);

@@ -44,9 +44,9 @@ namespace {{ PROJECT }}.ApiControllers
 
 		// GET: api/{{ BASECLASS | camel }}
 		[HttpGet, Route("")]
-		public IEnumerable<{{ BASECLASS }}> GetAll()
+		public IHttpActionResult GetAll()
 		{
-			return _service.GetList();
+			return Ok(_service.GetList());
 		}
 
 		// GET: api/{{ BASECLASS | camel }}/5
