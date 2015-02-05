@@ -12,7 +12,6 @@ using NerdBudget.Core.Services;
 using NerdBudget.Web;
 using NerdBudget.Web.ApiControllers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace NerdBudget.Tests.Web.ApiControllers
 {
@@ -65,11 +64,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonArray();
-
-            var expected = accounts.ToJsonArray(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonArrayEquality(accounts, settings);
 
             MockService.VerifyAll();
         }
@@ -94,11 +89,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = account.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(account, settings);
 
             MockService.VerifyAll();
         }
@@ -140,11 +131,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = account.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(account, settings);
 
             MockService.VerifyAll();
         }
@@ -188,11 +175,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = account.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(account, settings);
 
             MockService.VerifyAll();
         }

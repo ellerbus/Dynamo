@@ -13,7 +13,6 @@ using NerdBudget.Core.Services;
 using NerdBudget.Web;
 using NerdBudget.Web.ApiControllers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace NerdBudget.Tests.Web.ApiControllers
 {
@@ -89,11 +88,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = model.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(model, settings);
 
             MockService.VerifyAll();
         }
@@ -143,11 +138,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = model.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(model, settings);
 
             MockService.VerifyAll();
         }
@@ -197,11 +188,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = category.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(category, settings);
 
             MockService.VerifyAll();
         }
@@ -248,11 +235,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             //		act
             var msg = SubjectUnderTest.Put(account.Id, category.Id, category).ToMessage();
 
-            var actual = msg.Content.ToJsonObject();
-
-            var expected = category.ToJsonObject(settings);
-
-            Assert.IsTrue(JToken.DeepEquals(actual, expected));
+            msg.Content.AssertJsonObjectEquality(category, settings);
 
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);

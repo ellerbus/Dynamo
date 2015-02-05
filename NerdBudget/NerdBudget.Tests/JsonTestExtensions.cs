@@ -27,7 +27,7 @@ namespace NerdBudget.Tests
     ///     //		assert...
     ///     Assert.IsTrue(response.Result.IsSuccessStatusCode);
     /// 
-    ///     var actual = response.Result.Content.ToJsonArray();
+    ///     var actual = response.Result.Content.AssertJsonArrayEquality(
     /// 
     ///     var expected = accounts.ToJsonArray(settings);
     /// 
@@ -46,7 +46,7 @@ namespace NerdBudget.Tests
             return response.Result;
         }
 
-        public static JArray ToJsonArray(this HttpContent content)
+        private static JArray ToJsonArray(this HttpContent content)
         {
             var json = content.ReadAsStringAsync().Result;
 
@@ -57,18 +57,18 @@ namespace NerdBudget.Tests
             return actual;
         }
 
-        public static JArray ToJsonArray<T>(this T expected, JsonSerializerSettings settings)
+        private static JArray ToJsonArray<T>(this T expected, JsonSerializerSettings settings)
         {
             var json = JsonConvert.SerializeObject(expected, settings);
 
-            var array= JsonConvert.DeserializeObject(json) as JArray;
+            var array = JsonConvert.DeserializeObject(json) as JArray;
 
             Assert.IsNotNull(array, "Expected JArray on deserialize");
 
             return array;
         }
 
-        public static JObject ToJsonObject(this HttpContent content)
+        private static JObject ToJsonObject(this HttpContent content)
         {
             var json = content.ReadAsStringAsync().Result;
 
@@ -77,11 +77,29 @@ namespace NerdBudget.Tests
             return actual;
         }
 
-        public static JObject ToJsonObject<T>(this T expected, JsonSerializerSettings settings)
+        private static JObject ToJsonObject<T>(this T expected, JsonSerializerSettings settings)
         {
             var json = JsonConvert.SerializeObject(expected, settings);
 
             return JsonConvert.DeserializeObject(json) as JObject;
+        }
+
+        public static void AssertJsonArrayEquality<T>(this HttpContent content, T expected, JsonSerializerSettings expectedSettings)
+        {
+            var actualJson = content.ToJsonArray();
+
+            var expectedJson = expected.ToJsonArray(expectedSettings);
+
+            Assert.IsTrue(JToken.DeepEquals(actualJson, expectedJson));
+        }
+
+        public static void AssertJsonObjectEquality<T>(this HttpContent content, T expected, JsonSerializerSettings expectedSettings)
+        {
+            var actualJson = content.ToJsonObject();
+
+            var expectedJson = expected.ToJsonObject(expectedSettings);
+
+            Assert.IsTrue(JToken.DeepEquals(actualJson, expectedJson));
         }
     }
 }
