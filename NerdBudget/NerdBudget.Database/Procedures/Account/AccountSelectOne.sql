@@ -11,6 +11,10 @@ from	dbo.ACCOUNT
 where	account_id                  = @account_id
 
 select	*
+from	dbo.BALANCE
+where	account_id                  = @account_id
+
+select	*
 from	dbo.CATEGORY
 where	account_id                  = @account_id
 

@@ -70,6 +70,27 @@ namespace NerdBudget.Core.Models
         /// <summary>
         /// Stub for Insight.Database to load MARS
         /// </summary>
+        private IList<Balance> AllBalances { get; set; }
+
+        /// <summary>
+        /// List of all balances for this Account
+        /// </summary>
+        public BalanceCollection Balances
+        {
+            get
+            {
+                if (_balances == null)
+                {
+                    _balances = new BalanceCollection(this, AllBalances);
+                }
+                return _balances;
+            }
+        }
+        private BalanceCollection _balances;
+
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
         private IList<Category> AllCategories { get; set; }
 
         /// <summary>

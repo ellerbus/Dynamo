@@ -103,6 +103,7 @@
   <ItemGroup>
     <Compile Include="AnyHelper.cs" />
     <Compile Include="Core\Models\AccountModelTests.cs" />
+    <Compile Include="Core\Models\BalanceModelTests.cs" />
     <Compile Include="Core\Models\BudgetModelTests.cs" />
     <Compile Include="Core\Models\CategoryModelTests.cs" />
     <Compile Include="Core\Services\AccountServiceTests.cs" />
