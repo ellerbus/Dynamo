@@ -10,6 +10,17 @@ namespace NerdBudget.Core.Models
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Budget : Entities.BudgetEntity
     {
+        #region Constructors
+
+        public Budget() : base() { }
+
+        public Budget(string accountId, string id, string categoryId, string name, string frequency, int sequence, DateTime? startDate, DateTime? endDate, double amount, DateTime createdAt, DateTime? updatedAt)
+            : base(accountId, id, categoryId, name, frequency, sequence, startDate, endDate, amount, createdAt, updatedAt)
+        {
+        }
+
+        #endregion
+
         #region ToString/DebuggerDisplay
 
         ///	<summary>

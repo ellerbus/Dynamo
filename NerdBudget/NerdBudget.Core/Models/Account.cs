@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -12,6 +11,17 @@ namespace NerdBudget.Core.Models
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Account : Entities.AccountEntity
     {
+        #region Constructors
+
+        public Account() : base() { }
+
+        public Account(string id, string name, string type, DateTime startedAt, DateTime createdAt, DateTime? updatedAt)
+            : base(id, name, type, startedAt, createdAt, updatedAt)
+        {
+        }
+
+        #endregion
+
         #region ToString/DebuggerDisplay
 
         ///	<summary>
@@ -129,6 +139,70 @@ namespace NerdBudget.Core.Models
             }
         }
         private BudgetCollection _budgets;
+
+        ///// <summary>
+        ///// Stub for Insight.Database to load MARS
+        ///// </summary>
+        //private IList<Adjustment> AllAdjustments { get; set; }
+
+        ///// <summary>
+        ///// List of all adjustments for this Account
+        ///// </summary>
+        //internal AdjustmentCollection Adjustments
+        //{
+        //    get
+        //    {
+        //        if (_adjustments == null)
+        //        {
+        //            _adjustments = new AdjustmentCollection(this, AllAdjustments);
+        //        }
+        //        return _adjustments;
+        //    }
+        //}
+        //private AdjustmentCollection _adjustments;
+
+        ///// <summary>
+        ///// Stub for Insight.Database to load MARS
+        ///// </summary>
+        //private IList<Map> AllMaps { get; set; }
+
+        ///// <summary>
+        ///// List of all maps for this Account
+        ///// </summary>
+        //public MapCollection Maps
+        //{
+        //    get
+        //    {
+        //        if (_maps == null)
+        //        {
+        //            _maps = new MapCollection(this, AllMaps);
+        //        }
+        //        return _maps;
+        //    }
+        //}
+        //private MapCollection _maps;
+
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
+        private IList<Ledger> AllLedgers { get; set; }
+
+        /// <summary>
+        /// List of all ledgers for this Account
+        /// (Collection of Ledgers, since Transaction is a reserved DB word)
+        /// </summary>
+        public LedgerCollection Ledgers
+        {
+            get
+            {
+                if (_ledgers == null)
+                {
+                    _ledgers = new LedgerCollection(this, AllLedgers);
+                }
+                return _ledgers;
+            }
+        }
+        private LedgerCollection _ledgers;
 
         #endregion
 

@@ -1,8 +1,8 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -52,6 +52,31 @@ namespace NerdBudget.Core.Models
         #endregion
 
         #region Methods
+
+        public void Update()
+        {
+            foreach (Ledger led in Account.Ledgers.OrderBy(x => x.Date).ThenBy(x => x.Sequence))
+            {
+                UpdateBalance(led.Balance, led.Date.ToMonthDate());
+                UpdateBalance(led.Balance, led.Date.ToWeekDate());
+            }
+        }
+
+        private void UpdateBalance(double amount, DateTime dt)
+        {
+            Balance b = null;
+
+            if (Contains(dt))
+            {
+                this[dt].Amount = amount;
+            }
+            else
+            {
+                b = new Balance { AsOf = dt, Amount = amount };
+
+                Add(b);
+            }
+        }
 
         public void AddRange(IEnumerable<Balance> balances)
         {

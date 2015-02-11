@@ -37,6 +37,8 @@ namespace NerdBudget.Tests
     /// </remarks>
     static class JsonTestExtensions
     {
+        #region Message
+
         public static HttpResponseMessage ToMessage(this IHttpActionResult results)
         {
             var response = results.ExecuteAsync(CancellationToken.None);
@@ -45,6 +47,10 @@ namespace NerdBudget.Tests
 
             return response.Result;
         }
+
+        #endregion
+
+        #region JArray
 
         private static JArray ToJsonArray(this HttpContent content)
         {
@@ -68,6 +74,10 @@ namespace NerdBudget.Tests
             return array;
         }
 
+        #endregion
+
+        #region JObject
+
         private static JObject ToJsonObject(this HttpContent content)
         {
             var json = content.ReadAsStringAsync().Result;
@@ -83,6 +93,10 @@ namespace NerdBudget.Tests
 
             return JsonConvert.DeserializeObject(json) as JObject;
         }
+
+        #endregion
+
+        #region Assert Equality
 
         public static void AssertJsonArrayEquality<T>(this HttpContent content, T expected, JsonSerializerSettings expectedSettings)
         {
@@ -101,5 +115,7 @@ namespace NerdBudget.Tests
 
             Assert.IsTrue(JToken.DeepEquals(actualJson, expectedJson));
         }
+
+        #endregion
     }
 }

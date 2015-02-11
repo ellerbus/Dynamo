@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Augment;
 using Augment.Caching;
 using FluentValidation;
@@ -56,6 +57,16 @@ namespace NerdBudget.Core.Services
         /// Deletes a Account
         /// </summary>
         void Delete(Account account);
+
+        /// <summary>
+        /// Saves many balances
+        /// </summary>
+        void Save(IEnumerable<Balance> balances);
+
+        /// <summary>
+        /// Saves many ledgers
+        /// </summary>
+        void Save(IEnumerable<Ledger> ledgers);
     }
 
     #endregion
@@ -160,6 +171,56 @@ namespace NerdBudget.Core.Services
             _cache.Find<Account>().ByPrimaryKey(account.Id).Remove();
 
             _cache.Find<IList<Account>>().RemoveAll();
+        }
+
+        /// <summary>
+        /// Saves balances
+        /// </summary>
+        public void Save(IEnumerable<Balance> balances)
+        {
+            IList<Balance> balancesToSave = balances.Where(x => x.IsModified).ToList();
+
+            if (balancesToSave.Count > 0)
+            {
+                foreach (Balance bal in balancesToSave)
+                {
+                    if (bal.CreatedAt == DateTime.MinValue)
+                    {
+                        bal.CreatedAt = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        bal.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
+
+                _repository.Save(balancesToSave);
+            }
+        }
+
+        /// <summary>
+        /// Saves balances
+        /// </summary>
+        public void Save(IEnumerable<Ledger> ledgers)
+        {
+            IList<Ledger> ledgersToSave = ledgers.Where(x => x.IsModified).ToList();
+
+            if (ledgersToSave.Count > 0)
+            {
+                foreach (Ledger led in ledgersToSave)
+                {
+                    if (led.CreatedAt == DateTime.MinValue)
+                    {
+                        led.CreatedAt = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        led.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
+
+                _repository.Save(ledgersToSave);
+            }
         }
 
         #endregion

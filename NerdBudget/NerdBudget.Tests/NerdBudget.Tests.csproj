@@ -102,10 +102,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AnyHelper.cs" />
+    <Compile Include="Core\DateTimeExtensionsTests.cs" />
+    <Compile Include="Core\Crc32Tests.cs" />
     <Compile Include="Core\Models\AccountModelTests.cs" />
     <Compile Include="Core\Models\BalanceModelTests.cs" />
     <Compile Include="Core\Models\BudgetModelTests.cs" />
     <Compile Include="Core\Models\CategoryModelTests.cs" />
+    <Compile Include="Core\Models\LedgerModelTests.cs" />
     <Compile Include="Core\Services\AccountServiceTests.cs" />
     <Compile Include="Core\Services\BudgetServiceTests.cs" />
     <Compile Include="Core\Services\CategoryServiceTests.cs" />
@@ -136,6 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
+    <Content Include="SampleTransactions.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -24,6 +24,9 @@ namespace NerdBudget.Core.Repositories
         [Recordset(1, typeof(Balance), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBalances")]
         [Recordset(2, typeof(Category), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllCategories")]
         [Recordset(3, typeof(Budget), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBudgets")]
+        //[Recordset(4, typeof(Adjustment), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllAdjustment")]
+        //[Recordset(5, typeof(Map), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllMaps")]
+        [Recordset(4, typeof(Ledger), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllLedgers")]
         Account Get(string account_id);
 
         ///	<summary>
@@ -46,5 +49,19 @@ namespace NerdBudget.Core.Repositories
         ///	</summary>
         [Sql("AccountDeleteOne")]
         void Delete(Account account);
+
+        ///	<summary>
+        ///	Saves many Balances calling the
+        ///	stored procedure BalanceUpsertMany
+        ///	</summary>
+        [Sql("BalanceUpsertMany")]
+        void Save(IEnumerable<Balance> balances);
+
+        ///	<summary>
+        ///	Saves many Ledgers calling the
+        ///	stored procedure LedgerUpsertMany
+        ///	</summary>
+        [Sql("LedgerUpsertMany")]
+        void Save(IEnumerable<Ledger> ledgers);
     }
 }

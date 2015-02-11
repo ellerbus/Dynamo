@@ -9,16 +9,23 @@
 	
 	function BudgetFactory($resource)
 	{
-		var pkPattern = ':accountId/:id/:action';
+		var url = '/api/budgets/'; 
+
+		var pk = ':accountId/:id';
 		
-		var pkInputs = { accountId: '@accountId', id: '@id' };
+		var defaults = { accountId: '@accountId', id: '@id' };
 		
-		var cfg =
+		var actions =
 		{
-			update: { method: 'PUT' }
+			query:		{ method: 'GET', isArray: true },
+			get:		{ method: 'GET' },
+			add:		{ method: 'POST' },
+			update: 	{ method: 'PUT' },
+			'delete':   { method: 'DELETE' },
+			sequences:  { method: 'PUT', url: url + ':accountId/sequences' }
 		};
 
-		return $resource('/api/budgets/' + pkPattern, pkInputs, cfg);
+		return $resource(url + pk, defaults, actions);
 	}
 
 })();

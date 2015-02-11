@@ -7,9 +7,11 @@
 	<img src="/Content/Images/loading.gif" /> Gathering the requested list of {{ BASECLASS | plural | label }}...
 </p>
 
-<div class="row alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+<div class="row alert alert-danger" ng-show="vm.serverErrors.length > 0">
 	<div class="col-sm-offset-2 col-sm-8 text-center">
-		{{ "{{ " }}vm.serverErrorSummary }}
+		<ul class="col-sm-offset-4 col-sm-8">
+			<li ng-repeat="msg in vm.serverErrors">{{ msg }}</li>
+		</ul>
 	</div>
 </div>
 

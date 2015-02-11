@@ -28,7 +28,8 @@ namespace NerdBudget.Core.Validators
 
             RuleFor(x => x.AccountId).NotEmpty();
 
-            RuleFor(x => x.Name).NotEmpty();
+            //  causes issue with ng-repeat on duplicate messages
+            //  RuleFor(x => x.Name).NotEmpty();
 
             //	foreign keys
 

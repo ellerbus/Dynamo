@@ -26,29 +26,9 @@ namespace NerdBudget.Core
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        internal static Guid ToMd5(this string input)
+        internal static string ToCrc32(this string input)
         {
-            using (MD5 md5 = MD5.Create())
-            {
-                // Convert the input string to a byte array and compute the hash. 
-                byte[] data = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-                return new Guid(data);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        internal static int ToCrc32(this string input)
-        {
-            Crc32 crc = new Crc32();
-
-            byte[] bytes = Encoding.UTF8.GetBytes(input);
-
-            return BitConverter.ToInt32(crc.ComputeHash(bytes), 0);
+            return Crc32.Hash(input);
         }
 
         /// <summary>

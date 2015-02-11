@@ -4,54 +4,41 @@
  */
 var NB =
 {
-    hasData: false,
-
-    buildError: function (error)
-    {
-        var msg = "";
-
-        if (error.data)
-        {
-            if (error.data.message)
-            {
-                msg = error.data.message;
-            }
-
-            if (error.data.exceptionMessage)
-            {
-                msg += ": " + error.data.exceptionMessage;
-            }
-        }
-
-        if (msg === "")
-        {
-            if (error.status == 404 && error.statusText)
-            {
-                msg = error.statusText;
-            }
-            else
-            {
-                msg = "An unexpected error occurred - dang it!  " + error;
-            }
-        }
-
-        return msg;
-    },
-
-    applyError: function (vm, form, error)
+    applyError: function (error, vm, form)
     {
         var d = error.data;
 
+        var i = 0;
+
         vm.serverErrors = [];
 
-        vm.serverErrorSummary = [];
-
-        for (var prop in vm.user)
+        if (error.status == 404 && error.statusText)
         {
-            if (form[prop])
+            vm.serverErrors[i++] = error.statusText;
+        }
+
+        if (d)
+        {
+            if (d.message)
             {
-                form[prop].$setValidity('server', true);
+                vm.serverErrors[i++] = d.message;
             }
+
+            if (d.exceptionMessage)
+            {
+                vm.serverErrors[i++] = d.exceptionMessage;
+            }
+        }
+
+        if (form)
+        {
+            //for (var prop in form)
+            //{
+            //    if (form[prop])
+            //    {
+            //        form[prop].$setValidity('server', true);
+            //    }
+            //}
         }
 
         if (d && d.modelState)
@@ -60,31 +47,27 @@ var NB =
             {
                 var msg = d.modelState[key];
 
-                if (form[key])
+                if (form && form[key])
                 {
                     form[key].$setValidity('server', false);
-
-                    var x = Array.isArray(msg) ? msg.join(' ') : msg;
-
-                    vm.serverErrors[key] = x;
                 }
 
-                if (Array.isArray(msg))
+                var isArray = Array.isArray(msg);
+
+                vm.serverErrors[key] = isArray ? msg.join(' ') : msg;
+
+                if (isArray)
                 {
-                    for (var msgKey in msg)
+                    for (var mkey in msg)
                     {
-                        vm.serverErrorSummary[vm.serverErrorSummary.length] = msg[msgKey];
+                        vm.serverErrors[i++] = msg[mkey];
                     }
                 }
                 else
                 {
-                    vm.serverErrorSummary[vm.serverErrorSummary.length] = msg;
+                    vm.serverErrors[i++] = msg;
                 }
             }
-        }
-        else
-        {
-            vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
         }
     }
 };

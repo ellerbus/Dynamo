@@ -65,6 +65,7 @@
     <Folder Include="Procedures\Category" />
     <Folder Include="Procedures\Budget" />
     <Folder Include="Procedures\Balance" />
+    <Folder Include="Procedures\Ledger" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\ACCOUNT.sql" />
@@ -117,5 +118,9 @@
   <ItemGroup>
     <None Include="Procedures\Balance\BalanceUpsertMany.sql" />
     <None Include="Procedures\Balance\BalanceTableType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Ledger\LedgerTableType.sql" />
+    <None Include="Procedures\Ledger\LedgerUpsertMany.sql" />
   </ItemGroup>
 </Project>

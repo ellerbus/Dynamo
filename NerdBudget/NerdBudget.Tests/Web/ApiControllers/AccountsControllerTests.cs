@@ -257,5 +257,43 @@ namespace NerdBudget.Tests.Web.ApiControllers
         }
 
         #endregion
+
+        #region Tests - Import
+
+        [TestMethod]
+        public void AccountsController_PutTransactions_Should_SendOk()
+        {
+            //		arrange
+            var account = Builder<Account>.CreateNew().Build();
+
+            MockService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.PutTransactions(account.Id, "").ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AccountsController_PostOne_Should_SendNotFound()
+        {
+            //		arrange
+            var account = Builder<Account>.CreateNew().Build();
+
+            MockService.Setup(x => x.Get(account.Id)).Returns(null as Account);
+
+            //		act
+            var msg = SubjectUnderTest.PutTransactions(account.Id, "").ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.NotFound);
+
+            MockService.VerifyAll();
+        }
+
+        #endregion
     }
 }

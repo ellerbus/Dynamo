@@ -9,9 +9,11 @@
 <p ng-show="!vm.hasData">
   <i class="fa fa-spinner fa-spin"></i> Gathering the requested list of Categories...
 </p>
-<div class="row alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+<div class="row alert alert-danger" ng-show="vm.serverErrors.length > 0">
   <div class="col-sm-offset-2 col-sm-8 text-center">
-    {{ vm.serverErrorSummary }}
+    <ul class="col-sm-offset-4 col-sm-8">
+      <li ng-repeat="msg in vm.serverErrors">{{ msg }}</li>
+    </ul>
   </div>
 </div>
 <table nb-table>
@@ -27,8 +29,8 @@
     <tr ng-repeat="category in vm.categories">
       <td ng-bind="category.name" style="cursor: move;"></td>
       <td class="icons">
-        <a href="#/category/update/{{ category.accountId }}/{{ category.id }}" nb-edit-icon></a>
-        <a href="#/category/delete/{{ category.accountId }}/{{ category.id }}" nb-delete-icon></a>
+        <a href="#/category/update/{{ vm.account.id }}/{{ category.id }}" nb-edit-icon></a>
+        <a href="#/category/delete/{{ vm.account.id }}/{{ category.id }}" nb-delete-icon></a>
       </td>
     </tr>
   </tbody>

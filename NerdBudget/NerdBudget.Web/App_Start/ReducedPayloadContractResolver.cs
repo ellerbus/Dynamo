@@ -38,7 +38,7 @@ namespace NerdBudget.Web
         /// <returns></returns>
         public static IReducedPayloadContractResolver StandardPayload<T>(params string[] names)
         {
-            return new ReducedPayloadContractResolver().StandardPayload<T>(names);
+            return new ReducedPayloadContractResolver().AddBasicPayload<T>(names);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names">Additional Properties that are not value types or strings</param>
         /// <returns></returns>
-        IReducedPayloadContractResolver StandardPayload<T>(params string[] names);
+        IReducedPayloadContractResolver AddBasicPayload<T>(params string[] names);
 
         /// <summary>
         /// Adds a list of property names to be included in the JSON serialization
@@ -131,7 +131,7 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names"></param>
         /// <returns></returns>
-        public IReducedPayloadContractResolver StandardPayload<T>(params string[] names)
+        public IReducedPayloadContractResolver AddBasicPayload<T>(params string[] names)
         {
             Type type = typeof(T);
 

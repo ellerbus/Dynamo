@@ -240,6 +240,58 @@ namespace NerdBudget.Tests.Core.Services
 
         #endregion
 
+        #region Tests - Save (Balances/Ledgers)
+
+        [TestMethod]
+        public void AccountService_SaveBalances_Should_Succeed()
+        {
+            //	arrange
+            var account = Builder<Account>.CreateNew().Build();
+
+            account.Balances.Add(new Balance { AsOf = new DateTime(2015, 2, 6), CreatedAt = new DateTime(2015, 1, 1) });
+            account.Balances.Add(new Balance { AsOf = new DateTime(2015, 2, 28) });
+
+            MockRepo.Setup(x => x.Save(account.Balances));
+
+            //	act
+            SubjectUnderTest.Save(account.Balances);
+
+            //	assert
+            Assert.AreEqual(new DateTime(2015, 1, 1), account.Balances[0].CreatedAt);
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Balances[0].UpdatedAt.Value.Date);
+
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Balances[1].CreatedAt);
+            Assert.AreEqual(null, account.Balances[1].UpdatedAt);
+
+            MockRepo.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AccountService_SaveLedgers_Should_Succeed()
+        {
+            //	arrange
+            var account = Builder<Account>.CreateNew().Build();
+
+            account.Ledgers.Add(new Ledger { OriginalText = "02/01/2015\tAB\t$1\t$2\tA", CreatedAt = new DateTime(2015, 1, 1) });
+            account.Ledgers.Add(new Ledger { OriginalText = "02/01/2015\tAB\t$1\t$2\tA" });
+
+            MockRepo.Setup(x => x.Save(account.Ledgers));
+
+            //	act
+            SubjectUnderTest.Save(account.Ledgers);
+
+            //	assert
+            Assert.AreEqual(new DateTime(2015, 1, 1), account.Ledgers[0].CreatedAt);
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Ledgers[0].UpdatedAt.Value.Date);
+
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Ledgers[1].CreatedAt);
+            Assert.AreEqual(null, account.Ledgers[1].UpdatedAt);
+
+            MockRepo.VerifyAll();
+        }
+
+        #endregion
+
         #region Assertion Helpers
 
         private void AssertEqual(Account expected, Account actual)

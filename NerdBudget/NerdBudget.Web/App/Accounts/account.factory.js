@@ -9,16 +9,22 @@
 	
 	function AccountFactory($resource)
 	{
-		var pkPattern = ':id';
+		var url = '/api/accounts/'; 
+
+		var pk = ':id';
 		
-		var pkInputs = { id: '@id' };
+		var defaults = { id: '@id' };
 		
-		var cfg =
+		var actions =
 		{
-			update: { method: 'PUT' }
+			query:		{ method: 'GET', isArray: true },
+			get:		{ method: 'GET' },
+			add:		{ method: 'POST' },
+			update: 	{ method: 'PUT' },
+			'delete':	{ method: 'DELETE' }
 		};
 
-		return $resource('/api/accounts/' + pkPattern, pkInputs, cfg);
+		return $resource(url + pk, defaults, actions);
 	}
 
 })();

@@ -148,6 +148,7 @@
     <Compile Include="ApiControllers\CategoriesController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ApiControllers\LedgersController.cs" />
     <Compile Include="App_Start\InjectorConfig.cs" />
     <Compile Include="App_Start\ReducedPayloadContractResolver.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />

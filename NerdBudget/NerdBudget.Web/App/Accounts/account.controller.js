@@ -24,14 +24,13 @@
 	        vm.hasData = true;
 	    };
 
-	    AccountFactory.query(queryParams).$promise.then(assignData, handleQueryError);
-		
-		function handleQueryError(error)
-		{
-		    vm.serverErrorSummary = NB.buildError(error);
-			
-			vm.hasData = true;
-		}
+	    var assignError = function (error)
+	    {
+	        NB.applyError(error, vm);
+	        vm.hasData = true;
+	    };
+
+	    AccountFactory.query(queryParams).$promise.then(assignData, assignError);
 	}
 
 	function AccountController(AccountFactory, $routeParams, $scope, $location, $log)
@@ -68,7 +67,7 @@
 		{
 			if (vm.action == 'create')
 			{
-				AccountFactory.save(data).$promise.then(handleSaveSuccess, handleSaveError);
+				AccountFactory.add(data).$promise.then(handleSaveSuccess, handleSaveError);
 			}
 			else
 			{
@@ -102,17 +101,12 @@
 		
 		function handleSaveError(error)
 		{
-		    NB.applyError(vm, $scope.accountForm, error);
+		    NB.applyError(error, vm, $scope.accountForm);
 		}
 		
 		function handleGetError(error)
 		{
-		    if (typeof vm.serverErrorSummary === 'undefined')
-		    {
-		        vm.serverErrorSummary = [];
-		    }
-
-		    vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
+		    NB.applyError(error, vm);
 			
 			vm.hasData = true;
 		}

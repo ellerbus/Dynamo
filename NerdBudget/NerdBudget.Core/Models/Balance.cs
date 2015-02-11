@@ -9,7 +9,18 @@ namespace NerdBudget.Core.Models
     ///	</summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Balance : Entities.BalanceEntity
-    {	
+    {
+        #region Constructors
+
+        public Balance() { }
+
+        public Balance(string accountId, DateTime asOf, double amount, DateTime createdAt, DateTime? updatedAt)
+            : base(accountId, asOf, amount, createdAt, updatedAt)
+        {
+        }
+
+        #endregion
+
         #region ToString/DebuggerDisplay
 
         ///	<summary>
@@ -19,10 +30,10 @@ namespace NerdBudget.Core.Models
         {
             get
             {
-                string pk = "[" + AccountId + ","  + AsOf.ToString("yyyy-MM-dd") + "]";
-                
+                string pk = "[" + AccountId + "," + AsOf.ToString("yyyy-MM-dd") + "]";
+
                 string uq = "[" + "]";
-                
+
                 return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
             }
         }
@@ -70,8 +81,8 @@ namespace NerdBudget.Core.Models
             }
         }
         private Account _account;
-        
-                
+
+
         #endregion
     }
 }

@@ -27,18 +27,17 @@
             vm.hasData = true;
         };
 
-        CategoryFactory.get(queryParams).$promise.then(assignData, handleQueryError);
-        
-        function handleQueryError(error)
+        var assignError = function (error)
         {
-            vm.serverErrorSummary = NB.buildError(error);
-            
+            NB.applyError(error, vm);
             vm.hasData = true;
-        }
+        };
+
+        CategoryFactory.get(queryParams).$promise.then(assignData, assignError);
 
         function updateSequences()
         {
-            var pk = { accountId: $routeParams.accountId, action: 'sequences' };
+            var pk = { accountId: $routeParams.accountId };
 
             var ids = [];
 
@@ -47,7 +46,7 @@
                 ids[ids.length] = vm.categories[key].id;
             }
 
-            CategoryFactory.update(pk, ids).$promise.then(function () { }, handleQueryError);
+            CategoryFactory.sequences(pk, ids).$promise.then(function () { }, assignError);
         }
     }
 
@@ -69,6 +68,7 @@
             var assignData = function (data)
             {
                 vm.account = data;
+                vm.category = { accountId: vm.account.id };
                 vm.hasData = true;
             };
 
@@ -96,7 +96,7 @@
         {
             if (vm.action == 'create')
             {
-                CategoryFactory.save(data).$promise.then(handleSaveSuccess, handleSaveError);
+                CategoryFactory.add(data).$promise.then(handleSaveSuccess, handleSaveError);
             }
             else
             {
@@ -124,17 +124,12 @@
         
         function handleSaveError(error)
         {
-            NB.applyError(vm, $scope.categoryForm, error);
+            NB.applyError(error, vm, $scope.categoryForm);
         }
         
         function handleGetError(error)
         {
-            if (typeof vm.serverErrorSummary === 'undefined')
-            {
-                vm.serverErrorSummary = [];
-            }
-
-            vm.serverErrorSummary[vm.serverErrorSummary.length] = NB.buildError(error);
+            NB.applyError(error, vm);
             
             vm.hasData = true;
         }

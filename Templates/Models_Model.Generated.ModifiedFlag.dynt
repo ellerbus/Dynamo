@@ -1,0 +1,70 @@
+{% capture BASECLASS %}{{ table.class_name }}Entity{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
+using System;
+using Insight.Database;
+
+namespace {{ PROJECT }}.Models.Entities
+{
+	///	<summary>
+	/// Base Entity class that represents {{ table.name }} - Intended to be extended
+	///	for business rule implementation
+	///	</summary>
+	public abstract class {{ BASECLASS }}
+	{
+		#region Constructors
+
+		protected {{ BASECLASS }}() {}
+
+		protected {{ BASECLASS }}({% for column in table.columns %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		{ {% for column in table.columns %}
+			_{{ column.parameter_name }} = {{ column.parameter_name }};{% endfor -%}
+
+		}
+		
+		#endregion
+
+		#region Misc Properties
+		
+		///	<summary>
+		///	Internally Managed 'Is' Modified Flag
+		///	</summary>
+		public bool IsModified { get; internal set; }
+		
+		#endregion
+
+		#region Primary Key Properties
+		{% for column in table.primary_keys %}
+		///	<summary>
+		///	Gets / Sets database column '{{ column.name }}' (primary key)
+		///	</summary>
+		[Column("{{ column.name }}")]
+		public virtual {{ column.clr_type }} {{ column.property_name }}
+		{
+			get { return _{{ column.parameter_name }}; }
+			set { IsModified = _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
+		}
+		private {{ column.clr_type }} _{{ column.parameter_name }};
+		
+		{% endfor -%}
+		
+		#endregion
+		
+		#region Properties
+		{% for column in table.columns %}{% if column.is_primary_key == false %}
+		///	<summary>
+		///	Gets / Sets database column '{{ column.name }}'
+		///	</summary>
+		[Column("{{ column.name }}")]
+		public virtual {{ column.clr_type }} {{ column.property_name }}
+		{
+			get { return _{{ column.parameter_name }}; }
+			set { IsModified = _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
+		}
+		private {{ column.clr_type }} _{{ column.parameter_name }};
+
+		{% endif %}{% endfor -%}
+
+		#endregion
+	}
+}

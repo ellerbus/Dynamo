@@ -11,6 +11,17 @@ namespace NerdBudget.Core.Models
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Category : Entities.CategoryEntity
     {
+        #region Constructors
+
+        public Category() : base() { }
+
+        public Category(string accountId, string id, string name, int multiplier, int sequence, DateTime createdAt, DateTime? updatedAt)
+            : base(accountId, id, name, multiplier, sequence, createdAt, updatedAt)
+        {
+        }
+
+        #endregion
+
         #region ToString/DebuggerDisplay
 
         ///	<summary>

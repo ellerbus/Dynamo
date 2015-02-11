@@ -14,16 +14,22 @@
 	
 	function {{ FACTORY }}($resource)
 	{
-		var pkPattern = '{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}';
+		var url = '/api/{{ CAMELCLASS | plural }}/'; 
+
+		var pk = '{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}';
 		
-		var pkInputs = { {% for column in table.primary_keys %}{{ column.parameter_name }}: '@{{ column.parameter_name }}'{% if forloop.last == false %}, {% endif %}{% endfor %} };
+		var defaults = { {% for column in table.primary_keys %}{{ column.parameter_name }}: '@{{ column.parameter_name }}'{% if forloop.last == false %}, {% endif %}{% endfor %} };
 		
-		var cfg =
+		var actions =
 		{
-			update: { method: 'PUT' }
+			query:		{ method: 'GET', isArray: true },
+			get:		{ method: 'GET' },
+			add:		{ method: 'POST' },
+			update: 	{ method: 'PUT' },
+			'delete':	{ method: 'DELETE' }
 		};
 
-		return $resource('/api/{{ CAMELCLASS | plural }}/' + pkPattern, pkInputs, cfg);
+		return $resource(url + pk, defaults, actions);
 	}
 
 })();

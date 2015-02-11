@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Augment;
 using Augment.Caching;
 using FluentValidation;
 using NerdBudget.Core.Models;
@@ -46,7 +47,6 @@ namespace NerdBudget.Core.Services
 
         private ICategoryRepository _repository;
         private IValidator<Category> _validator;
-        private ICacheManager _cache;
 
         #endregion
 
@@ -55,11 +55,10 @@ namespace NerdBudget.Core.Services
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public CategoryService(ICategoryRepository repository, IValidator<Category> validator, ICacheManager cache)
+        public CategoryService(ICategoryRepository repository, IValidator<Category> validator)
         {
             _repository = repository;
             _validator = validator;
-            _cache = cache;
         }
 
         #endregion
@@ -74,7 +73,7 @@ namespace NerdBudget.Core.Services
             category.Account = account;
 
             category.Id = Utilities.CreateId(2);
-            category.Multiplier = category.Name.Contains("INCOME") ? 1 : -1;
+            category.Multiplier = category.Name.AssertNotNull().Contains("INCOME") ? 1 : -1;
             category.CreatedAt = DateTime.UtcNow;
             category.Sequence = account.Categories.Count * 10;
 

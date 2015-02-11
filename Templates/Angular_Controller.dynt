@@ -9,26 +9,69 @@
 {
 	'use strict';
 	
-	function buildGenericError(error)
+	function applyError(error, vm, form)
 	{
-		var msg = "";
-		
-		if (error.data && error.data.message)
+		var d = error.data;
+
+		var i = 0;
+
+		vm.serverErrors = [];
+
+		if (error.status == 404 && error.statusText)
 		{
-			msg = error.data.message;
+			vm.serverErrors[i++] = error.statusText;
 		}
-		
-		if (error.data && error.data.exceptionMessage)
+
+		if (d)
 		{
-			msg += ": " + error.data.exceptionMessage;
+			if (d.message)
+			{
+				vm.serverErrors[i++] = d.message;
+			}
+
+			if (d.exceptionMessage)
+			{
+				vm.serverErrors[i++] = d.exceptionMessage;
+			}
 		}
-		
-		if (msg === "")
+
+		for (var prop in vm.user)
 		{
-			msg = "An unexpected error occurred - dang it!";
+			if (form && form[prop])
+			{
+				form[prop].$setValidity('server', true);
+			}
 		}
-		
-		return msg;
+
+		if (d && d.modelState)
+		{
+			for (var key in d.modelState)
+			{
+				var msg = d.modelState[key];
+
+				if (form && form[key])
+				{
+					form[key].$setValidity('server', false);
+
+				}
+
+				var isArray = Array.isArray(msg);
+
+				vm.serverErrors[key] = isArray ? msg.join(' ') : msg;
+
+				if (isArray)
+				{
+					for (var mkey in msg)
+					{
+						vm.serverErrors[i++] = msg[mkey];
+					}
+				}
+				else
+				{
+					vm.serverErrors[i++] = msg;
+				}
+			}
+		}
 	}
 
 	//	setup the application controllers for multiple and single interactions
@@ -46,8 +89,6 @@
 		
 		vm.hasData = false;
 		
-		vm.serverErrorSummary = "";
-		
 		var queryParams = {};
 
 		{{ FACTORY }}.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
@@ -61,7 +102,7 @@
 		
 		function handleQueryError(error)
 		{
-			vm.serverErrorSummary = buildGenericError(error);
+			applyError(error, vm);
 			
 			vm.hasData = true;
 		}
@@ -102,7 +143,7 @@
 		{
 			if (vm.action == 'create')
 			{
-				{{ FACTORY }}.save(data).$promise.then(handleSaveSuccess, handleSaveError);
+				{{ FACTORY }}.add(data).$promise.then(handleSaveSuccess, handleSaveError);
 			}
 			else
 			{
@@ -130,50 +171,7 @@
 		
 		function handleSaveError(error)
 		{
-		    var d = error.data;
-			
-			vm.serverErrorSummary = [];
-
-		    for (var prop in vm.user)
-		    {
-		        if ($scope.{{ FORM }}[prop])
-		        {
-		            $scope.{{ FORM }}[prop].$setValidity('server', true);
-		        }
-		    }
-
-		    if (d && d.modelState)
-		    {
-		        for (var key in d.modelState)
-		        {
-		            var msg = d.modelState[key];
-
-		            if ($scope.{{ FORM }}[key])
-		            {
-		                $scope.{{ FORM }}[key].$setValidity('server', false);
-					
-						var x = Array.isArray(msg) ? msg.join(' ') : msg;
-
-		                vm.serverErrors[key] = x;
-		            }
-
-					if (Array.isArray(msg))
-					{
-						for (var msgKey in msg)
-						{
-							vm.serverErrorSummary[vm.serverErrorSummary.length] = msg[msgKey];
-						}
-					}
-					else
-					{
-						vm.serverErrorSummary[vm.serverErrorSummary.length] = msg;
-					}
-		        }
-		    }
-			else
-			{
-				vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
-			}
+			applyError(error, vm, $scope.{{ FORM }});
 		}
 		
 		function handleGetSuccess(data)
@@ -185,7 +183,7 @@
 		
 		function handleGetError(error)
 		{
-			vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
+			applyError(error, vm);
 			
 			vm.hasData = true;
 		}
