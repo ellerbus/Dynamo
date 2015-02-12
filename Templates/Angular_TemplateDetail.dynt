@@ -5,7 +5,7 @@
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.html{% endcapture -%}
 
 <form name="{{ FORM }}" ng-submit="vm.save(vm.{{ CAMELCLASS }})" novalidate>
-	<p ng-show="!vm.hasData">
+	<p ng-show="!vm.hasData()">
 		<img src="/Content/Images/loading.gif" /> Gathering the requested {{ BASECLASS | label }} Data ...
 	</p>
 	<div class="form-horizontal" role="form" ng-show="vm.hasData">

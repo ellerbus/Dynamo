@@ -1,9 +1,9 @@
-<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData()">
   <a href="#/accounts" nb-crumb-home></a>
   <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
   <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
   <a href="#/budgets/{{ vm.account.id }}" nb-crumb>Budgets</a>
-  <a href="#/budget/{{ vm.action }}/{{ vm.account.id }}/{{ vm.budget.id }}" nb-crumb ng-bind="vm.budget.name"></a>
+  <a href="#/budget/{{ vm.action }}/{{ vm.account.id }}/{{ vm.budget.id }}" nb-crumb ng-bind="vm.budget.name" ng-show="vm.action != 'create'"></a>
 </div>
 <br />
 <br />
@@ -13,10 +13,10 @@
       <form name="budgetForm" ng-submit="vm.save(vm.budget)" novalidate>
         <fieldset>
           <legend class="text-center">{{ vm.action }} Budget</legend>
-          <p ng-show="!vm.hasData">
+          <p ng-show="!vm.hasData()">
             <i class="fa fa-spinner fa-spin"></i> Gathering the requested Budget Data ...
           </p>
-          <div class="form-horizontal" role="form" ng-show="vm.hasData">
+          <div class="form-horizontal" role="form" ng-show="vm.hasData()">
 
             <div class="form-group alert alert-danger" ng-show="vm.serverErrors.length > 0">
               <ul class="col-sm-offset-4 col-sm-8">

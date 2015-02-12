@@ -32,13 +32,13 @@ var NB =
 
         if (form)
         {
-            //for (var prop in form)
-            //{
-            //    if (form[prop])
-            //    {
-            //        form[prop].$setValidity('server', true);
-            //    }
-            //}
+            for (var prop in form)
+            {
+                if (form[prop])
+                {
+                    form[prop].$setValidity('server', true);
+                }
+            }
         }
 
         if (d && d.modelState)

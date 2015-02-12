@@ -15,19 +15,19 @@
 	function AccountsController(AccountFactory, $log)
 	{
 	    var vm = this;
+
+	    vm.hasData = function () { return typeof vm.accounts !== "undefined" };
 		
 	    var queryParams = {};
 
 	    var assignData = function (data)
 	    {
 	        vm.accounts = data;
-	        vm.hasData = true;
 	    };
 
 	    var assignError = function (error)
 	    {
 	        NB.applyError(error, vm);
-	        vm.hasData = true;
 	    };
 
 	    AccountFactory.query(queryParams).$promise.then(assignData, assignError);
@@ -36,6 +36,8 @@
 	function AccountController(AccountFactory, $routeParams, $scope, $location, $log)
 	{
 	    var vm = this;
+
+	    vm.hasData = function () { return typeof vm.account !== "undefined" };
 		
 		vm.action = $routeParams.action;
 		
@@ -44,8 +46,6 @@
 		if (vm.action == 'create')
 		{
 		    vm.account = {};
-				
-			vm.hasData = true;
 		}
 		else
 		{
@@ -57,7 +57,6 @@
 			var assignData = function (data)
 			{
 			    vm.account = data;
-			    vm.hasData = true;
 			};
 			
 			AccountFactory.get(pk).$promise.then(assignData, handleGetError);
@@ -107,8 +106,6 @@
 		function handleGetError(error)
 		{
 		    NB.applyError(error, vm);
-			
-			vm.hasData = true;
 		}
 	}
 

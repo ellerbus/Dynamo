@@ -83,15 +83,28 @@
 	{{ BASECLASS | plural }}Controller.$inject = ['{{ FACTORY }}', '$log'];
 	{{ BASECLASS }}Controller.$inject = ['{{ FACTORY }}', '$routeParams', '$scope', '$location', '$log'];
 
+	//
+	//	List Controller
+	//
 	function {{ BASECLASS | plural }}Controller({{ FACTORY }}, $log)
 	{
+		//	member variables
 		var vm = this;
-		
-		vm.hasData = false;
 		
 		var queryParams = {};
 
 		{{ FACTORY }}.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
+		
+		//	public methods (via VM - View Model)
+		
+		vm.hasData = hasData;
+		
+		//	private methods (of the controller)
+		
+		function hasData()
+		{
+			return typeof vm.{{ CAMELCLASS | plural }} !== "undefined";
+		}
 		
 		function handleQuerySuccess(data)
 		{
@@ -108,13 +121,14 @@
 		}
 	}
 
+	//
+	//	Details Controller
+	//
 	function {{ BASECLASS }}Controller({{ FACTORY }}, $routeParams, $scope, $location, $log)
 	{
 		var vm = this;
 		
-		vm.hasData = false;
-			
-		vm.serverErrorSummary = [];
+		vm.hasData = hasData;
 
 		vm.serverErrors = {};
 		
@@ -137,6 +151,11 @@
 			};
 			
 			{{ FACTORY }}.get(pk).$promise.then(handleGetSuccess, handleGetError);
+		}
+		
+		function hasData()
+		{
+			return typeof vm.{{ CAMELCLASS }} !== "undefined";
 		}
 
 		function save(data)

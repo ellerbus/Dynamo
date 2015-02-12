@@ -3,13 +3,13 @@
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS | plural }}.html{% endcapture -%}
 <h4>{{ BASECLASS | plural }}</h4>
-<p ng-show="!vm.hasData">
+<p ng-show="!vm.hasData()">
 	<img src="/Content/Images/loading.gif" /> Gathering the requested list of {{ BASECLASS | plural | label }}...
 </p>
 
 <div class="row alert alert-danger" ng-show="vm.serverErrors.length > 0">
 	<div class="col-sm-offset-2 col-sm-8 text-center">
-		<ul class="col-sm-offset-4 col-sm-8">
+		<ul>
 			<li ng-repeat="msg in vm.serverErrors">{{ msg }}</li>
 		</ul>
 	</div>

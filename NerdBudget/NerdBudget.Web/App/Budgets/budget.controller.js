@@ -16,6 +16,8 @@
     {
         var vm = this;
 
+        vm.hasData = function () { return typeof vm.budgets !== "undefined" };
+
         vm.updateSequences = updateSequences;
 
         var queryParams = { accountId: $routeParams.accountId };
@@ -24,13 +26,11 @@
         {
             vm.account = data.account;
             vm.categories = data.categories;
-            vm.hasData = true;
         };
 
         var assignError = function (error)
         {
             NB.applyError(error, vm);
-            vm.hasData = true;
         };
         
         BudgetFactory.get(queryParams).$promise.then(assignData, assignError);
@@ -59,6 +59,8 @@
     {
         var vm = this;
 
+        vm.hasData = function () { return typeof vm.budget !== "undefined" };
+
         vm.action = $routeParams.action;
 
         vm.save = save;
@@ -80,8 +82,6 @@
             {
                 vm.budget.categoryId = $routeParams.categoryId;
             }
-
-            vm.hasData = true;
         };
             
         BudgetFactory.get(pk).$promise.then(assignData, handleGetError);
@@ -124,8 +124,6 @@
         function handleGetError(error)
         {
             NB.applyError(error, vm);
-            
-            vm.hasData = true;
         }
     }
 

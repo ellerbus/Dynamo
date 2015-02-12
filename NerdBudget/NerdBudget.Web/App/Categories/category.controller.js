@@ -16,6 +16,8 @@
     {
         var vm = this;
 
+        vm.hasData = function () { return typeof vm.categories !== "undefined" };
+
         vm.updateSequences = updateSequences;
         
         var queryParams = { accountId: $routeParams.accountId };
@@ -24,13 +26,11 @@
         {
             vm.account = data.account;
             vm.categories = data.categories;
-            vm.hasData = true;
         };
 
         var assignError = function (error)
         {
             NB.applyError(error, vm);
-            vm.hasData = true;
         };
 
         CategoryFactory.get(queryParams).$promise.then(assignData, assignError);
@@ -53,6 +53,8 @@
     function CategoryController(AccountFactory, CategoryFactory, $routeParams, $scope, $location, $log)
     {
         var vm = this;
+
+        vm.hasData = function () { return typeof vm.category !== "undefined" };
         
         vm.action = $routeParams.action;
         
@@ -69,7 +71,6 @@
             {
                 vm.account = data;
                 vm.category = { accountId: vm.account.id };
-                vm.hasData = true;
             };
 
             AccountFactory.get(pk).$promise.then(assignData, handleGetError);
@@ -86,7 +87,6 @@
             {
                 vm.account = data.account;
                 vm.category = data.category;
-                vm.hasData = true;
             };
             
             CategoryFactory.get(pk).$promise.then(assignData, handleGetError);
@@ -130,8 +130,6 @@
         function handleGetError(error)
         {
             NB.applyError(error, vm);
-            
-            vm.hasData = true;
         }
     }
 

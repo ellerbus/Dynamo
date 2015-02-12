@@ -1,6 +1,6 @@
-<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData()">
   <a href="#/accounts" nb-crumb-home></a>
-  <a href="#/account/{{ vm.action }}/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/account/{{ vm.action }}/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name" ng-show="vm.action != 'create'"></a>
 </div>
 <br />
 <br />
@@ -10,10 +10,10 @@
       <form name="accountForm" ng-submit="vm.save(vm.account)" novalidate>
         <fieldset>
           <legend class="text-center">{{ vm.action }} Account</legend>
-          <p ng-show="!vm.hasData" class="text-center">
+          <p ng-show="!vm.hasData()" class="text-center">
             <i class="fa fa-spinner fa-spin"></i> Gathering the requested Account Data ...
           </p>
-          <div class="form-horizontal" role="form" ng-show="vm.hasData">
+          <div class="form-horizontal" role="form" ng-show="vm.hasData()">
 
             <div class="form-group alert alert-danger" ng-show="vm.serverErrors.length > 0">
               <ul class="col-sm-offset-4 col-sm-8">

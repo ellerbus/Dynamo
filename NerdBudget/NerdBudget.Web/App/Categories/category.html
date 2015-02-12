@@ -1,8 +1,8 @@
-<div class="btn-group btn-breadcrumb" ng-show="vm.hasData">
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData()">
   <a href="#/accounts" nb-crumb-home></a>
   <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
   <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
-  <a href="#/category/{{ vm.action }}/{{ vm.account.id }}/{{ vm.category.id }}" nb-crumb ng-bind="vm.category.name"></a>
+  <a href="#/category/{{ vm.action }}/{{ vm.account.id }}/{{ vm.category.id }}" nb-crumb ng-bind="vm.category.name" ng-show="vm.action != 'create'"></a>
 </div>
 <br />
 <br />
@@ -12,10 +12,10 @@
       <form name="categoryForm" ng-submit="vm.save(vm.category)" novalidate>
         <fieldset>
           <legend class="text-center">{{ vm.action }} Category</legend>
-          <p ng-show="!vm.hasData">
+          <p ng-show="!vm.hasData()">
             <i class="fa fa-spinner fa-spin"></i> Gathering the requested Category Data ...
           </p>
-          <div class="form-horizontal" role="form" ng-show="vm.hasData">
+          <div class="form-horizontal" role="form" ng-show="vm.hasData()">
 
             <div class="form-group alert alert-danger" ng-show="vm.serverErrors.length > 0">
               <ul class="col-sm-offset-4 col-sm-8">
