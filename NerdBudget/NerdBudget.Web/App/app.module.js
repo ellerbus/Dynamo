@@ -2,7 +2,8 @@
 angular.module('app',
 [
     'ngRoute', 'ngResource', 'ngMessages', 'ui',
-    'app.accounts', 'app.categories', 'app.budgets'
+    'app.accounts', 'app.categories', 'app.budgets',
+    'app.ledgers'
 ]);
 
 angular.module('app').directive('nbTable', function ()
@@ -127,6 +128,20 @@ angular.module('app').directive('nbDollarIcon', function ()
             element
                 .addClass('btn btn-default btn-sm')
                 .html('<i class="fa fa-usd fa-fw text-success"></i>');
+        }
+    };
+});
+
+angular.module('app').directive('nbImportIcon', function ()
+{
+    return {
+        restrict: 'A',
+        replace: true,
+        link: function (scope, element, attrs)
+        {
+            element
+                .addClass('btn btn-default btn-sm')
+                .html('<i class="fa fa-download fa-fw"></i>');
         }
     };
 });

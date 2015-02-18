@@ -4,10 +4,18 @@ using System.Linq;
 using Augment;
 using Augment.Caching;
 using Moq;
-using NerdBudget.Core;
 
 namespace NerdBudget.Tests
 {
+    public class Helpers
+    {
+        #region Static Helpers
+
+        public const string OriginalLedgerText = "02/01/2015\tAB\t$1\t\t$2\tA";
+
+        #endregion
+    }
+
     public class AnyHelper<T> where T : class
     {
         #region Value Types

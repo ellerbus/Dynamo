@@ -21,6 +21,8 @@
       <th class="icons">
       </th>
       <th class="icons">
+      </th>
+      <th class="icons">
         <a href="#/account/create" nb-create-icon></a>
       </th>
     </tr>
@@ -30,6 +32,9 @@
     <td class="icons">
       <a href="#/categories/{{ account.id }}" nb-list-icon></a>
       <a href="#/budgets/{{ account.id }}" nb-dollar-icon></a>
+    </td>
+    <td class="icons">
+      <a href="#/ledger/import/{{ account.id }}" nb-import-icon></a>
     </td>
     <td class="icons">
       <a href="#/account/update/{{ account.id }}" nb-edit-icon></a>

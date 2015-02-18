@@ -6,13 +6,13 @@
     //	setup the application controllers for multiple and single interactions
     angular
         .module('app.categories')
-        .controller('CategoriesController', CategoriesController)
-        .controller('CategoryController', CategoryController);
+        .controller('CategoryListController', CategoryListController)
+        .controller('CategoryDetailController', CategoryDetailController);
 
-    CategoriesController.$inject = ['CategoryFactory', '$routeParams', '$location', '$log'];
-    CategoryController.$inject = ['AccountFactory', 'CategoryFactory', '$routeParams', '$scope', '$location', '$log'];
+    CategoryListController.$inject = ['CategoryFactory', '$routeParams', '$location', '$log'];
+    CategoryDetailController.$inject = ['AccountFactory', 'CategoryFactory', '$routeParams', '$scope', '$location', '$log'];
 
-    function CategoriesController(CategoryFactory, $routeParams, $location, $log)
+    function CategoryListController(CategoryFactory, $routeParams, $location, $log)
     {
         var vm = this;
 
@@ -50,7 +50,7 @@
         }
     }
 
-    function CategoryController(AccountFactory, CategoryFactory, $routeParams, $scope, $location, $log)
+    function CategoryDetailController(AccountFactory, CategoryFactory, $routeParams, $scope, $location, $log)
     {
         var vm = this;
 

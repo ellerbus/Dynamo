@@ -53,9 +53,9 @@ namespace NerdBudget.Core.Models
 
         #region Methods
 
-        public void Update()
+        public void Update(IEnumerable<Ledger> ledgers)
         {
-            foreach (Ledger led in Account.Ledgers.OrderBy(x => x.Date).ThenBy(x => x.Sequence))
+            foreach (Ledger led in ledgers.OrderBy(x => x.Date).ThenBy(x => x.Sequence))
             {
                 UpdateBalance(led.Balance, led.Date.ToMonthDate());
                 UpdateBalance(led.Balance, led.Date.ToWeekDate());

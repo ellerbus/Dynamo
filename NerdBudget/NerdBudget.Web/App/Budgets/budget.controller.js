@@ -6,13 +6,13 @@
     //	setup the application controllers for multiple and single interactions
     angular
         .module('app.budgets')
-        .controller('BudgetsController', BudgetsController)
-        .controller('BudgetController', BudgetController);
+        .controller('BudgetListController', BudgetListController)
+        .controller('BudgetDetailController', BudgetDetailController);
 
-    BudgetsController.$inject = ['BudgetFactory', '$routeParams', '$location', '$log'];
-    BudgetController.$inject = ['BudgetFactory', '$routeParams', '$scope', '$location', '$log'];
+    BudgetListController.$inject = ['BudgetFactory', '$routeParams', '$location', '$log'];
+    BudgetDetailController.$inject = ['BudgetFactory', '$routeParams', '$scope', '$location', '$log'];
 
-    function BudgetsController(BudgetFactory, $routeParams, $location, $log)
+    function BudgetListController(BudgetFactory, $routeParams, $location, $log)
     {
         var vm = this;
 
@@ -55,7 +55,7 @@
         }
     }
 
-    function BudgetController(BudgetFactory, $routeParams, $scope, $location, $log)
+    function BudgetDetailController(BudgetFactory, $routeParams, $scope, $location, $log)
     {
         var vm = this;
 

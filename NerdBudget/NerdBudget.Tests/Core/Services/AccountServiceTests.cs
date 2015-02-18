@@ -257,10 +257,10 @@ namespace NerdBudget.Tests.Core.Services
             SubjectUnderTest.Save(account.Balances);
 
             //	assert
-            Assert.AreEqual(new DateTime(2015, 1, 1), account.Balances[0].CreatedAt);
+            Assert.AreEqual(new DateTime(2015, 1, 1).Date, account.Balances[0].CreatedAt.Date);
             Assert.AreEqual(DateTime.UtcNow.Date, account.Balances[0].UpdatedAt.Value.Date);
 
-            Assert.AreEqual(DateTime.UtcNow.Date, account.Balances[1].CreatedAt);
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Balances[1].CreatedAt.Date);
             Assert.AreEqual(null, account.Balances[1].UpdatedAt);
 
             MockRepo.VerifyAll();
@@ -272,8 +272,8 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var account = Builder<Account>.CreateNew().Build();
 
-            account.Ledgers.Add(new Ledger { OriginalText = "02/01/2015\tAB\t$1\t$2\tA", CreatedAt = new DateTime(2015, 1, 1) });
-            account.Ledgers.Add(new Ledger { OriginalText = "02/01/2015\tAB\t$1\t$2\tA" });
+            account.Ledgers.Add(new Ledger { OriginalText = Helpers.OriginalLedgerText, CreatedAt = new DateTime(2015, 1, 1) });
+            account.Ledgers.Add(new Ledger { OriginalText = Helpers.OriginalLedgerText });
 
             MockRepo.Setup(x => x.Save(account.Ledgers));
 
@@ -281,10 +281,10 @@ namespace NerdBudget.Tests.Core.Services
             SubjectUnderTest.Save(account.Ledgers);
 
             //	assert
-            Assert.AreEqual(new DateTime(2015, 1, 1), account.Ledgers[0].CreatedAt);
+            Assert.AreEqual(new DateTime(2015, 1, 1).Date, account.Ledgers[0].CreatedAt.Date);
             Assert.AreEqual(DateTime.UtcNow.Date, account.Ledgers[0].UpdatedAt.Value.Date);
 
-            Assert.AreEqual(DateTime.UtcNow.Date, account.Ledgers[1].CreatedAt);
+            Assert.AreEqual(DateTime.UtcNow.Date, account.Ledgers[1].CreatedAt.Date);
             Assert.AreEqual(null, account.Ledgers[1].UpdatedAt);
 
             MockRepo.VerifyAll();

@@ -1,190 +1,199 @@
 
 (function ()
 {
-	'use strict';
-	
-	function buildGenericError(error)
-	{
-		var msg = "";
-		
-		if (error.data && error.data.message)
-		{
-			msg = error.data.message;
-		}
-		
-		if (error.data && error.data.exceptionMessage)
-		{
-			msg += ": " + error.data.exceptionMessage;
-		}
-		
-		if (msg === "")
-		{
-			msg = "An unexpected error occurred - dang it!";
-		}
-		
-		return msg;
-	}
+    'use strict';
+    
+    //	setup the application controllers for multiple and single interactions
+    angular
+        .module('app.ledgers')
+        .controller('LedgerListController', LedgerListController)
+        .controller('LedgerImportController', LedgerImportController)
+        .controller('LedgerDetailController', LedgerDetailController);
 
-	//	setup the application controllers for multiple and single interactions
-	angular
-		.module('app.ledgers')
-		.controller('LedgersController', LedgersController)
-		.controller('LedgerController', LedgerController);
+    LedgerListController.$inject = ['LedgerFactory', '$log'];
+    LedgerImportController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$location', '$log'];
+    LedgerDetailController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$location', '$log'];
 
-	LedgersController.$inject = ['LedgerFactory', '$log'];
-	LedgerController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$location', '$log'];
+    //
+    //	List Controller
+    //
+    function LedgerListController(LedgerFactory, $log)
+    {
+        //	member variables
+        var vm = this;
+        
+        var queryParams = {};
 
-	function LedgersController(LedgerFactory, $log)
-	{
-		var vm = this;
-		
-		vm.hasData = false;
-		
-		vm.serverErrorSummary = "";
-		
-		var queryParams = {};
+        LedgerFactory.query(queryParams).$promise.then(querySuccess, queryError);
+        
+        //	public methods (via VM - View Model)
+        
+        vm.hasData = hasData;
+        
+        //	private methods (of the controller)
+        
+        function hasData()
+        {
+            return typeof vm.ledgers != 'undefined';
+        }
+        
+        function querySuccess(data)
+        {
+            vm.ledgers = data;
+        }
+        
+        function queryError(error)
+        {
+            NB.applyError(error, vm);
+        }
+    }
 
-		LedgerFactory.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
-		
-		function handleQuerySuccess(data)
-		{
-			vm.ledgers = data;
-			
-			vm.hasData = true;
-		}
-		
-		function handleQueryError(error)
-		{
-			vm.serverErrorSummary = buildGenericError(error);
-			
-			vm.hasData = true;
-		}
-	}
+    //
+    //	Import Controller
+    //
+    function LedgerImportController(LedgerFactory, $routeParams, $scope, $location, $log)
+    {
+        //	member variables
 
-	function LedgerController(LedgerFactory, $routeParams, $scope, $location, $log)
-	{
-		var vm = this;
-		
-		vm.hasData = false;
-			
-		vm.serverErrorSummary = [];
+        var vm = this;
 
-		vm.serverErrors = {};
-		
-		vm.action = $routeParams.action;
-		
-		vm.save = save;
-		
-		if (vm.action == 'create')
-		{
-			handleGetSuccess({ });
-				
-			vm.hasData = true;
-		}
-		else
-		{
-			var pk =
-			{
-				accountId: $routeParams.accountId,
-				id: $routeParams.id,
-				date: $routeParams.date
-			};
-			
-			LedgerFactory.get(pk).$promise.then(handleGetSuccess, handleGetError);
-		}
+        vm.transactions = '02/09/2015	NN NNNNN 9999 NNN# 9999993 99999 NNNNNNN NNNN	$1,499.99		$1,138.52	NNNNNNNNNNN NNNNNNN';
+        //02/09/2015	NNNNNNNN'N N99999 NNNNNNN NN 02/08/15 NNN 9999	$9.82		$2,538.52	NNNNNNNNNNN NNNNNNN
+        //02/09/2015	NNNNNNNN : NNNNNNNN NN: 9999999999NN: NNNNNNNN NNN NNNNN 999999999999999		$1,406.99	$2,548.34	NNNNNNNNNNN NNNNNNN';
 
-		function save(data)
-		{
-			if (vm.action == 'create')
-			{
-				LedgerFactory.add(data).$promise.then(handleSaveSuccess, handleSaveError);
-			}
-			else
-			{
-				var pk =
-				{
-					accountId: $routeParams.accountId,
-					id: $routeParams.id,
-					date: $routeParams.date
-				};
+        var pk = { accountId: $routeParams.accountId };
 
-				if (vm.action == 'update')
-				{
-					LedgerFactory.update(pk, data).$promise.then(handleSaveSuccess, handleSaveError);
-				}
-				else if (vm.action == 'delete')
-				{
-					LedgerFactory.delete(pk).$promise.then(handleSaveSuccess, handleSaveError);
-				}
-			}
-		}
-		
-		function handleSaveSuccess(data)
-		{
-			$location.path('/ledgers');
-		}
-		
-		function handleSaveError(error)
-		{
-		    var d = error.data;
-			
-			vm.serverErrorSummary = [];
+        LedgerFactory.getImport(pk).$promise.then(getSuccess, getError);
 
-		    for (var prop in vm.user)
-		    {
-		        if ($scope.ledgerForm[prop])
-		        {
-		            $scope.ledgerForm[prop].$setValidity('server', true);
-		        }
-		    }
+        //	public methods (via VM - View Model)
 
-		    if (d && d.modelState)
-		    {
-		        for (var key in d.modelState)
-		        {
-		            var msg = d.modelState[key];
+        vm.hasData = hasData;
 
-		            if ($scope.ledgerForm[key])
-		            {
-		                $scope.ledgerForm[key].$setValidity('server', false);
-					
-						var x = Array.isArray(msg) ? msg.join(' ') : msg;
+        vm.import = importTransactions;
 
-		                vm.serverErrors[key] = x;
-		            }
+        //	private methods (of the controller)
 
-					if (Array.isArray(msg))
-					{
-						for (var msgKey in msg)
-						{
-							vm.serverErrorSummary[vm.serverErrorSummary.length] = msg[msgKey];
-						}
-					}
-					else
-					{
-						vm.serverErrorSummary[vm.serverErrorSummary.length] = msg;
-					}
-		        }
-		    }
-			else
-			{
-				vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
-			}
-		}
-		
-		function handleGetSuccess(data)
-		{
-			vm.ledger = data;
-			
-			vm.hasData = true;
-		}
-		
-		function handleGetError(error)
-		{
-			vm.serverErrorSummary[vm.serverErrorSummary.length] = buildGenericError(error);
-			
-			vm.hasData = true;
-		}
-	}
+        function hasData()
+        {
+            return typeof vm.account != 'undefined';
+        }
+
+        function importTransactions(data)
+        {
+            var success = function (data)
+            {
+                $location.path('/accounts');
+            };
+
+            var error = function (error)
+            {
+                NB.applyError(error, vm);
+            };
+
+            var pk = { accountId: $routeParams.accountId };
+
+            LedgerFactory.import(pk, '"' + data + '"').$promise.then(success, error);
+        };
+
+        function getSuccess(data)
+        {
+            vm.account = data.account;
+            vm.ledger = data.ledger;
+        }
+
+        function getError(error)
+        {
+            NB.applyError(error, vm);
+        }
+    }
+
+    //
+    //	Details Controller
+    //
+    function LedgerDetailController(LedgerFactory, $routeParams, $scope, $location, $log)
+    {
+        //	member variables
+        
+        var vm = this;
+
+        vm.serverErrors = {};
+        
+        vm.action = $routeParams.action;
+
+        if (vm.action == 'create')
+        {
+            getSuccess({ });
+        }
+        else
+        {
+            var pk =
+            {
+                accountId: $routeParams.accountId,
+                id: $routeParams.id,
+                date: $routeParams.date
+            };
+            
+            LedgerFactory.get(pk).$promise.then(getSuccess, getError);
+        }
+        
+        //	public methods (via VM - View Model)
+        
+        vm.hasData = hasData;
+
+        vm.save = save;
+        
+        //	private methods (of the controller)
+        
+        function hasData()
+        {
+            return typeof vm.ledger != 'undefined';
+        }
+
+        function save(data)
+        {
+            if (vm.action == 'create')
+            {
+                LedgerFactory.add(data).$promise.then(saveSuccess, saveError);
+            }
+            else
+            {
+                var pk =
+                {
+                    accountId: $routeParams.accountId,
+                    id: $routeParams.id,
+                    date: $routeParams.date
+                };
+
+                if (vm.action == 'update')
+                {
+                    LedgerFactory.update(pk, data).$promise.then(saveSuccess, saveError);
+                }
+                else if (vm.action == 'delete')
+                {
+                    LedgerFactory.delete(pk).$promise.then(saveSuccess, saveError);
+                }
+            }
+        }
+        
+        function saveSuccess(data)
+        {
+            $location.path('/ledgers');
+        }
+        
+        function saveError(error)
+        {
+            NB.applyError(error, vm, $scope.ledgerForm);
+        }
+        
+        function getSuccess(data)
+        {
+            vm.ledger = data;
+        }
+        
+        function getError(error)
+        {
+            NB.applyError(error, vm);
+        }
+    }
 
 })();

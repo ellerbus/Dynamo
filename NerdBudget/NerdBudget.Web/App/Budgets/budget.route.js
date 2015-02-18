@@ -16,12 +16,12 @@
 		$routeProvider
 			.when('/budgets/:accountId', {
 				templateUrl: '/App/Budgets/budgets.html',
-				controller: 'BudgetsController',
+				controller: 'BudgetListController',
 				controllerAs: 'vm'
 			})
 			.when('/budget/:action/:accountId/:id?', {
 				templateUrl: '/App/Budgets/budget.html',
-				controller: 'BudgetController',
+				controller: 'BudgetDetailController',
 				controllerAs: 'vm'
 			});
 	};

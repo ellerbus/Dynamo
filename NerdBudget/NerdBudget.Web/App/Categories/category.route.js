@@ -16,12 +16,12 @@
 		$routeProvider
 			.when('/categories/:accountId', {
 				templateUrl: '/App/Categories/categories.html',
-				controller: 'CategoriesController',
+				controller: 'CategoryListController',
 				controllerAs: 'vm'
 			})
 			.when('/category/:action/:accountId/:id?', {
 				templateUrl: '/App/Categories/category.html',
-				controller: 'CategoryController',
+				controller: 'CategoryDetailController',
 				controllerAs: 'vm'
 			});
 	};

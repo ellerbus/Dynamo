@@ -13,20 +13,20 @@
 	
 	function AccountConfig($routeProvider)
 	{
-		$routeProvider
+	    $routeProvider
 			.when('/accounts', {
-				templateUrl: '/App/Accounts/accounts.html',
-				controller: 'AccountsController',
-				controllerAs: 'vm'
+			    templateUrl: '/App/Accounts/accounts.html',
+			    controller: 'AccountListController',
+			    controllerAs: 'vm'
 			})
 			.when('/account/:action/:id?', {
 			    templateUrl: '/App/Accounts/account.html',
-			    controller: 'AccountController',
+			    controller: 'AccountDetailController',
 			    controllerAs: 'vm'
 			})
 			.otherwise({
 			    templateUrl: '/App/Accounts/accounts.html',
-			    controller: 'AccountsController',
+			    controller: 'AccountListController',
 			    controllerAs: 'vm'
 			});
 	};

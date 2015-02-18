@@ -135,6 +135,12 @@
     <Content Include="App\Categories\category.factory.js" />
     <Content Include="App\Categories\category.html" />
     <Content Include="App\Categories\category.route.js" />
+    <Content Include="App\Ledgers\ledger-import.html" />
+    <Content Include="App\Ledgers\ledger.controller.js" />
+    <Content Include="App\Ledgers\ledger.factory.js" />
+    <Content Include="App\Ledgers\ledger.html" />
+    <Content Include="App\Ledgers\ledger.route.js" />
+    <Content Include="App\Ledgers\ledgers.html" />
     <Content Include="App\nb.js" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />

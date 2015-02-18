@@ -6,46 +6,62 @@
 	//	setup the application controllers for multiple and single interactions
 	angular
 		.module('app.accounts')
-		.controller('AccountsController', AccountsController)
-		.controller('AccountController', AccountController);
+		.controller('AccountListController', AccountListController)
+		.controller('AccountDetailController', AccountDetailController);
 
-	AccountsController.$inject = ['AccountFactory', '$log'];
-	AccountController.$inject = ['AccountFactory', '$routeParams', '$scope', '$location', '$log'];
+	AccountListController.$inject = ['AccountFactory', '$log'];
+	AccountDetailController.$inject = ['AccountFactory', '$routeParams', '$scope', '$location', '$log'];
 
-	function AccountsController(AccountFactory, $log)
+	//
+	//	List Controller
+	//
+	function AccountListController(AccountFactory, $log)
 	{
-	    var vm = this;
-
-	    vm.hasData = function () { return typeof vm.accounts !== "undefined" };
+		//	member variables
+		var vm = this;
 		
-	    var queryParams = {};
+		var queryParams = {};
 
-	    var assignData = function (data)
-	    {
-	        vm.accounts = data;
-	    };
-
-	    var assignError = function (error)
-	    {
-	        NB.applyError(error, vm);
-	    };
-
-	    AccountFactory.query(queryParams).$promise.then(assignData, assignError);
+		AccountFactory.query(queryParams).$promise.then(querySuccess, queryError);
+		
+		//	public methods (via VM - View Model)
+		
+		vm.hasData = hasData;
+		
+		//	private methods (of the controller)
+		
+		function hasData()
+		{
+			return typeof vm.accounts != 'undefined';
+		}
+		
+		function querySuccess(data)
+		{
+			vm.accounts = data;
+		}
+		
+		function queryError(error)
+		{
+			NB.applyError(error, vm);
+		}
 	}
 
-	function AccountController(AccountFactory, $routeParams, $scope, $location, $log)
+	//
+	//	Details Controller
+	//
+	function AccountDetailController(AccountFactory, $routeParams, $scope, $location, $log)
 	{
-	    var vm = this;
+		//	member variables
+		
+		var vm = this;
 
-	    vm.hasData = function () { return typeof vm.account !== "undefined" };
+		vm.serverErrors = {};
 		
 		vm.action = $routeParams.action;
-		
-		vm.save = save;
-		
+
 		if (vm.action == 'create')
 		{
-		    vm.account = {};
+			getSuccess({ });
 		}
 		else
 		{
@@ -53,20 +69,28 @@
 			{
 				id: $routeParams.id
 			};
-
-			var assignData = function (data)
-			{
-			    vm.account = data;
-			};
 			
-			AccountFactory.get(pk).$promise.then(assignData, handleGetError);
+			AccountFactory.get(pk).$promise.then(getSuccess, getError);
+		}
+		
+		//	public methods (via VM - View Model)
+		
+		vm.hasData = hasData;
+
+		vm.save = save;
+		
+		//	private methods (of the controller)
+		
+		function hasData()
+		{
+			return typeof vm.account != 'undefined';
 		}
 
 		function save(data)
 		{
 			if (vm.action == 'create')
 			{
-				AccountFactory.add(data).$promise.then(handleSaveSuccess, handleSaveError);
+				AccountFactory.add(data).$promise.then(saveSuccess, saveError);
 			}
 			else
 			{
@@ -77,33 +101,31 @@
 
 				if (vm.action == 'update')
 				{
-					AccountFactory.update(pk, data).$promise.then(handleSaveSuccess, handleSaveError);
+					AccountFactory.update(pk, data).$promise.then(saveSuccess, saveError);
 				}
 				else if (vm.action == 'delete')
 				{
-					AccountFactory.delete(pk).$promise.then(handleSaveSuccess, handleSaveError);
+					AccountFactory.delete(pk).$promise.then(saveSuccess, saveError);
 				}
 			}
 		}
 		
-		function handleSaveSuccess(data)
+		function saveSuccess(data)
 		{
-		    if (vm.action == 'delete')
-		    {
-		        $location.path('/accounts/');
-		    }
-		    else
-		    {
-		        $location.path('/categories/' + data.id);
-		    }
+			$location.path('/accounts');
 		}
 		
-		function handleSaveError(error)
+		function saveError(error)
 		{
-		    NB.applyError(error, vm, $scope.accountForm);
+			NB.applyError(error, vm, $scope.accountForm);
 		}
 		
-		function handleGetError(error)
+		function getSuccess(data)
+		{
+			vm.account = data;
+		}
+		
+		function getError(error)
 		{
 		    NB.applyError(error, vm);
 		}

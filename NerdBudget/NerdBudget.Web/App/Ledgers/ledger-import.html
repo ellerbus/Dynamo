@@ -1,0 +1,24 @@
+
+<form name="ledgerForm" ng-submit="vm.import(vm.transactions)" novalidate>
+  <div class="form-horizontal" role="form" ng-show="vm.hasData()">
+
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        &nbsp;
+      </label>
+      <div class="col-sm-8 form-control-static" ng-bind="vm.account.name"></div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-8">
+        <textarea class="form-control" name="transactions" rows="9" ng-bind="vm.transactions"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-4 col-sm-8">
+        <button type="submit" class="btn btn-primary">Import</button>
+        <a href="#/accounts" class="btn btn-default">Cancel</a>
+      </div>
+    </div>
+  </div>
+</form>

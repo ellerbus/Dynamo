@@ -84,7 +84,7 @@ namespace NerdBudget.Core.Models
 
                 if (Count > trxCount)
                 {
-                    Account.Balances.Update();
+                    Account.Balances.Update(this);
                 }
             }
         }
