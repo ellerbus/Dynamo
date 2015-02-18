@@ -52,7 +52,6 @@
 				if (form && form[key])
 				{
 					form[key].$setValidity('server', false);
-
 				}
 
 				var isArray = Array.isArray(msg);
@@ -77,23 +76,23 @@
 	//	setup the application controllers for multiple and single interactions
 	angular
 		.module('app.{{ CAMELCLASS | plural }}')
-		.controller('{{ BASECLASS | plural }}Controller', {{ BASECLASS | plural }}Controller)
-		.controller('{{ BASECLASS }}Controller', {{ BASECLASS }}Controller);
+		.controller('{{ BASECLASS }}ListController', {{ BASECLASS  }}ListController)
+		.controller('{{ BASECLASS }}DetailController', {{ BASECLASS }}DetailController);
 
-	{{ BASECLASS | plural }}Controller.$inject = ['{{ FACTORY }}', '$log'];
-	{{ BASECLASS }}Controller.$inject = ['{{ FACTORY }}', '$routeParams', '$scope', '$location', '$log'];
+	{{ BASECLASS }}ListController.$inject = ['{{ FACTORY }}', '$log'];
+	{{ BASECLASS }}DetailController.$inject = ['{{ FACTORY }}', '$routeParams', '$scope', '$location', '$log'];
 
 	//
 	//	List Controller
 	//
-	function {{ BASECLASS | plural }}Controller({{ FACTORY }}, $log)
+	function {{ BASECLASS }}ListController({{ FACTORY }}, $log)
 	{
 		//	member variables
 		var vm = this;
 		
 		var queryParams = {};
 
-		{{ FACTORY }}.query(queryParams).$promise.then(handleQuerySuccess, handleQueryError);
+		{{ FACTORY }}.query(queryParams).$promise.then(querySuccess, queryError);
 		
 		//	public methods (via VM - View Model)
 		
@@ -103,44 +102,36 @@
 		
 		function hasData()
 		{
-			return typeof vm.{{ CAMELCLASS | plural }} !== "undefined";
+			return typeof vm.{{ CAMELCLASS | plural }} != 'undefined';
 		}
 		
-		function handleQuerySuccess(data)
+		function querySuccess(data)
 		{
 			vm.{{ CAMELCLASS | plural }} = data;
-			
-			vm.hasData = true;
 		}
 		
-		function handleQueryError(error)
+		function queryError(error)
 		{
 			applyError(error, vm);
-			
-			vm.hasData = true;
 		}
 	}
 
 	//
 	//	Details Controller
 	//
-	function {{ BASECLASS }}Controller({{ FACTORY }}, $routeParams, $scope, $location, $log)
+	function {{ BASECLASS }}DetailController({{ FACTORY }}, $routeParams, $scope, $location, $log)
 	{
-		var vm = this;
+		//	member variables
 		
-		vm.hasData = hasData;
+		var vm = this;
 
 		vm.serverErrors = {};
 		
 		vm.action = $routeParams.action;
-		
-		vm.save = save;
-		
+
 		if (vm.action == 'create')
 		{
-			handleGetSuccess({ });
-				
-			vm.hasData = true;
+			getSuccess({ });
 		}
 		else
 		{
@@ -150,19 +141,27 @@
 				{% endif %}{% endfor %}
 			};
 			
-			{{ FACTORY }}.get(pk).$promise.then(handleGetSuccess, handleGetError);
+			{{ FACTORY }}.get(pk).$promise.then(getSuccess, getError);
 		}
+		
+		//	public methods (via VM - View Model)
+		
+		vm.hasData = hasData;
+
+		vm.save = save;
+		
+		//	private methods (of the controller)
 		
 		function hasData()
 		{
-			return typeof vm.{{ CAMELCLASS }} !== "undefined";
+			return typeof vm.{{ CAMELCLASS }} != 'undefined';
 		}
 
 		function save(data)
 		{
 			if (vm.action == 'create')
 			{
-				{{ FACTORY }}.add(data).$promise.then(handleSaveSuccess, handleSaveError);
+				{{ FACTORY }}.add(data).$promise.then(saveSuccess, saveError);
 			}
 			else
 			{
@@ -174,37 +173,33 @@
 
 				if (vm.action == 'update')
 				{
-					{{ FACTORY }}.update(pk, data).$promise.then(handleSaveSuccess, handleSaveError);
+					{{ FACTORY }}.update(pk, data).$promise.then(saveSuccess, saveError);
 				}
 				else if (vm.action == 'delete')
 				{
-					{{ FACTORY }}.delete(pk).$promise.then(handleSaveSuccess, handleSaveError);
+					{{ FACTORY }}.delete(pk).$promise.then(saveSuccess, saveError);
 				}
 			}
 		}
 		
-		function handleSaveSuccess(data)
+		function saveSuccess(data)
 		{
 			$location.path('/{{ CAMELCLASS | plural }}');
 		}
 		
-		function handleSaveError(error)
+		function saveError(error)
 		{
 			applyError(error, vm, $scope.{{ FORM }});
 		}
 		
-		function handleGetSuccess(data)
+		function getSuccess(data)
 		{
 			vm.{{ CAMELCLASS }} = data;
-			
-			vm.hasData = true;
 		}
 		
-		function handleGetError(error)
+		function getError(error)
 		{
 			applyError(error, vm);
-			
-			vm.hasData = true;
 		}
 	}
 

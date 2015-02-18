@@ -21,17 +21,17 @@
 		$routeProvider
 			.when('/{{ CAMELCLASS | plural }}', {
 				templateUrl: '{{PATH}}/{{ CAMELCLASS | plural }}.html',
-				controller: '{{ BASECLASS | plural }}Controller',
+				controller: '{{ BASECLASS }}ListController',
 				controllerAs: 'vm'
 			})
 			.when('/{{ CAMELCLASS }}/:action', {
 				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
-				controller: '{{ BASECLASS }}Controller',
+				controller: '{{ BASECLASS }}DetailController',
 				controllerAs: 'vm'
 			})
 			.when('/{{ CAMELCLASS }}/:action/{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}', {
 				templateUrl: '{{ PATH }}/{{ CAMELCLASS }}.html',
-				controller: '{{ BASECLASS }}Controller',
+				controller: '{{ BASECLASS }}DetailController',
 				controllerAs: 'vm'
 			});
 	};
