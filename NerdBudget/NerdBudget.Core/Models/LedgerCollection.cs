@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -71,9 +72,9 @@ namespace NerdBudget.Core.Models
                             OriginalText = details
                         };
 
-                        bool hasMatch = this.Any(x => x.Id == led.Id && x.Date == led.Date);
+                        Ledger match = Find(led.Id, led.Date);
 
-                        if (!hasMatch)
+                        if (match == null)
                         {
                             led.Sequence = Count;
 
@@ -87,6 +88,13 @@ namespace NerdBudget.Core.Models
                     Account.Balances.Update(this);
                 }
             }
+        }
+
+        public Ledger Find(string id, DateTime date)
+        {
+            id = id.AssertNotNull().ToUpper();
+
+            return this.FirstOrDefault(x => x.Id == id && x.Date == date);
         }
 
         public void AddRange(IEnumerable<Ledger> ledgers)

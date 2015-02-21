@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Augment;
+using Insight.Database;
 
 namespace NerdBudget.Core.Models
 {
@@ -14,6 +15,7 @@ namespace NerdBudget.Core.Models
 
         public Budget() : base() { }
 
+        [SqlConstructor]
         public Budget(string accountId, string id, string categoryId, string name, string frequency, int sequence, DateTime? startDate, DateTime? endDate, double amount, DateTime createdAt, DateTime? updatedAt)
             : base(accountId, id, categoryId, name, frequency, sequence, startDate, endDate, amount, createdAt, updatedAt)
         {
@@ -41,6 +43,14 @@ namespace NerdBudget.Core.Models
         #endregion
 
         #region Properties
+
+        public string FullName
+        {
+            get
+            {
+                return "{0} ({1})".FormatArgs(Name, Category.Name.ToLower());
+            }
+        }
 
         public override string Id
         {

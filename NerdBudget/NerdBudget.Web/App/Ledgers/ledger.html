@@ -1,174 +1,87 @@
+<div class="btn-group btn-breadcrumb" ng-show="vm.hasData()">
+  <a href="#/accounts" nb-crumb-home></a>
+  <a href="#/account/update/{{ vm.account.id }}" nb-crumb ng-bind="vm.account.name"></a>
+  <a href="#/categories/{{ vm.account.id }}" nb-crumb>Categories</a>
+  <a href="#/budgets/{{ vm.account.id }}" nb-crumb>Budgets</a>
+</div>
+<br />
+<br />
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="well well-sm">
+      <form name="ledgerForm" ng-submit="vm.save(vm.ledger)" novalidate>
+        <p ng-show="!vm.hasData">
+          <i class="fa fa-spinner fa-spin"></i> Gathering the requested Ledger Data ...
+        </p>
+        <div class="form-horizontal" role="form" ng-show="vm.hasData()">
 
-<form name="ledgerForm" ng-submit="vm.save(vm.ledger)" novalidate>
-	<p ng-show="!vm.hasData">
-		<img src="/Content/Images/loading.gif" /> Gathering the requested Ledger Data ...
-	</p>
-	<div class="form-horizontal" role="form" ng-show="vm.hasData()">
-	
-		<div class="form-group alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
-			<ul class="col-sm-offset-4 col-sm-8">
-				<li ng-repeat="msg in vm.serverErrorSummary">{{ msg }}</li>
-			</ul>
-		</div>
+          <div class="form-group alert alert-danger" ng-show="vm.serverErrorSummary.length > 0">
+            <ul class="col-sm-offset-4 col-sm-8">
+              <li ng-repeat="msg in vm.serverErrorSummary">{{ msg }}</li>
+            </ul>
+          </div>
 
-		
-		<div class="form-group">
-			<label class="col-sm-4 control-label">
-				Account Id
-			</label>
-			<div class="col-sm-8 form-control-static" ng-bind="vm.ledger.accountId"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-4 control-label">
-				Id
-			</label>
-			<div class="col-sm-8 form-control-static" ng-bind="vm.ledger.id"></div>
-		</div>
-		<div class="form-group">
-			<label class="col-sm-4 control-label">
-				Date
-			</label>
-			<div class="col-sm-8 form-control-static" ng-bind="vm.ledger.date"></div>
-		</div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">
+              Id
+            </label>
+            <div class="col-sm-8 form-control-static">
+              <span ng-bind="vm.account.id"></span>,
+              <span ng-bind="vm.ledger.id"></span>,
+              <span ng-bind="vm.ledger.date | date:'yyyy-MM-dd'"></span>
+            </div>
+          </div>
 
-		
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.budgetId.$invalid }">
-			<label class="col-sm-4 control-label">
-				Budget Id
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="budgetId" ng-model="vm.ledger.budgetId"
-					ng-disabled="vm.action == 'delete'" ng-required="true" ng-maxlength="2"
-					/>
-				<div class="help-block" ng-messages="ledgerForm.budgetId.$error">
-					<div ng-message="server">{{ vm.serverErrors.budgetId }}</div>
-					<div ng-message="required">'Budget Id' is required</div>
-					<div ng-message="maxlength">The max length for 'Budget Id' is 2 characters</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.originalText.$invalid }">
-			<label class="col-sm-4 control-label">
-				Original Text
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="originalText" ng-model="vm.ledger.originalText"
-					ng-disabled="vm.action == 'delete'" ng-required="true" ng-maxlength="500"
-					/>
-				<div class="help-block" ng-messages="ledgerForm.originalText.$error">
-					<div ng-message="server">{{ vm.serverErrors.originalText }}</div>
-					<div ng-message="required">'Original Text' is required</div>
-					<div ng-message="maxlength">The max length for 'Original Text' is 500 characters</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.description.$invalid }">
-			<label class="col-sm-4 control-label">
-				Description
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="description" ng-model="vm.ledger.description"
-					ng-disabled="vm.action == 'delete'" ng-required="true" ng-maxlength="100"
-					/>
-				<div class="help-block" ng-messages="ledgerForm.description.$error">
-					<div ng-message="server">{{ vm.serverErrors.description }}</div>
-					<div ng-message="required">'Description' is required</div>
-					<div ng-message="maxlength">The max length for 'Description' is 100 characters</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.amount.$invalid }">
-			<label class="col-sm-4 control-label">
-				Amount
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="amount" ng-model="vm.ledger.amount"
-					ng-disabled="vm.action == 'delete'" ng-required="true" 
-					/>
-				<div class="help-block" ng-messages="ledgerForm.amount.$error">
-					<div ng-message="server">{{ vm.serverErrors.amount }}</div>
-					<div ng-message="required">'Amount' is required</div>
-					
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.balance.$invalid }">
-			<label class="col-sm-4 control-label">
-				Balance
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="balance" ng-model="vm.ledger.balance"
-					ng-disabled="vm.action == 'delete'" ng-required="true" 
-					/>
-				<div class="help-block" ng-messages="ledgerForm.balance.$error">
-					<div ng-message="server">{{ vm.serverErrors.balance }}</div>
-					<div ng-message="required">'Balance' is required</div>
-					
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.sequence.$invalid }">
-			<label class="col-sm-4 control-label">
-				Sequence
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="sequence" ng-model="vm.ledger.sequence"
-					ng-disabled="vm.action == 'delete'" ng-required="true" 
-					/>
-				<div class="help-block" ng-messages="ledgerForm.sequence.$error">
-					<div ng-message="server">{{ vm.serverErrors.sequence }}</div>
-					<div ng-message="required">'Sequence' is required</div>
-					
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.createdAt.$invalid }">
-			<label class="col-sm-4 control-label">
-				Created At
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="createdAt" ng-model="vm.ledger.createdAt"
-					ng-disabled="vm.action == 'delete'" ng-required="true" 
-					/>
-				<div class="help-block" ng-messages="ledgerForm.createdAt.$error">
-					<div ng-message="server">{{ vm.serverErrors.createdAt }}</div>
-					<div ng-message="required">'Created At' is required</div>
-					
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group" ng-class="{ 'has-error': ledgerForm.updatedAt.$invalid }">
-			<label class="col-sm-4 control-label">
-				Updated At
-			</label>
-			<div class="col-sm-8">
-				<input class="form-control" name="updatedAt" ng-model="vm.ledger.updatedAt"
-					ng-disabled="vm.action == 'delete'" ng-required="true" 
-					/>
-				<div class="help-block" ng-messages="ledgerForm.updatedAt.$error">
-					<div ng-message="server">{{ vm.serverErrors.updatedAt }}</div>
-					<div ng-message="required">'Updated At' is required</div>
-					
-				</div>
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-sm-offset-4 col-sm-8">
-				<button type="submit" class="btn btn-primary" ng-show="vm.action == 'create'">Create</button>
-				<button type="submit" class="btn btn-primary" ng-show="vm.action == 'update'">Update</button>
-				<button type="submit" class="btn btn-danger" ng-show="vm.action == 'delete'">Delete</button>
-				<a href="#/ledgers" class="btn btn-default">Cancel</a>
-			</div>
-		</div>
-
-	</div>
-</form>
+          <div class="form-group" ng-class="{ 'has-error': ledgerForm.budgetId.$invalid }">
+            <label class="col-sm-4 control-label">
+              Budget Id
+            </label>
+            <div class="col-sm-8">
+              <select class="form-control" ng-model="vm.ledger.budgetId"
+                      ng-disabled="vm.action == 'delete'" ng-required="true"
+                      ng-options="budget.id as budget.fullName for budget in vm.budgets"></select>
+              <div class="help-block" ng-messages="ledgerForm.budgetId.$error">
+                <div ng-message="server">{{ vm.serverErrors.budgetId }}</div>
+                <div ng-message="required">'Budget Id' is required</div>
+                <div ng-message="maxlength">The max length for 'Budget Id' is 2 characters</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{ 'has-error': ledgerForm.description.$invalid }">
+            <label class="col-sm-4 control-label">
+              Description
+            </label>
+            <div class="col-sm-8">
+              <input class="form-control" name="description" ng-model="vm.ledger.description"
+                     ng-disabled="true" />
+            </div>
+          </div>
+          <div class="form-group" ng-class="{ 'has-error': ledgerForm.amount.$invalid }">
+            <label class="col-sm-4 control-label">
+              Amount
+            </label>
+            <div class="col-sm-8">
+              <input class="form-control" name="amount" ng-model="vm.ledger.amount"
+                     ng-disabled="true" />
+            </div>
+          </div>
+          <div class="form-group" ng-class="{ 'has-error': ledgerForm.balance.$invalid }">
+            <label class="col-sm-4 control-label">
+              Balance
+            </label>
+            <div class="col-sm-8">
+              <input class="form-control" name="balance" ng-model="vm.ledger.balance"
+                     ng-disabled="true" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <button type="submit" class="btn btn-primary">Update</button>
+              <a href="#/accounts" class="btn btn-default">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

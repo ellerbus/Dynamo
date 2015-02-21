@@ -195,6 +195,11 @@ namespace NerdBudget.Core.Services
                 }
 
                 _repository.Save(balancesToSave);
+
+                foreach (Balance bal in balancesToSave)
+                {
+                    bal.IsModified = false;
+                }
             }
         }
 
@@ -220,6 +225,11 @@ namespace NerdBudget.Core.Services
                 }
 
                 _repository.Save(ledgersToSave);
+
+                foreach (Ledger led in ledgersToSave)
+                {
+                    led.IsModified = false;
+                }
             }
         }
 

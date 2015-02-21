@@ -14,7 +14,7 @@
 	function LedgerConfig($routeProvider)
 	{
 	    $routeProvider
-			//.when('/ledger/history/:accountId/:startDate/:endDate', {
+			//.when('/ledger/history/:accountId/:startDate/:endDate/:budgetId', {
 			//    templateUrl: '/App/Ledgers/ledgers.html',
 			//    controller: 'LedgerListController',
 			//    controllerAs: 'vm'
@@ -23,12 +23,12 @@
 		        templateUrl: '/App/Ledgers/ledger-import.html',
 		        controller: 'LedgerImportController',
 		        controllerAs: 'vm'
-		    });
-			//.when('/ledger/update/:accountId/:id/:date', {
-			//    templateUrl: '/App/Ledgers/ledger.html',
-	        //    controller: 'LedgerDetailController',
-			//    controllerAs: 'vm'
-			//});
+		    })
+			.when('/ledger/update/:accountId/:id/:date', {
+			    templateUrl: '/App/Ledgers/ledger.html',
+	            controller: 'LedgerDetailController',
+			    controllerAs: 'vm'
+			});
 	};
 
 })();

@@ -213,6 +213,23 @@ namespace NerdBudget.Tests.Core.Models
         #region Collection Tests
 
         [TestMethod]
+        public void LedgerCollection_Should_FindLedger()
+        {
+            //  assign 
+            var account = Builder<Account>.CreateNew().Build();
+
+            var ledger = CreateEmptyLedger();
+
+            //  act
+            account.Ledgers.Add(ledger);
+
+            //  assert
+            var x = account.Ledgers.Find(ledger.Id.ToLower(), ledger.Date);
+
+            Assert.AreSame(ledger, x);
+        }
+
+        [TestMethod]
         public void LedgerCollection_Should_AssignAccountId()
         {
             //  assign 

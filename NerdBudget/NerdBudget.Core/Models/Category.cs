@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Augment;
+using Insight.Database;
 
 namespace NerdBudget.Core.Models
 {
@@ -15,6 +16,7 @@ namespace NerdBudget.Core.Models
 
         public Category() : base() { }
 
+        [SqlConstructor]
         public Category(string accountId, string id, string name, int multiplier, int sequence, DateTime createdAt, DateTime? updatedAt)
             : base(accountId, id, name, multiplier, sequence, createdAt, updatedAt)
         {

@@ -68,9 +68,9 @@ namespace NerdBudget.Core.Models
 
         public void AddRange(IEnumerable<Budget> budgets)
         {
-            foreach (Budget bud in budgets)
+            foreach (Budget bgt in budgets)
             {
-                Add(bud);
+                Add(bgt);
             }
         }
 
@@ -80,9 +80,9 @@ namespace NerdBudget.Core.Models
 
             Clear();
 
-            foreach (Budget bud in budget)
+            foreach (Budget bgt in budget)
             {
-                Add(bud);
+                Add(bgt);
             }
         }
 
@@ -105,15 +105,15 @@ namespace NerdBudget.Core.Models
             SetOwner(item);
         }
 
-        private void SetOwner(Budget bud)
+        private void SetOwner(Budget bgt)
         {
             if (Category == null)
             {
-                bud.Account = Account;
+                bgt.Account = Account;
             }
             else
             {
-                bud.Category = Category;
+                bgt.Category = Category;
             }
         }
 

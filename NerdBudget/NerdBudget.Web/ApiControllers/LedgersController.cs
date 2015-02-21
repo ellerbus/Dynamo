@@ -1,5 +1,7 @@
+using System;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Description;
 using FluentValidation;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
@@ -32,7 +34,7 @@ namespace NerdBudget.Web.ApiControllers
 
         // POST: api/ledger
         [HttpGet, Route("{accountId}/import")]
-        public IHttpActionResult GetImport(string accountId, [FromBody]string transactions)
+        public IHttpActionResult GetImport(string accountId)
         {
             Account account = GetAccount(accountId);
 
@@ -45,10 +47,15 @@ namespace NerdBudget.Web.ApiControllers
             {
                 JsonSerializerSettings jss = GetPayloadSettings();
 
+                Ledger ledger = account.Ledgers
+                    .OrderBy(x => x.Date)
+                    .ThenBy(x => x.Sequence)
+                    .LastOrDefault();
+
                 var model = new
                 {
                     account = account,
-                    ledger = account.Ledgers.LastOrDefault()
+                    ledger = ledger
                 };
 
                 return Json(model, jss);
@@ -74,11 +81,77 @@ namespace NerdBudget.Web.ApiControllers
             {
                 account.Ledgers.Import(transactions);
 
+                _service.Save(account.Ledgers);
+
+                _service.Save(account.Balances);
+
                 return Ok();
             }
             catch (ValidationException exp)
             {
                 return BadRequest(exp.Errors);
+            }
+        }
+
+        // GET: api/ledger/5
+        [HttpGet, Route("{accountId}/{id}/{date}"), ResponseType(typeof(Ledger))]
+        public IHttpActionResult Get(string accountId, string id, DateTime date)
+        {
+            Account account = GetAccount(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            Ledger ledger = account.Ledgers.Find(id, date);
+
+            if (ledger == null)
+            {
+                return NotFound();
+            }
+
+            JsonSerializerSettings jss = GetPayloadSettings();
+
+            var model = new
+            {
+                account = account,
+                budgets = account.Categories.SelectMany(x => x.Budgets),
+                ledger = ledger
+            };
+
+            return Json(model, jss);
+        }
+
+        // PUT: api/ledger/5
+        [HttpPut, Route("{accountId}/{id}/{date}")]
+        public IHttpActionResult Put(string accountId, string id, DateTime date, [FromBody]Ledger ledger)
+        {
+            Account account = GetAccount(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            Ledger model = account.Ledgers.Find(id, date);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            model.BudgetId = ledger.BudgetId;
+
+            try
+            {
+                _service.Save(account.Ledgers);
+
+                return Ok();
+            }
+            catch (ValidationException ve)
+            {
+                return BadRequest(ve.Errors);
             }
         }
 
@@ -116,90 +189,6 @@ namespace NerdBudget.Web.ApiControllers
         //    return Json(_service.GetList());
         //}
 
-        //// GET: api/ledger/5
-        //[HttpGet, Route("{accountId}/{id}/{date}"), ResponseType(typeof(Ledger))]
-        //public IHttpActionResult Get(string accountId, string id, DateTime date)
-        //{
-        //    Ledger ledger = _service.Get(accountId, id, date);
-
-        //    if (ledger == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(ledger);
-        //}
-
-        //// POST: api/ledger
-        //[HttpPost, Route("")]
-        //public IHttpActionResult Post([FromBody]Ledger ledger)
-        //{
-        //    try
-        //    {
-        //        _service.Insert(ledger);
-
-        //        return Ok();
-        //    }
-        //    catch (ValidationException ve)
-        //    {
-        //        return BadRequest(ve.Errors);
-        //    }
-        //}
-
-        //// PUT: api/ledger/5
-        //[HttpPut, Route("{accountId}/{id}/{date}")]
-        //public IHttpActionResult Put(string accountId, string id, DateTime date, [FromBody]Ledger ledger)
-        //{
-        //    Ledger model = _service.Get(accountId, id, date);
-
-        //    if (model == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    model.BudgetId = ledger.BudgetId;
-        //    model.OriginalText = ledger.OriginalText;
-        //    model.Description = ledger.Description;
-        //    model.Amount = ledger.Amount;
-        //    model.Balance = ledger.Balance;
-        //    model.Sequence = ledger.Sequence;
-        //    model.CreatedAt = ledger.CreatedAt;
-        //    model.UpdatedAt = ledger.UpdatedAt;
-        //    try
-        //    {
-        //        _service.Update(model);
-
-        //        return Ok();
-        //    }
-        //    catch (ValidationException ve)
-        //    {
-        //        return BadRequest(ve.Errors);
-        //    }
-        //}
-
-        //// DELETE: api/ledger/5
-        //[HttpDelete, Route("{accountId}/{id}/{date}")]
-        //public IHttpActionResult Delete(string accountId, string id, DateTime date)
-        //{
-        //    Ledger model = _service.Get(accountId, id, date);
-
-        //    if (model == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    try
-        //    {
-        //        _service.Delete(model);
-
-        //        return Ok();
-        //    }
-        //    catch (ValidationException ve)
-        //    {
-        //        return BadRequest(ve.Errors);
-        //    }
-        //}
-
         #endregion
 
         #region Helpers
@@ -213,6 +202,7 @@ namespace NerdBudget.Web.ApiControllers
         {
             return PayloadManager
                 .AddPayload<Account>("Id", "Name")
+                .AddPayload<Budget>("Id", "FullName")
                 .AddBasicPayload<Ledger>()
                 .ToSettings();
         }

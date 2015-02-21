@@ -29,14 +29,14 @@
                 Id
               </label>
               <div class="col-sm-8 form-control-static">
-                <span ng-bind="vm.account.id"></span>
+                <span ng-bind="vm.account.id"></span>,
                 <span ng-bind="vm.budget.id"></span>
               </div>
             </div>
 
             <div class="form-group" ng-class="{ 'has-error': budgetForm.categoryId.$invalid }">
               <label class="col-sm-4 control-label">
-                Category Id
+                Category
               </label>
               <div class="col-sm-8">
                 <select class="form-control" ng-model="vm.budget.categoryId"

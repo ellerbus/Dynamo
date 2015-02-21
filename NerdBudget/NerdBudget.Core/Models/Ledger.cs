@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Augment;
+using Insight.Database;
 
 namespace NerdBudget.Core.Models
 {
@@ -17,6 +18,7 @@ namespace NerdBudget.Core.Models
 
         public Ledger() { }
 
+        [SqlConstructor]
         public Ledger(string accountId, string id, DateTime date, string budgetId, string originalText, string description, double amount, double balance, int sequence, DateTime createdAt, DateTime? updatedAt)
             : base(accountId, id, date, budgetId, originalText, description, amount, balance, sequence, createdAt, updatedAt)
         {

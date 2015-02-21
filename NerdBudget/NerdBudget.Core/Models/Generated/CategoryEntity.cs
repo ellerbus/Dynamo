@@ -31,7 +31,7 @@ namespace NerdBudget.Core.Models.Entities
 		///	<summary>
 		///	Internally Managed 'Is' Modified Flag
 		///	</summary>
-		public bool IsModified { get; private set; }
+        public bool IsModified { get; internal set; }
 		
 		#endregion
 

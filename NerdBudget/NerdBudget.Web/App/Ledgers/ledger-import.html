@@ -1,5 +1,8 @@
 
 <form name="ledgerForm" ng-submit="vm.import(vm.transactions)" novalidate>
+  <p ng-show="!vm.hasData">
+    <i class="fa fa-spinner fa-spin"></i> Gathering the requested Ledger Data ...
+  </p>
   <div class="form-horizontal" role="form" ng-show="vm.hasData()">
 
     <div class="form-group">
@@ -20,5 +23,37 @@
         <a href="#/accounts" class="btn btn-default">Cancel</a>
       </div>
     </div>
+
+    <div class="form-group" ng-show="vm.ledger != null">
+      <label class="col-sm-4 control-label">
+        Date
+      </label>
+      <div class="col-sm-8">
+        <p class="form-control-static" ng-bind="vm.ledger.date | date:'yyyy-MM-dd'"></p>
+      </div>
+    </div>
+    <div class="form-group" ng-show="vm.ledger != null">
+      <label class="col-sm-4 control-label">
+        Description
+      </label>
+      <div class="col-sm-8">
+        <p class="form-control-static" ng-bind="vm.ledger.description"></p>
+      </div>
+    </div>
+    <div class="form-group" ng-show="vm.ledger != null">
+      <label class="col-sm-4 control-label">
+        Amount
+      </label>
+      <div class="col-sm-2">
+        <p class="form-control-static" ng-bind="vm.ledger.amount | number"></p>
+      </div>
+      <label class="col-sm-2 control-label">
+        Balance
+      </label>
+      <div class="col-sm-2">
+        <p class="form-control-static" ng-bind="vm.ledger.balance | number"></p>
+      </div>
+    </div>
+
   </div>
 </form>

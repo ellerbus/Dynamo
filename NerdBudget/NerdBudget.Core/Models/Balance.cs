@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Augment;
+using Insight.Database;
 
 namespace NerdBudget.Core.Models
 {
@@ -14,6 +15,7 @@ namespace NerdBudget.Core.Models
 
         public Balance() { }
 
+        [SqlConstructor]
         public Balance(string accountId, DateTime asOf, double amount, DateTime createdAt, DateTime? updatedAt)
             : base(accountId, asOf, amount, createdAt, updatedAt)
         {

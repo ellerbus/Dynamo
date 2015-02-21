@@ -219,9 +219,9 @@ namespace NerdBudget.Core.Models
 
                 foreach (Category cat in Categories)
                 {
-                    foreach (Budget bud in cat.Budgets)
+                    foreach (Budget bgt in cat.Budgets)
                     {
-                        amount += bud.WeeklyAmount * cat.Multiplier;
+                        amount += bgt.WeeklyAmount * cat.Multiplier;
                     }
                 }
 
@@ -240,9 +240,9 @@ namespace NerdBudget.Core.Models
 
                 foreach (Category cat in Categories)
                 {
-                    foreach (Budget bud in cat.Budgets)
+                    foreach (Budget bgt in cat.Budgets)
                     {
-                        amount += bud.MonthlyAmount * cat.Multiplier;
+                        amount += bgt.MonthlyAmount * cat.Multiplier;
                     }
                 }
 
@@ -261,9 +261,9 @@ namespace NerdBudget.Core.Models
 
                 foreach (Category cat in Categories)
                 {
-                    foreach (Budget bud in cat.Budgets)
+                    foreach (Budget bgt in cat.Budgets)
                     {
-                        amount += bud.YearlyAmount * cat.Multiplier;
+                        amount += bgt.YearlyAmount * cat.Multiplier;
                     }
                 }
 

@@ -120,21 +120,14 @@
         
         vm.action = $routeParams.action;
 
-        if (vm.action == 'create')
+        var pk =
         {
-            getSuccess({ });
-        }
-        else
-        {
-            var pk =
-            {
-                accountId: $routeParams.accountId,
-                id: $routeParams.id,
-                date: $routeParams.date
-            };
+            accountId: $routeParams.accountId,
+            id: $routeParams.id,
+            date: $routeParams.date
+        };
             
-            LedgerFactory.get(pk).$promise.then(getSuccess, getError);
-        }
+        LedgerFactory.get(pk).$promise.then(getSuccess, getError);
         
         //	public methods (via VM - View Model)
         
@@ -151,33 +144,22 @@
 
         function save(data)
         {
-            if (vm.action == 'create')
+            var pk =
             {
-                LedgerFactory.add(data).$promise.then(saveSuccess, saveError);
-            }
-            else
-            {
-                var pk =
-                {
-                    accountId: $routeParams.accountId,
-                    id: $routeParams.id,
-                    date: $routeParams.date
-                };
+                accountId: $routeParams.accountId,
+                id: $routeParams.id,
+                date: $routeParams.date
+            };
 
-                if (vm.action == 'update')
-                {
-                    LedgerFactory.update(pk, data).$promise.then(saveSuccess, saveError);
-                }
-                else if (vm.action == 'delete')
-                {
-                    LedgerFactory.delete(pk).$promise.then(saveSuccess, saveError);
-                }
+            if (vm.action == 'update')
+            {
+                LedgerFactory.update(pk, data).$promise.then(saveSuccess, saveError);
             }
         }
         
         function saveSuccess(data)
         {
-            $location.path('/ledgers');
+            $location.path('/acounts');
         }
         
         function saveError(error)
@@ -187,7 +169,9 @@
         
         function getSuccess(data)
         {
-            vm.ledger = data;
+            vm.account = data.account;
+            vm.budgets = data.budgets;
+            vm.ledger = data.ledger;
         }
         
         function getError(error)
