@@ -20,5 +20,6 @@ insert into dbo.{{ table.name }}
 	from	@items x left join dbo.{{ table.name }} t
 				on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{% if forloop.last == false %}
 				and	{% endif %}{% endfor %}
-				and	{% for column in table.primary_keys %}{% if forloop.first == true %}t.{{ column.name | r_pad:19 }} is null{% endif %}{% endfor %}
+	where	{% for column in table.primary_keys %}{%if forloop.first == true %}t.{{ column.name | r_pad:23 }} is null{% endif %}{% endfor %}
+
 go
