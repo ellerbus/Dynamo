@@ -66,7 +66,7 @@ namespace NerdBudget.Tests.Core.Services
 
             var category = account.Categories.Last();
 
-            MockRepo.Setup(x => x.Insert(budget));
+            MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationSuccess);
 
@@ -99,7 +99,7 @@ namespace NerdBudget.Tests.Core.Services
 
             var category = account.Categories.Last();
 
-            MockRepo.Setup(x => x.Insert(budget));
+            MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationFailure);
 
@@ -123,7 +123,7 @@ namespace NerdBudget.Tests.Core.Services
 
             budget.UpdatedAt = DateTime.MinValue;
 
-            MockRepo.Setup(x => x.Update(budget));
+            MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationSuccess);
 
@@ -152,7 +152,7 @@ namespace NerdBudget.Tests.Core.Services
 
             budget.UpdatedAt = DateTime.MinValue;
 
-            MockRepo.Setup(x => x.Update(budget));
+            MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationSuccess);
 
@@ -175,7 +175,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var budget = Builder<Budget>.CreateNew().Build();
 
-            MockRepo.Setup(x => x.Update(budget));
+            MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationFailure);
 
@@ -191,7 +191,7 @@ namespace NerdBudget.Tests.Core.Services
 
             var category = account.Categories.Last();
 
-            MockRepo.Setup(x => x.Update(category.Budgets));
+            MockRepo.Setup(x => x.Save(category.Budgets));
 
             MockValidator.Setup(x => x.Validate(Any.Item)).Returns(ValidationSuccess);
 
@@ -214,7 +214,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var budgets = Builder<Budget>.CreateListOfSize(10).Build();
 
-            MockRepo.Setup(x => x.Update(budgets));
+            MockRepo.Setup(x => x.Save(budgets));
 
             MockValidator.Setup(x => x.Validate(It.IsAny<Budget>())).Returns(ValidationFailure);
 

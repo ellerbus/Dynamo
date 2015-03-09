@@ -48,7 +48,7 @@ namespace NerdBudget.Tests.Core.Services
 
             var account = GetAccount();
 
-            MockRepo.Setup(x => x.Insert(category));
+            MockRepo.Setup(x => x.Save(category));
 
             MockValidator.Setup(x => x.Validate(category)).Returns(ValidationSuccess);
 
@@ -75,7 +75,7 @@ namespace NerdBudget.Tests.Core.Services
 
             var account = GetAccount();
 
-            MockRepo.Setup(x => x.Insert(category));
+            MockRepo.Setup(x => x.Save(category));
 
             MockValidator.Setup(x => x.Validate(category)).Returns(ValidationFailure);
 
@@ -97,7 +97,7 @@ namespace NerdBudget.Tests.Core.Services
 
             category.UpdatedAt = DateTime.MinValue;
 
-            MockRepo.Setup(x => x.Update(category));
+            MockRepo.Setup(x => x.Save(category));
 
             MockValidator.Setup(x => x.Validate(category)).Returns(ValidationSuccess);
 
@@ -117,7 +117,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var category = Builder<Category>.CreateNew().Build();
 
-            MockRepo.Setup(x => x.Update(category));
+            MockRepo.Setup(x => x.Save(category));
 
             MockValidator.Setup(x => x.Validate(category)).Returns(ValidationFailure);
 
@@ -136,7 +136,7 @@ namespace NerdBudget.Tests.Core.Services
                 c.UpdatedAt = DateTime.MinValue;
             }
 
-            MockRepo.Setup(x => x.Update(account.Categories));
+            MockRepo.Setup(x => x.Save(account.Categories));
 
             MockValidator.Setup(x => x.Validate(Any.Item)).Returns(ValidationSuccess);
 
@@ -159,7 +159,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var account = GetAccount();
 
-            MockRepo.Setup(x => x.Update(account.Categories));
+            MockRepo.Setup(x => x.Save(account.Categories));
 
             MockValidator.Setup(x => x.Validate(Any.Item)).Returns(ValidationFailure);
 

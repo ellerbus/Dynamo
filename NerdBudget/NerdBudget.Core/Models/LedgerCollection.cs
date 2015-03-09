@@ -57,6 +57,8 @@ namespace NerdBudget.Core.Models
         {
             if (input.IsNotEmpty())
             {
+                IList<Map> maps = Account.Maps.ToMatchList();
+
                 int trxCount = Count;
 
                 string[] lines = input.AssertNotNull().Split('\r', '\n');
@@ -77,6 +79,13 @@ namespace NerdBudget.Core.Models
                         if (match == null)
                         {
                             led.Sequence = Count;
+
+                            Map map = maps.FindMatchFor(led);
+
+                            if (map != null)
+                            {
+                                led.BudgetId = map.BudgetId;
+                            }
 
                             Add(led);
                         }

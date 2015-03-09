@@ -6,7 +6,7 @@ create table dbo.MAP
 (
 	account_id				char(2) not null,
 	budget_id				char(2) not null,
-	map_id					int not null,
+	map_id					char(8) not null,
 	
 	regex_pattern			varchar(750) not null,
 

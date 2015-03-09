@@ -16,7 +16,7 @@
     {
         var vm = this;
 
-        vm.hasData = function () { return typeof vm.budgets !== "undefined" };
+        vm.hasData = function () { return typeof vm.account !== "undefined" };
 
         vm.updateSequences = updateSequences;
 

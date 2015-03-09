@@ -66,6 +66,7 @@
     <Folder Include="Procedures\Budget" />
     <Folder Include="Procedures\Balance" />
     <Folder Include="Procedures\Ledger" />
+    <Folder Include="Procedures\Map" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\ACCOUNT.sql" />
@@ -92,28 +93,13 @@
     <None Include="Tables\BALANCE.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Procedures\sp_PRUNE_ACCOUNTS.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Procedures\Account\AccountDeleteOne.sql" />
-    <None Include="Procedures\Account\AccountInsertOne.sql" />
     <None Include="Procedures\Account\AccountSelectMany.sql" />
     <None Include="Procedures\Account\AccountSelectOne.sql" />
-    <None Include="Procedures\Account\AccountUpdateOne.sql" />
     <None Include="Procedures\Category\CategoryDeleteOne.sql" />
-    <None Include="Procedures\Category\CategoryInsertOne.sql" />
-    <None Include="Procedures\Category\CategoryUpdateOne.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Procedures\Category\CategoryTableType.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Procedures\Category\CategoryUpdateMany.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Procedures\Budget\BudgetDeleteOne.sql" />
-    <None Include="Procedures\Budget\BudgetInsertOne.sql" />
-    <None Include="Procedures\Budget\BudgetUpdateOne.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Procedures\Balance\BalanceUpsertMany.sql" />
@@ -122,5 +108,22 @@
   <ItemGroup>
     <None Include="Procedures\Ledger\LedgerTableType.sql" />
     <None Include="Procedures\Ledger\LedgerUpsertMany.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Account\AccountUpsertOne.sql" />
+    <None Include="Procedures\Category\CategoryUpsertOne.sql" />
+    <None Include="Procedures\Budget\BudgetUpsertOne.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Budget\BudgetUpsertMany.sql" />
+    <None Include="Procedures\Budget\BudgetTableType.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Category\CategoryTableType.sql" />
+    <None Include="Procedures\Category\CategoryUpsertMany.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Map\MapTableType.sql" />
+    <None Include="Procedures\Map\MapUpsertMany.sql" />
   </ItemGroup>
 </Project>

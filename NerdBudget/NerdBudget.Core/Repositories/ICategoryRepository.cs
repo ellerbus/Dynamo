@@ -10,25 +10,18 @@ namespace NerdBudget.Core.Repositories
     public interface ICategoryRepository
     {
         ///	<summary>
-        ///	Inserts a single Category calling the
+        ///	Saves a single Category calling the
         ///	stored procedure CategoryInsertOne
         ///	</summary>
-        [Sql("CategoryInsertOne")]
-        void Insert(Category category);
+        [Sql("CategoryUpsertOne")]
+        void Save(Category category);
 
         ///	<summary>
-        ///	Updates a single Category calling the
-        ///	stored procedure CategoryUpdateOne
+        ///	Saves a many Categories calling the
+        ///	stored procedure CategoryUpsertMany
         ///	</summary>
-        [Sql("CategoryUpdateOne")]
-        void Update(Category category);
-
-        ///	<summary>
-        ///	Updates a single Category calling the
-        ///	stored procedure CategoryUpdateOne
-        ///	</summary>
-        [Sql("CategoryUpdateMany")]
-        void Update(IEnumerable<Category> categories);
+        [Sql("CategoryUpsertMany")]
+        void Save(IEnumerable<Category> categories);
 
         ///	<summary>
         ///	Deletes a single Category calling the

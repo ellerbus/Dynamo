@@ -30,5 +30,5 @@ insert into dbo.BALANCE
 	from	@items x left join dbo.BALANCE t
 				on	x.account_id          = t.account_id
 				and	x.as_of               = t.as_of
-				and	t.account_id          is null
+	where	t.account_id              is null
 go

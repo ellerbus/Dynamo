@@ -85,6 +85,8 @@ namespace NerdBudget.Web.ApiControllers
 
                 _service.Save(account.Balances);
 
+                _service.Save(account.Maps);
+
                 return Ok();
             }
             catch (ValidationException exp)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Augment;
 using FizzWare.NBuilder;
@@ -227,6 +228,44 @@ namespace NerdBudget.Tests.Core.Models
             var x = account.Ledgers.Find(ledger.Id.ToLower(), ledger.Date);
 
             Assert.AreSame(ledger, x);
+        }
+
+        [TestMethod]
+        public void LedgerCollection_Should_FindMap()
+        {
+            //  assign 
+            var account = CreateAccount();
+
+            var ledger = CreateEmptyLedger();
+
+            var map = new Map { RegexPattern = ledger.RegexMap, BudgetId = account.Categories.First().Budgets.First().Id };
+
+            account.Maps.Add(map);
+
+            //  act
+            account.Ledgers.Import(ledger.OriginalText);
+
+            //  assert
+            Assert.AreEqual(map.BudgetId, account.Ledgers.First().BudgetId);
+        }
+
+        private Account CreateAccount()
+        {
+            var account = Builder<Account>.CreateNew().Build();
+
+            var category = Builder<Category>.CreateNew().Build();
+
+            var budget = new Budget { CategoryId = category.Id, Id = "X" };
+
+            var po = new PrivateObject(account);
+
+            po.SetField("_categories", null);
+            po.SetProperty("AllCategories", new List<Category> { category });
+
+            po.SetField("_budgets", null);
+            po.SetProperty("AllBudgets", new List<Budget> { budget });
+
+            return account;
         }
 
         [TestMethod]

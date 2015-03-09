@@ -64,6 +64,11 @@ namespace NerdBudget.Core.Services
         void Save(IEnumerable<Balance> balances);
 
         /// <summary>
+        /// Saves many maps
+        /// </summary>
+        void Save(IEnumerable<Map> maps);
+
+        /// <summary>
         /// Saves many ledgers
         /// </summary>
         void Save(IEnumerable<Ledger> ledgers);
@@ -140,7 +145,7 @@ namespace NerdBudget.Core.Services
 
             _validator.ValidateAndThrow(account);
 
-            _repository.Insert(account);
+            _repository.Save(account);
 
             _cache.Find<IList<Account>>().RemoveAll();
         }
@@ -154,7 +159,7 @@ namespace NerdBudget.Core.Services
 
             account.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(account);
+            _repository.Save(account);
 
             _cache.Find<Account>().ByPrimaryKey(account.Id).Remove();
 
@@ -199,6 +204,36 @@ namespace NerdBudget.Core.Services
                 foreach (Balance bal in balancesToSave)
                 {
                     bal.IsModified = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves maps
+        /// </summary>
+        public void Save(IEnumerable<Map> maps)
+        {
+            IList<Map> mapsToSave = maps.Where(x => x.IsModified).ToList();
+
+            if (mapsToSave.Count > 0)
+            {
+                foreach (Map map in mapsToSave)
+                {
+                    if (map.CreatedAt == DateTime.MinValue)
+                    {
+                        map.CreatedAt = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        map.UpdatedAt = DateTime.UtcNow;
+                    }
+                }
+
+                _repository.Save(mapsToSave);
+
+                foreach (Map map in mapsToSave)
+                {
+                    map.IsModified = false;
                 }
             }
         }

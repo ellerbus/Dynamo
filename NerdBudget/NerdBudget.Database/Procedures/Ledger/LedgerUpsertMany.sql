@@ -49,5 +49,5 @@ insert into dbo.LEDGER
 				on	x.account_id          = t.account_id
 				and	x.ledger_id           = t.ledger_id
 				and	x.ledger_date         = t.ledger_date
-				and	t.account_id          is null
+	where	t.account_id              is null
 go

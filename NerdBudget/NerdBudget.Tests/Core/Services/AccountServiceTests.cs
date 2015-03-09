@@ -123,13 +123,11 @@ namespace NerdBudget.Tests.Core.Services
                 .With(x => x.CreatedAt = DateTime.MinValue)
                 .Build();
 
-            MockRepo.Setup(x => x.Insert(account));
+            MockRepo.Setup(x => x.Save(account));
 
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationSuccess);
 
             MockCache.Setup(x => x.GetAllKeys()).Returns(new[] { Any.ListKey });
-
-            MockCache.Setup(x => x.Remove(Any.ListKey));
 
             //	act
             SubjectUnderTest.Insert(account);
@@ -153,7 +151,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var account = Builder<Account>.CreateNew().Build();
 
-            MockRepo.Setup(x => x.Insert(account));
+            MockRepo.Setup(x => x.Save(account));
 
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationFailure);
 
@@ -173,13 +171,11 @@ namespace NerdBudget.Tests.Core.Services
                 .With(x => x.UpdatedAt = DateTime.MinValue)
                 .Build();
 
-            MockRepo.Setup(x => x.Update(account));
+            MockRepo.Setup(x => x.Save(account));
 
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationSuccess);
 
             MockCache.Setup(x => x.GetAllKeys()).Returns(new[] { Any.ListKey });
-
-            MockCache.Setup(x => x.Remove(Any.ListKey));
 
             MockCache.Setup(x => x.Remove(Any.GetByPrimaryKey(account.Id)));
 
@@ -202,7 +198,7 @@ namespace NerdBudget.Tests.Core.Services
             //	arrange
             var account = Builder<Account>.CreateNew().Build();
 
-            MockRepo.Setup(x => x.Update(account));
+            MockRepo.Setup(x => x.Save(account));
 
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationFailure);
 
@@ -223,8 +219,6 @@ namespace NerdBudget.Tests.Core.Services
             MockRepo.Setup(x => x.Delete(account));
 
             MockCache.Setup(x => x.GetAllKeys()).Returns(new[] { Any.ListKey });
-
-            MockCache.Setup(x => x.Remove(Any.ListKey));
 
             MockCache.Setup(x => x.Remove(Any.GetByPrimaryKey(account.Id)));
 

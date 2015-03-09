@@ -26,7 +26,7 @@ namespace NerdBudget.Core.Services
         void Update(Category category);
 
         /// <summary>
-        /// Updates a Category
+        /// Updates a Categories
         /// </summary>
         void Update(IEnumerable<Category> categories);
 
@@ -79,7 +79,7 @@ namespace NerdBudget.Core.Services
 
             _validator.ValidateAndThrow(category);
 
-            _repository.Insert(category);
+            _repository.Save(category);
 
             account.Categories.Add(category);
         }
@@ -93,7 +93,7 @@ namespace NerdBudget.Core.Services
 
             category.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(category);
+            _repository.Save(category);
         }
 
         /// <summary>
@@ -101,17 +101,17 @@ namespace NerdBudget.Core.Services
         /// </summary>
         public void Update(IEnumerable<Category> categories)
         {
-            foreach (Category c in categories)
+            foreach (Category cat in categories)
             {
-                _validator.ValidateAndThrow(c);
+                _validator.ValidateAndThrow(cat);
             }
 
-            foreach (Category c in categories)
+            foreach (Category cat in categories)
             {
-                c.UpdatedAt = DateTime.UtcNow;
+                cat.UpdatedAt = DateTime.UtcNow;
             }
 
-            _repository.Update(categories);
+            _repository.Save(categories);
         }
 
         /// <summary>

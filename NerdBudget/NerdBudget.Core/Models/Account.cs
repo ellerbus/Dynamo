@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Augment;
+using Insight.Database;
 
 namespace NerdBudget.Core.Models
 {
@@ -15,6 +16,7 @@ namespace NerdBudget.Core.Models
 
         public Account() : base() { }
 
+        [SqlConstructor]
         public Account(string id, string name, string type, DateTime startedAt, DateTime createdAt, DateTime? updatedAt)
             : base(id, name, type, startedAt, createdAt, updatedAt)
         {
@@ -161,26 +163,26 @@ namespace NerdBudget.Core.Models
         //}
         //private AdjustmentCollection _adjustments;
 
-        ///// <summary>
-        ///// Stub for Insight.Database to load MARS
-        ///// </summary>
-        //private IList<Map> AllMaps { get; set; }
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
+        private IList<Map> AllMaps { get; set; }
 
-        ///// <summary>
-        ///// List of all maps for this Account
-        ///// </summary>
-        //public MapCollection Maps
-        //{
-        //    get
-        //    {
-        //        if (_maps == null)
-        //        {
-        //            _maps = new MapCollection(this, AllMaps);
-        //        }
-        //        return _maps;
-        //    }
-        //}
-        //private MapCollection _maps;
+        /// <summary>
+        /// List of all maps for this Account
+        /// </summary>
+        public MapCollection Maps
+        {
+            get
+            {
+                if (_maps == null)
+                {
+                    _maps = new MapCollection(this, AllMaps);
+                }
+                return _maps;
+            }
+        }
+        private MapCollection _maps;
 
         /// <summary>
         /// Stub for Insight.Database to load MARS

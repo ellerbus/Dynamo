@@ -26,9 +26,9 @@ where	account_id                  = @account_id
 --from	dbo.ADJUSTMENT
 --where	account_id                  = @account_id
 
---select	*
---from	dbo.MAP
---where	account_id                  = @account_id
+select	*
+from	dbo.MAP
+where	account_id                  = @account_id
 
 select	*
 from	dbo.LEDGER

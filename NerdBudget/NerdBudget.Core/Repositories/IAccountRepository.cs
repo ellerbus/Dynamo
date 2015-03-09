@@ -25,23 +25,16 @@ namespace NerdBudget.Core.Repositories
         [Recordset(2, typeof(Category), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllCategories")]
         [Recordset(3, typeof(Budget), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBudgets")]
         //[Recordset(4, typeof(Adjustment), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllAdjustment")]
-        //[Recordset(5, typeof(Map), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllMaps")]
-        [Recordset(4, typeof(Ledger), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllLedgers")]
+        [Recordset(4, typeof(Map), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllMaps")]
+        [Recordset(5, typeof(Ledger), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllLedgers")]
         Account Get(string account_id);
 
         ///	<summary>
         ///	Inserts a single Account calling the
         ///	stored procedure AccountInsertOne
         ///	</summary>
-        [Sql("AccountInsertOne")]
-        void Insert(Account account);
-
-        ///	<summary>
-        ///	Updates a single Account calling the
-        ///	stored procedure AccountUpdateOne
-        ///	</summary>
-        [Sql("AccountUpdateOne")]
-        void Update(Account account);
+        [Sql("AccountUpsertOne")]
+        void Save(Account account);
 
         ///	<summary>
         ///	Deletes a single Account calling the
@@ -56,6 +49,13 @@ namespace NerdBudget.Core.Repositories
         ///	</summary>
         [Sql("BalanceUpsertMany")]
         void Save(IEnumerable<Balance> balances);
+
+        ///	<summary>
+        ///	Saves many Maps calling the
+        ///	stored procedure MapUpsertMany
+        ///	</summary>
+        [Sql("MapUpsertMany")]
+        void Save(IEnumerable<Map> maps);
 
         ///	<summary>
         ///	Saves many Ledgers calling the

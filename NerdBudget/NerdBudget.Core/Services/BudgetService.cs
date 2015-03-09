@@ -24,7 +24,7 @@ namespace NerdBudget.Core.Services
         void Update(Budget budget);
 
         /// <summary>
-        /// Updates a list of Budget
+        /// Updates a Budgets
         /// </summary>
         void Update(IEnumerable<Budget> budgets);
 
@@ -76,7 +76,7 @@ namespace NerdBudget.Core.Services
 
             _validator.ValidateAndThrow(budget);
 
-            _repository.Insert(budget);
+            _repository.Save(budget);
 
             category.Budgets.Add(budget);
         }
@@ -90,7 +90,7 @@ namespace NerdBudget.Core.Services
 
             budget.UpdatedAt = DateTime.UtcNow;
 
-            _repository.Update(budget);
+            _repository.Save(budget);
 
             //  categoryId rules them ALL
             Category current = budget.Category;
@@ -107,21 +107,21 @@ namespace NerdBudget.Core.Services
         }
 
         /// <summary>
-        /// Updates a list of Budget
+        /// Updates a Budget
         /// </summary>
         public void Update(IEnumerable<Budget> budgets)
         {
-            foreach (Budget budget in budgets)
+            foreach (Budget bud in budgets)
             {
-                _validator.ValidateAndThrow(budget);
+                _validator.ValidateAndThrow(bud);
             }
 
-            foreach (Budget budget in budgets)
+            foreach (Budget bud in budgets)
             {
-                budget.UpdatedAt = DateTime.UtcNow;
+                bud.UpdatedAt = DateTime.UtcNow;
             }
 
-            _repository.Update(budgets);
+            _repository.Save(budgets);
         }
 
         /// <summary>

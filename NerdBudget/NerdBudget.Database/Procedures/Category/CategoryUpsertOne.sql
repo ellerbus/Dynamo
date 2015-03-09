@@ -1,8 +1,8 @@
 
-if object_id('dbo.CategoryUpdateOne', 'P') is not null drop procedure dbo.CategoryUpdateOne
+if object_id('dbo.CategoryUpsertOne', 'P') is not null drop procedure dbo.CategoryUpsertOne
 go
 
-create procedure dbo.CategoryUpdateOne
+create procedure dbo.CategoryUpsertOne
 	@account_id                     char(2),
 	@category_id                    char(2),
 	@category_name                  varchar(30),
@@ -20,5 +20,34 @@ set		category_name               = @category_name,
 		updated_at                  = @updated_at
 where	account_id                  = @account_id
   and	category_id                 = @category_id
+
+if	@@rowcount = 0
+begin
+
+	insert into dbo.CATEGORY
+		(
+			account_id,
+			category_id,
+			category_name,
+			multiplier,
+			sequence,
+			created_at,
+			updated_at
+		)
+		values
+		(
+			@account_id,
+			@category_id,
+			@category_name,
+			@multiplier,
+			@sequence,
+			@created_at,
+			@updated_at
+		)
+		
+		
+end
+
+
 
 go

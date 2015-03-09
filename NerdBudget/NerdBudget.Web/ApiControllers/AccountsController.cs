@@ -136,32 +136,6 @@ namespace NerdBudget.Web.ApiControllers
 
         #endregion
 
-        #region Import
-
-        [HttpPost, Route("{id}/import")]
-        public IHttpActionResult PutTransactions(string id, [FromBody]string transactions)
-        {
-            Account account = _service.Get(id);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                account.Ledgers.Import(transactions);
-
-                return Ok();
-            }
-            catch (ValidationException ve)
-            {
-                return BadRequest(ve.Errors);
-            }
-        }
-
-        #endregion
-
         #region Helpers
 
         private JsonSerializerSettings GetPayloadSettings()
