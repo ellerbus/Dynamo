@@ -12,7 +12,7 @@
 
     LedgerListController.$inject = ['LedgerFactory', '$log'];
     LedgerImportController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$location', '$log'];
-    LedgerDetailController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$location', '$log'];
+    LedgerDetailController.$inject = ['LedgerFactory', '$routeParams', '$scope', '$filter', '$location', '$log'];
 
     //
     //	List Controller
@@ -56,11 +56,7 @@
         //	member variables
 
         var vm = this;
-
-        vm.transactions = '02/09/2015	NN NNNNN 9999 NNN# 9999993 99999 NNNNNNN NNNN	$1,499.99		$1,138.52	NNNNNNNNNNN NNNNNNN';
-        //02/09/2015	NNNNNNNN'N N99999 NNNNNNN NN 02/08/15 NNN 9999	$9.82		$2,538.52	NNNNNNNNNNN NNNNNNN
-        //02/09/2015	NNNNNNNN : NNNNNNNN NN: 9999999999NN: NNNNNNNN NNN NNNNN 999999999999999		$1,406.99	$2,548.34	NNNNNNNNNNN NNNNNNN';
-
+        
         var pk = { accountId: $routeParams.accountId };
 
         LedgerFactory.getImport(pk).$promise.then(getSuccess, getError);
@@ -82,7 +78,7 @@
         {
             var success = function (data)
             {
-                $location.path('/accounts');
+                $location.path('/ledger/update/' + $routeParams.accountId + '/map');
             };
 
             var error = function (error)
@@ -99,6 +95,7 @@
         {
             vm.account = data.account;
             vm.ledger = data.ledger;
+            vm.transactions = '';
         }
 
         function getError(error)
@@ -110,7 +107,7 @@
     //
     //	Details Controller
     //
-    function LedgerDetailController(LedgerFactory, $routeParams, $scope, $location, $log)
+    function LedgerDetailController(LedgerFactory, $routeParams, $scope, $filter, $location, $log)
     {
         //	member variables
         
@@ -118,8 +115,6 @@
 
         vm.serverErrors = {};
         
-        vm.action = $routeParams.action;
-
         var pk =
         {
             accountId: $routeParams.accountId,
@@ -147,21 +142,13 @@
             var pk =
             {
                 accountId: $routeParams.accountId,
-                id: $routeParams.id,
-                date: $routeParams.date
+                id: data.id,
+                date: $filter('date')(new Date(data.date), 'yyyy-MM-dd', 'UTC')
             };
 
-            if (vm.action == 'update')
-            {
-                LedgerFactory.update(pk, data).$promise.then(saveSuccess, saveError);
-            }
+            LedgerFactory.update(pk, data).$promise.then(getSuccess, saveError);
         }
-        
-        function saveSuccess(data)
-        {
-            $location.path('/acounts');
-        }
-        
+
         function saveError(error)
         {
             NB.applyError(error, vm, $scope.ledgerForm);
@@ -169,9 +156,16 @@
         
         function getSuccess(data)
         {
-            vm.account = data.account;
-            vm.budgets = data.budgets;
-            vm.ledger = data.ledger;
+            if (data && data.mappingComplete)
+            {
+                $location.path('/budgets/' + data.account.id);
+            }
+            else
+            {
+                vm.account = data.account;
+                vm.budgets = data.budgets;
+                vm.ledger = data.ledger;
+            }
         }
         
         function getError(error)

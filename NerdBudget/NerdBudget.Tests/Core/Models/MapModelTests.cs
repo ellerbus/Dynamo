@@ -30,27 +30,19 @@ namespace NerdBudget.Tests.Core.Models
         }
 
         [TestMethod]
-        public void Map_RegexPattern_Should_UpperCase()
-        {
-            var actual = new Map() { RegexPattern = "aa" };
-
-            Assert.AreEqual(" AA ", actual.RegexPattern);
-        }
-
-        [TestMethod]
         public void Map_RegexPattern_Should_AssignId()
         {
             var actual = new Map() { RegexPattern = "aa" };
 
-            Assert.AreEqual(Crc32.Hash(" AA ").ToUpper(), actual.Id);
+            Assert.AreEqual(Crc32.Hash("aa").ToUpper(), actual.Id);
         }
 
         [TestMethod]
-        public void Map_RegexPattern_Should_BePaddedWithSpaces()
+        public void Map_RegexPattern_Should_BeSameAsAssignment()
         {
             var actual = new Map() { RegexPattern = "aa" };
 
-            Assert.AreEqual(" AA ", actual.RegexPattern);
+            Assert.AreEqual("aa", actual.RegexPattern);
         }
 
 
@@ -75,6 +67,20 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual(dt.ToUniversalTime(), actual.UpdatedAt);
         }
 
+
+        #endregion
+
+        #region Method Tests
+
+        [TestMethod]
+        public void Map_Should_MatchUsingRegex()
+        {
+            var ledger = new Ledger { OriginalText = "03/09/2015\tNNNNNNNN : NNNNNNNN NN: 9999999999NN: NNNNNNNN NNN NNNNN 999999999999999\t\t$1,406.99\t$2,548.34\tNNNNNNNNNNN NNNNNNN" };
+
+            var map = new Map { RegexPattern = ledger.RegexMap };
+
+            Assert.IsTrue(map.IsMatchFor(ledger));
+        }
 
         #endregion
 

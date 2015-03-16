@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Augment;
 using EnsureThat;
 
@@ -17,19 +16,7 @@ namespace NerdBudget.Core.Models
 
         public static Map FindMatchFor(this IEnumerable<Map> maps, Ledger led)
         {
-            string descr = led.Description;
-
-            //  need to pad for REGEX boundary crap
-            if (!descr.StartsWith(" "))
-            {
-                descr = " " + descr;
-            }
-            if (!descr.EndsWith(" "))
-            {
-                descr += " ";
-            }
-
-            return maps.FirstOrDefault(x => Regex.IsMatch(descr, x.RegexPattern, RegexOptions.Compiled));
+            return maps.FirstOrDefault(x => x.IsMatchFor(led));
         }
     }
 
@@ -79,7 +66,7 @@ namespace NerdBudget.Core.Models
 
         #region Methods
 
-        public void CreateFor(Ledger ledger)
+        public Map CreateFor(Ledger ledger)
         {
             //  does a map already exist (make sure one pattern per budget)
             Map map = this.SingleOrDefault(x => x.RegexPattern == ledger.RegexMap);
@@ -100,6 +87,8 @@ namespace NerdBudget.Core.Models
                 //  ok we have one, so update the ledger
                 ledger.BudgetId = map.BudgetId;
             }
+
+            return map;
         }
 
         protected override void InsertItem(int index, Map item)

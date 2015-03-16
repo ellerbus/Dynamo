@@ -159,7 +159,7 @@ namespace NerdBudget.Core.Models
                 tmp = Regex.Replace(tmp, @"\s+", " ", RegexOptions.Compiled);
 
                 //  add spaces to make regex's easy
-                return " {0} ".FormatArgs(tmp);
+                return "{0}".FormatArgs(tmp).Trim();
             }
         }
 
@@ -189,10 +189,10 @@ namespace NerdBudget.Core.Models
                 //  01/01/01
                 tmp = ReplaceWithPatterns(tmp,
                     @"\d{2}/\d{2}/\d{2,4}",
-                    @"#\s?\d+",
-                    @"\s[A-Z]+\d+\s",
-                    @"\s\d+[A-Z]+\s",
-                    @"\s\d+\s"
+                    @"# ?\d+",
+                    @"[A-Z]+\d+",
+                    @"\d+[A-Z]+ ",
+                    @"\d+"
                     );
 
                 return tmp;

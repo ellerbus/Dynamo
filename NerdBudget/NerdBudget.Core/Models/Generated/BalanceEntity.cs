@@ -29,7 +29,7 @@ namespace NerdBudget.Core.Models.Entities
 		///	<summary>
 		///	Internally Managed 'Is' Modified Flag
 		///	</summary>
-        public bool IsModified { get; internal set; }
+		public bool IsModified { get; internal set; }
 		
 		#endregion
 
@@ -42,7 +42,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string AccountId
 		{
 			get { return _accountId; }
-			set { IsModified = _accountId != value; _accountId = value; }
+			set { IsModified |= _accountId != value; _accountId = value; }
 		}
 		private string _accountId;
 		
@@ -54,7 +54,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime AsOf
 		{
 			get { return _asOf; }
-			set { IsModified = _asOf != value; _asOf = value; }
+			set { IsModified |= _asOf != value; _asOf = value; }
 		}
 		private DateTime _asOf;
 		
@@ -70,7 +70,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual double Amount
 		{
 			get { return _amount; }
-			set { IsModified = _amount != value; _amount = value; }
+			set { IsModified |= _amount != value; _amount = value; }
 		}
 		private double _amount;
 
@@ -82,7 +82,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime CreatedAt
 		{
 			get { return _createdAt; }
-			set { IsModified = _createdAt != value; _createdAt = value; }
+			set { IsModified |= _createdAt != value; _createdAt = value; }
 		}
 		private DateTime _createdAt;
 
@@ -94,7 +94,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime? UpdatedAt
 		{
 			get { return _updatedAt; }
-			set { IsModified = _updatedAt != value; _updatedAt = value; }
+			set { IsModified |= _updatedAt != value; _updatedAt = value; }
 		}
 		private DateTime? _updatedAt;
 

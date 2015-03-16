@@ -249,36 +249,19 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
             var ledger = account.Ledgers.Last();
 
+            ledger.BudgetId = account.Categories.First().Budgets.First().Id;
+
             MockService.Setup(x => x.Get(account.Id)).Returns(account);
 
             MockService.Setup(x => x.Save(account.Ledgers));
+
+            MockService.Setup(x => x.Save(account.Maps));
 
             //		act
             var msg = SubjectUnderTest.Put(ledger.AccountId, ledger.Id, ledger.Date, ledger).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
-
-            MockService.VerifyAll();
-        }
-
-        [TestMethod]
-        public void LedgersController_PutOne_Should_SendBadRequest()
-        {
-            //		arrange
-            var account = GetAccount(true);
-
-            var ledger = account.Ledgers.Last();
-
-            MockService.Setup(x => x.Get(account.Id)).Returns(account);
-
-            MockService.Setup(x => x.Save(account.Ledgers)).Throws(new ValidationException(ValidationFailure.Errors));
-
-            //		act
-            var msg = SubjectUnderTest.Put(ledger.AccountId, ledger.Id, ledger.Date, ledger).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
 
             MockService.VerifyAll();
         }

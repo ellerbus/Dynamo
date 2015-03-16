@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -65,17 +66,7 @@ namespace NerdBudget.Core.Models
             get { return base.RegexPattern; }
             set
             {
-                string pattern = value.AssertNotNull().ToUpper();
-
-                if (!pattern.StartsWith(" "))
-                {
-                    pattern = " " + pattern;
-                }
-
-                if (!pattern.EndsWith(" "))
-                {
-                    pattern += " ";
-                }
+                string pattern = value.AssertNotNull().Trim();
 
                 base.RegexPattern = pattern;
 
@@ -132,6 +123,17 @@ namespace NerdBudget.Core.Models
             }
         }
         private Budget _budget;
+
+        #endregion
+
+        #region Methods
+
+        public bool IsMatchFor(Ledger ledger)
+        {
+            string descr = ledger.CleanDescription.Trim();
+
+            return Regex.IsMatch(descr, RegexPattern, RegexOptions.Compiled);
+        }
 
         #endregion
     }

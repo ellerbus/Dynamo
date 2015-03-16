@@ -24,7 +24,7 @@
 		        controller: 'LedgerImportController',
 		        controllerAs: 'vm'
 		    })
-			.when('/ledger/update/:accountId/:id/:date', {
+			.when('/ledger/update/:accountId/:id/:date?', {
 			    templateUrl: '/App/Ledgers/ledger.html',
 	            controller: 'LedgerDetailController',
 			    controllerAs: 'vm'

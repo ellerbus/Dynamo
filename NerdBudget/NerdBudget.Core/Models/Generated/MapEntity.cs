@@ -43,7 +43,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string AccountId
 		{
 			get { return _accountId; }
-			set { IsModified = _accountId != value; _accountId = value; }
+			set { IsModified |= _accountId != value; _accountId = value; }
 		}
 		private string _accountId;
 		
@@ -55,7 +55,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string BudgetId
 		{
 			get { return _budgetId; }
-			set { IsModified = _budgetId != value; _budgetId = value; }
+			set { IsModified |= _budgetId != value; _budgetId = value; }
 		}
 		private string _budgetId;
 		
@@ -67,7 +67,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string Id
 		{
 			get { return _id; }
-			set { IsModified = _id != value; _id = value; }
+			set { IsModified |= _id != value; _id = value; }
 		}
 		private string _id;
 		
@@ -83,7 +83,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string RegexPattern
 		{
 			get { return _regexPattern; }
-			set { IsModified = _regexPattern != value; _regexPattern = value; }
+			set { IsModified |= _regexPattern != value; _regexPattern = value; }
 		}
 		private string _regexPattern;
 
@@ -95,7 +95,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime CreatedAt
 		{
 			get { return _createdAt; }
-			set { IsModified = _createdAt != value; _createdAt = value; }
+			set { IsModified |= _createdAt != value; _createdAt = value; }
 		}
 		private DateTime _createdAt;
 
@@ -107,7 +107,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime? UpdatedAt
 		{
 			get { return _updatedAt; }
-			set { IsModified = _updatedAt != value; _updatedAt = value; }
+			set { IsModified |= _updatedAt != value; _updatedAt = value; }
 		}
 		private DateTime? _updatedAt;
 

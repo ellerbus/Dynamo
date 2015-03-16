@@ -53,6 +53,11 @@ namespace NerdBudget.Core.Models
 
         #region Methods
 
+        public IEnumerable<Ledger> MissingBudget()
+        {
+            return this.Where(x => x.BudgetId.IsNullOrEmpty());
+        }
+
         public void Import(string input)
         {
             if (input.IsNotEmpty())

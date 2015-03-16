@@ -18,10 +18,8 @@
 		var actions =
 		{
 		    //query:		{ method: 'GET', isArray: true, url: url + ':accountId/history/:startDate/:endDate' },
-			//get:		{ method: 'GET' },
-			//add:		{ method: 'POST' },
-			//update:     { method: 'PUT' },
-		    //'delete':   { method: 'DELETE' },
+			get:		    { method: 'GET' },
+		    update:         { method: 'PUT' },
 		    'getImport':    { method: 'GET', url: url + ':accountId/import' },
 			'import':       { method: 'POST', url: url + ':accountId/import' }
 		};

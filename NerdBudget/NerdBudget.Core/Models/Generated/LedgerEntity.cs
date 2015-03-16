@@ -48,7 +48,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string AccountId
 		{
 			get { return _accountId; }
-			set { IsModified = _accountId != value; _accountId = value; }
+			set { IsModified |= _accountId != value; _accountId = value; }
 		}
 		private string _accountId;
 		
@@ -60,7 +60,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string Id
 		{
 			get { return _id; }
-			set { IsModified = _id != value; _id = value; }
+			set { IsModified |= _id != value; _id = value; }
 		}
 		private string _id;
 		
@@ -72,7 +72,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime Date
 		{
 			get { return _date; }
-			set { IsModified = _date != value; _date = value; }
+			set { IsModified |= _date != value; _date = value; }
 		}
 		private DateTime _date;
 		
@@ -88,7 +88,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string BudgetId
 		{
 			get { return _budgetId; }
-			set { IsModified = _budgetId != value; _budgetId = value; }
+			set { IsModified |= _budgetId != value; _budgetId = value; }
 		}
 		private string _budgetId;
 
@@ -100,7 +100,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string OriginalText
 		{
 			get { return _originalText; }
-			set { IsModified = _originalText != value; _originalText = value; }
+			set { IsModified |= _originalText != value; _originalText = value; }
 		}
 		private string _originalText;
 
@@ -112,7 +112,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual string Description
 		{
 			get { return _description; }
-			set { IsModified = _description != value; _description = value; }
+			set { IsModified |= _description != value; _description = value; }
 		}
 		private string _description;
 
@@ -124,7 +124,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual double Amount
 		{
 			get { return _amount; }
-			set { IsModified = _amount != value; _amount = value; }
+			set { IsModified |= _amount != value; _amount = value; }
 		}
 		private double _amount;
 
@@ -136,7 +136,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual double Balance
 		{
 			get { return _balance; }
-			set { IsModified = _balance != value; _balance = value; }
+			set { IsModified |= _balance != value; _balance = value; }
 		}
 		private double _balance;
 
@@ -148,7 +148,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual int Sequence
 		{
 			get { return _sequence; }
-			set { IsModified = _sequence != value; _sequence = value; }
+			set { IsModified |= _sequence != value; _sequence = value; }
 		}
 		private int _sequence;
 
@@ -160,7 +160,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime CreatedAt
 		{
 			get { return _createdAt; }
-			set { IsModified = _createdAt != value; _createdAt = value; }
+			set { IsModified |= _createdAt != value; _createdAt = value; }
 		}
 		private DateTime _createdAt;
 
@@ -172,7 +172,7 @@ namespace NerdBudget.Core.Models.Entities
 		public virtual DateTime? UpdatedAt
 		{
 			get { return _updatedAt; }
-			set { IsModified = _updatedAt != value; _updatedAt = value; }
+			set { IsModified |= _updatedAt != value; _updatedAt = value; }
 		}
 		private DateTime? _updatedAt;
 

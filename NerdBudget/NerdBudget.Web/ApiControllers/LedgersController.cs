@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Augment;
 using FluentValidation;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
@@ -95,6 +96,46 @@ namespace NerdBudget.Web.ApiControllers
             }
         }
 
+        #endregion
+
+        #region Normal CRUD Actions
+
+        // GET: api/ledger/5
+        [HttpGet, Route("{accountId}/map"), ResponseType(typeof(Ledger))]
+        public IHttpActionResult Get(string accountId)
+        {
+            Account account = GetAccount(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            Ledger ledger = account.Ledgers.MissingBudget().FirstOrDefault();
+
+            JsonSerializerSettings jss = GetPayloadSettings();
+
+            if (ledger == null)
+            {
+                var done = new
+                {
+                    account = account,
+                    mappingComplete = true
+                };
+
+                return Json(done, jss);
+            }
+
+            var model = new
+            {
+                account = account,
+                budgets = account.Categories.SelectMany(x => x.Budgets),
+                ledger = ledger
+            };
+
+            return Json(model, jss);
+        }
+
         // GET: api/ledger/5
         [HttpGet, Route("{accountId}/{id}/{date}"), ResponseType(typeof(Ledger))]
         public IHttpActionResult Get(string accountId, string id, DateTime date)
@@ -138,16 +179,44 @@ namespace NerdBudget.Web.ApiControllers
 
             Ledger model = account.Ledgers.Find(id, date);
 
+            bool mapping = false;
+
             if (model == null)
             {
                 return NotFound();
             }
 
-            model.BudgetId = ledger.BudgetId;
+            if (model.BudgetId.IsNullOrEmpty())
+            {
+                //  need to associate a map
+                Map map = account.Maps.CreateFor(ledger);
+
+                foreach (Ledger x in account.Ledgers.MissingBudget())
+                {
+                    if (map.IsMatchFor(x))
+                    {
+                        x.BudgetId = map.BudgetId;
+                    }
+                }
+
+                mapping = true;
+            }
+            else
+            {
+                //  otherwise we're just moving "this" ledger
+                model.BudgetId = ledger.BudgetId;
+            }
 
             try
             {
                 _service.Save(account.Ledgers);
+
+                _service.Save(account.Maps);
+
+                if (mapping)
+                {
+                    return Get(accountId);
+                }
 
                 return Ok();
             }
