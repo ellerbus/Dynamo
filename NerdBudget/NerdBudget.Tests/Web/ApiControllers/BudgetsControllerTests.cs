@@ -68,9 +68,9 @@ namespace NerdBudget.Tests.Web.ApiControllers
         private JsonSerializerSettings GetPayloadSettings()
         {
             return PayloadManager
-                .AddPayload<Account>("Id", "Name")
-                .AddPayload<Category>("Id", "AccountId", "Name")
-                .AddPayload<Budget>("Id", "AccountId", "CategoryId", "Name", "StartDate", "EndDate", "Amount", "Frequency")
+                .AddPayload<Account>("Id,Name")
+                .AddPayload<Category>("Id,AccountId,Name")
+                .AddPayload<Budget>("Id,AccountId,CategoryId,Name,StartDate,EndDate,Amount,Frequency")
                 .ToSettings();
         }
 
@@ -85,9 +85,9 @@ namespace NerdBudget.Tests.Web.ApiControllers
             var account = GetAccount();
 
             var settings = PayloadManager
-                .AddPayload<Account>("Id", "Name", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
-                .AddPayload<Category>("Id", "AccountId", "Name", "Budgets")
-                .AddPayload<Budget>("Id", "AccountId", "Name", "Frequency", "Amount", "WeeklyAmount", "MonthlyAmount", "YearlyAmount")
+                .AddPayload<Account>("Id,Name,WeeklyAmount,MonthlyAmount,YearlyAmount")
+                .AddPayload<Category>("Id,AccountId,Name,Budgets")
+                .AddPayload<Budget>("Id,AccountId,Name,Frequency,Amount,WeeklyAmount,MonthlyAmount,YearlyAmount")
                 .ToSettings();
 
             var model = new

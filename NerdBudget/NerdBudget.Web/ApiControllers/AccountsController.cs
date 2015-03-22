@@ -103,7 +103,7 @@ namespace NerdBudget.Web.ApiControllers
 
                 JsonSerializerSettings jss = GetPayloadSettings();
 
-                return Json(account, jss);
+                return Json(model, jss);
             }
             catch (ValidationException ve)
             {
@@ -140,7 +140,7 @@ namespace NerdBudget.Web.ApiControllers
 
         private JsonSerializerSettings GetPayloadSettings()
         {
-            JsonSerializerSettings jss = PayloadManager.AddPayload<Account>("Id", "Name").ToSettings();
+            JsonSerializerSettings jss = PayloadManager.AddPayload<Account>("Id,Name").ToSettings();
 
             return jss;
         }

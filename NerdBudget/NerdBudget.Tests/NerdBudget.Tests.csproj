@@ -47,6 +47,9 @@
     <Reference Include="AutoMoq">
       <HintPath>..\packages\AutoMoq.1.6.2.0\lib\net35\AutoMoq.dll</HintPath>
     </Reference>
+    <Reference Include="BCrypt.Net">
+      <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="EnsureThat">
       <HintPath>..\packages\Ensure.That.2.0.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\EnsureThat.dll\EnsureThat.dll</HintPath>
     </Reference>
@@ -112,9 +115,11 @@
     <Compile Include="Core\Models\CategoryModelTests.cs" />
     <Compile Include="Core\Models\LedgerModelTests.cs" />
     <Compile Include="Core\Models\MapModelTests.cs" />
+    <Compile Include="Core\Models\MemberModelTests.cs" />
     <Compile Include="Core\Services\AccountServiceTests.cs" />
     <Compile Include="Core\Services\BudgetServiceTests.cs" />
     <Compile Include="Core\Services\CategoryServiceTests.cs" />
+    <Compile Include="Core\Services\MemberServiceTests.cs" />
     <Compile Include="Core\Services\ServiceTestHelper.cs" />
     <Compile Include="Core\Validators\AccountValidatorTests.cs" />
     <Compile Include="Core\Validators\BudgetValidatorTests.cs" />
@@ -142,7 +147,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="License.txt" />
     <Content Include="SampleTransactions.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

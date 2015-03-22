@@ -36,9 +36,21 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names">Additional Properties that are not value types or strings</param>
         /// <returns></returns>
-        public static IReducedPayloadContractResolver StandardPayload<T>(params string[] names)
+        public static IReducedPayloadContractResolver StandardPayload<T>(string names)
         {
             return new ReducedPayloadContractResolver().AddBasicPayload<T>(names);
+        }
+
+        /// <summary>
+        /// Adds a list of property names to be included in the JSON serialization. Automatically
+        /// includes all Public|Instance properties that are a Value Type or String
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="names">Additional Properties that are not value types or strings</param>
+        /// <returns></returns>
+        public static IReducedPayloadContractResolver StandardPayload<T>()
+        {
+            return new ReducedPayloadContractResolver().AddBasicPayload<T>();
         }
 
         /// <summary>
@@ -47,7 +59,7 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names"></param>
         /// <returns></returns>
-        public static IReducedPayloadContractResolver AddPayload<T>(params string[] names)
+        public static IReducedPayloadContractResolver AddPayload<T>(string names)
         {
             return new ReducedPayloadContractResolver().AddPayload<T>(names);
         }
@@ -74,9 +86,10 @@ namespace NerdBudget.Web
         /// includes all Public|Instance properties that are a Value Type or String
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="names">Additional Properties that are not value types or strings</param>
+        /// <param name="names">Additional Properties that are not value types or strings (Comma delimited)</param>
         /// <returns></returns>
-        IReducedPayloadContractResolver AddBasicPayload<T>(params string[] names);
+        IReducedPayloadContractResolver AddBasicPayload<T>(string names);
+        IReducedPayloadContractResolver AddBasicPayload<T>();
 
         /// <summary>
         /// Adds a list of property names to be included in the JSON serialization
@@ -84,7 +97,7 @@ namespace NerdBudget.Web
         /// <typeparam name="T"></typeparam>
         /// <param name="names"></param>
         /// <returns></returns>
-        IReducedPayloadContractResolver AddPayload<T>(params string[] names);
+        IReducedPayloadContractResolver AddPayload<T>(string names);
 
         /// <summary>
         /// Adds a list of property names to be included in the JSON serialization
@@ -118,6 +131,8 @@ namespace NerdBudget.Web
     {
         #region Members
 
+        private const char Sep = ',';
+
         private Dictionary<Type, HashSet<string>> _payload = new Dictionary<Type, HashSet<string>>();
 
         #endregion
@@ -129,16 +144,34 @@ namespace NerdBudget.Web
         /// includes all Public|Instance properties that are a Value Type or String
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="names"></param>
+        /// <param name="names">Comma delimited list</param>
         /// <returns></returns>
-        public IReducedPayloadContractResolver AddBasicPayload<T>(params string[] names)
+        public IReducedPayloadContractResolver AddBasicPayload<T>()
+        {
+            Type type = typeof(T);
+
+            IEnumerable<string> props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.PropertyType.IsValueType || x.PropertyType == typeof(string))
+                .Select(x => x.Name);
+
+            return AddPayload<T>(props);
+        }
+
+        /// <summary>
+        /// Adds a list of property names to be included in the JSON serialization. Automatically
+        /// includes all Public|Instance properties that are a Value Type or String
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="names">Comma delimited list</param>
+        /// <returns></returns>
+        public IReducedPayloadContractResolver AddBasicPayload<T>(string names)
         {
             Type type = typeof(T);
 
             IEnumerable<string> props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(x => x.PropertyType.IsValueType || x.PropertyType == typeof(string))
                 .Select(x => x.Name)
-                .Union(names);
+                .Union(names.Split(Sep));
 
             return AddPayload<T>(props);
         }
@@ -147,11 +180,11 @@ namespace NerdBudget.Web
         /// Adds a list of property names to be included in the JSON serialization
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="names"></param>
+        /// <param name="names">Comma delimited list</param>
         /// <returns></returns>
-        public IReducedPayloadContractResolver AddPayload<T>(params string[] names)
+        public IReducedPayloadContractResolver AddPayload<T>(string names)
         {
-            return AddPayload<T>(names as IEnumerable<string>);
+            return AddPayload<T>(names.Split(Sep));
         }
 
         /// <summary>

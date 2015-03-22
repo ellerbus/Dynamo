@@ -12,6 +12,8 @@ namespace NerdBudget.Web
             // Code that runs on application startup
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
             InjectorConfig.Register();
         }
     }

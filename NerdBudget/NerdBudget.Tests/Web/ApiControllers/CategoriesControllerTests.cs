@@ -57,8 +57,8 @@ namespace NerdBudget.Tests.Web.ApiControllers
         private JsonSerializerSettings GetPayloadSettings()
         {
             return PayloadManager
-                .AddPayload<Account>("Id", "Name")
-                .AddPayload<Category>("Id", "Name")
+                .AddPayload<Account>("Id,Name")
+                .AddPayload<Category>("Id,Name")
                 .ToSettings();
         }
 

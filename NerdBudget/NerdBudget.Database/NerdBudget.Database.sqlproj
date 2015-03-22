@@ -67,6 +67,7 @@
     <Folder Include="Procedures\Balance" />
     <Folder Include="Procedures\Ledger" />
     <Folder Include="Procedures\Map" />
+    <Folder Include="Procedures\Member" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\ACCOUNT.sql" />
@@ -125,5 +126,8 @@
   <ItemGroup>
     <None Include="Procedures\Map\MapTableType.sql" />
     <None Include="Procedures\Map\MapUpsertMany.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Member\MemberUpsertOne.sql" />
   </ItemGroup>
 </Project>

@@ -217,8 +217,8 @@ namespace NerdBudget.Web.ApiControllers
         private JsonSerializerSettings GetPayloadSettings()
         {
             JsonSerializerSettings jss = PayloadManager
-                .AddPayload<Account>("Id", "Name")
-                .AddPayload<Category>("Id", "Name")
+                .AddPayload<Account>("Id,Name")
+                .AddPayload<Category>("Id,Name")
                 .ToSettings();
 
             return jss;
