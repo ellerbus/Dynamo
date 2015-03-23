@@ -32,6 +32,14 @@ namespace NerdBudget.Web.Controllers
             return View(new AccountsViewModel(_service.GetList()));
         }
 
+        //
+        // GET: /Member/Login
+        [Route("~/Categories/{id}")]
+        public ActionResult Categories(string id)
+        {
+            return View(new CategoriesViewModel(_service.Get(id)));
+        }
+
         #endregion
     }
 }

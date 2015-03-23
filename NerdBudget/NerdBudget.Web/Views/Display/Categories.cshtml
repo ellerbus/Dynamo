@@ -1,44 +1,52 @@
-﻿@model AccountsViewModel
+﻿@model CategoriesViewModel
 
 @{
-  ViewBag.Title = "Accounts";
+  ViewBag.Title = "Categories";
 }
 
-<script src="@Url.Content("~/App/Accounts.js")"></script>
+<script src="@Url.Content("~/App/Categories.js")"></script>
 
 <script type="text/javascript">
   var data = @Html.Raw(Model.ToJson());
 
-  var vm = new AccountsViewModel(data.accounts);
+  var vm = new CategoriesViewModel(data.account, data.categories);
 
-  $(function(){ ko.applyBindings(vm); });
+  $(function(){
+    $('table.table-sortable tbody').sortable({
+      items: "tr:not(.ui-state-disabled)",
+      update: function( event, ui ) { alert('done');},
+      helper: function(e, tr)
+      {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function(index)
+        {
+          // Set helper cell sizes to match the original sizes
+          $(this).width($originals.eq(index).width());
+        });
+        return $helper;
+      }
+    });
+    ko.applyBindings(vm);
+  });
 </script>
 
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped table-sortable">
   <thead>
     <tr>
       <th style="width: 50px" class="text-center">ID</th>
       <th>Name</th>
-      <th class="icons">
-      </th>
-      <th class="icons">
-      </th>
+      <th class="icons text-right">I/E</th>
       <th class="icons">
         <a href="#" data-bind="click: create" nb-create-icon></a>
       </th>
     </tr>
   </thead>
-  <tbody data-bind="foreach: accounts">
-    <tr>
+  <tbody data-bind="foreach: categories">
+    <tr data-bind="css: multiplier == 1 ? 'ui-state-disabled' : ''">
       <td data-bind="text: id" class="text-center"></td>
       <td data-bind="text: name"></td>
-      <td class="icons">
-        <a nb-list-icon data-bind="attr: { href: $parent.categoryPath(id) }"></a>
-        <a nb-dollar-icon data-bind="attr: { href: $parent.budgetPath(id) }"></a>
-      </td>
-      <td class="icons">
-        <a nb-import-icon data-bind="attr: { href: $parent.importPath(id) }"></a>
-      </td>
+      <td data-bind="text: multiplier" class="text-right"></td>
       <td class="icons">
         <a href="#" data-bind="click: $parent.update" nb-update-icon></a>
         <a href="#" data-bind="click: $parent.delete" nb-delete-icon></a>
@@ -52,7 +60,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Account</h4>
+        <h4 class="modal-title">Category</h4>
       </div>
       <div class="modal-body">
         <form id="accountForm" class="form-horizontal" data-bind="submit: save">

@@ -1,4 +1,15 @@
-﻿function DetailsFormView(modalSelector, options)
+﻿$(function ()
+{
+    $('[nb-create-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-plus fa-fw text-success"></i>');
+    $('[nb-update-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-pencil fa-fw text-primary"></i>');
+    $('[nb-delete-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-times fa-fw text-danger"></i>');
+    
+    $('[nb-list-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-list fa-fw"></i>');
+    $('[nb-dollar-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-usd fa-fw text-success"></i>');
+    $('[nb-import-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-download fa-fw"></i>');
+});
+
+function DetailsFormView(modalSelector, options)
 {
     var self = this;
 
@@ -6,12 +17,16 @@
 
     self.options = options;
 
+    self.item = null;
+
+    self.clone = null;
+
     //  creating, updating, deleting
     self.state = '';
 
     self.errors = [];
 
-    ko.track(this);
+    ko.track(self);
 
     self.showId = function ()
     {
@@ -62,6 +77,10 @@
     //
     self.cancel = function ()
     {
+        self.item = null;
+
+        self.clone = null;
+
         if (self.options.onCancelled) self.options.onCancelled();
 
         self.close();
@@ -87,9 +106,15 @@
         return false;
     };
 
-    self.open = function (state)
+    self.open = function (state, data)
     {
+        self.errors = [];
+
         self.state = state;
+
+        self.item = data;
+
+        self.clone = new self.options.model(data);
 
         $(self.modalSelector).modal('show');
     };
@@ -98,10 +123,14 @@
     {
         self.state = '';
 
+        self.item = null;
+
+        self.clone = null;
+
         $(self.modalSelector).modal('hide');
     };
 
-    self.loadErrors = function (jqXHR)
+    self.onError = function (jqXHR, textStatus, errorThrown)
     {
         var res = jqXHR.responseJSON;
 
@@ -199,13 +228,13 @@
 
         if (data)
         {
-            options.url = fillUrl(url, data);
+            options.url = $.restSetup.rootUrl + fillUrl(url, data);
 
             options.data = data;
         }
         else
         {
-            options.url = url;
+            options.url = $.restSetup.rootUrl + url;
         }
 
         return options;

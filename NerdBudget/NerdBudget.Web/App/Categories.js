@@ -1,9 +1,10 @@
-﻿function AccountModel(data)
+﻿function CategoryModel(data)
 {
     var self = this;
 
     self.id = '';
     self.name = '';
+    self.multiplier = 0;
 
     ko.track(self);
 
@@ -17,21 +18,24 @@
         {
             self.id = data.id || '';
             self.name = data.name || '';
+            self.multiplier = data.multiplier || '';
         }
     };
 };
 
 
-function AccountsViewModel(accounts)
+function CategoriesViewModel(account, categories)
 {
     var self = this;
 
-    self.accounts = ko.utils.arrayMap(accounts, function (data) { return new AccountModel(data); });
+    self.account = account;
 
-    self.apiUrl = 'api/Accounts';
+    self.categories = ko.utils.arrayMap(categories, function (data) { return new CategoryModel(data); });
 
-    //  selected account
-    self.account = null;
+    self.apiUrl = 'api/Categories/' + account.id;
+
+    //  selected category
+    self.category = null;
 
     //  clone to work on for "cancel" purposes
     self.clone = null;
@@ -40,7 +44,7 @@ function AccountsViewModel(accounts)
         onCreated: onCreated,
         onUpdated: onUpdated,
         onDeleted: onDeleted,
-        model: AccountModel
+        model: CategoryModel
     };
 
     self.form = new DetailsFormView('div.modal', options);
@@ -62,26 +66,11 @@ function AccountsViewModel(accounts)
         self.form.open('delete', data);
     };
 
-    self.categoryPath = function (id)
-    {
-        return $.restSetup.rootUrl + 'Categories/' + id;
-    };
-
-    self.budgetPath = function (id)
-    {
-        return $.restSetup.rootUrl + 'Budgets/' + id;
-    };
-
-    self.importPath = function (id)
-    {
-        return $.restSetup.rootUrl + 'Import/' + id;
-    };
-
     function onCreated()
     {
         var onSuccess = function (data, textStatus, jqXHR)
         {
-            self.accounts.push(new AccountModel(data));
+            self.categories.push(new CategoryModel(data));
 
             self.form.close();
         };
@@ -105,7 +94,7 @@ function AccountsViewModel(accounts)
     {
         var onSuccess = function ()
         {
-            self.accounts.remove(self.form.item);
+            self.categories.remove(self.form.item);
 
             self.form.close();
         };
