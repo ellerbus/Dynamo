@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FluentValidation;
@@ -11,7 +10,7 @@ namespace NerdBudget.Web.ApiControllers
     ///	<summary>
     /// Represents a basic controller for Account
     ///	</summary>
-    [RoutePrefix("api/accounts")]
+    [RoutePrefix("api/accounts"), Authorize]
     public class AccountsController : BaseController
     {
         #region Members
@@ -25,41 +24,6 @@ namespace NerdBudget.Web.ApiControllers
         public AccountsController(IAccountService service)
         {
             _service = service;
-        }
-
-        #endregion
-
-        #region GetAll
-
-        // GET: api/account
-        [HttpGet, Route("")]
-        public IHttpActionResult GetAll()
-        {
-            IList<Account> accounts = _service.GetList();
-
-            JsonSerializerSettings jss = GetPayloadSettings();
-
-            return Json(accounts, jss);
-        }
-
-        #endregion
-
-        #region Detail Display
-
-        // GET: api/account/5
-        [HttpGet, Route("{id}"), ResponseType(typeof(Account))]
-        public IHttpActionResult Get(string id)
-        {
-            Account account = _service.Get(id);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            JsonSerializerSettings jss = GetPayloadSettings();
-
-            return Json(account, jss);
         }
 
         #endregion

@@ -199,6 +199,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BudgetsViewModel.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\AccountsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -212,6 +213,10 @@
     <Content Include="Views\Display\Accounts.cshtml" />
     <Content Include="Scripts\Knockout.Punches.min.js" />
     <Content Include="Views\Display\Categories.cshtml" />
+    <Content Include="Views\Display\_Tabs.cshtml" />
+    <None Include="Views\Display\Import.cshtml" />
+    <Content Include="Views\Display\Budgets.cshtml" />
+    <Content Include="Views\Display\Analysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

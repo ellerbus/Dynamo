@@ -10,6 +10,8 @@
 
     self.update = update;
 
+    self.isIncome = function () { return self.multiplier == 1 ? "Yes" : ""; };
+
     self.update(data);
 
     function update(data)
@@ -50,6 +52,22 @@ function CategoriesViewModel(account, categories)
     self.form = new DetailsFormView('div.modal', options);
 
     ko.track(self);
+
+    self.sequences = function (event, ui)
+    {
+        var ids = [];
+
+        $('table.table-sortable tbody tr').each(function (idx)
+        {
+            var txt = $(this).find('td:first').attr('category-id');
+
+            ids[ids.length] = txt;
+        });
+
+        var onSuccess = null;
+
+        $.update(self.apiUrl + '/sequences', { sequence: ids }).then(onSuccess, self.form.onError);
+    };
 
     self.create = function ()
     {

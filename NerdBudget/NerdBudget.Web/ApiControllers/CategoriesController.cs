@@ -11,10 +11,12 @@ namespace NerdBudget.Web.ApiControllers
     ///	<summary>
     /// Represents a basic controller for Category
     ///	</summary>
-    [RoutePrefix("api/categories")]
+    [RoutePrefix("api/categories"), Authorize]
     public class CategoriesController : BaseController
     {
         #region Members
+
+        public class Seq { public string[] Sequence { get; set; } }
 
         private IAccountService _accountService;
         private ICategoryService _categoryService;
@@ -27,60 +29,6 @@ namespace NerdBudget.Web.ApiControllers
         {
             _accountService = accountSvc;
             _categoryService = categorySvc;
-        }
-
-        #endregion
-
-        #region GetAll
-
-        // GET: api/category
-        [HttpGet, Route("{accountId}"), ResponseType(typeof(Account))]
-        public IHttpActionResult GetAll(string accountId)
-        {
-            Account account = _accountService.Get(accountId);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            JsonSerializerSettings jss = GetPayloadSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories
-            };
-
-            return Json(model, jss);
-        }
-
-        #endregion
-
-        #region Detail Display
-
-        // GET: api/category/5
-        [HttpGet, Route("{accountId}/{id}"), ResponseType(typeof(Category))]
-        public IHttpActionResult Get(string accountId, string id)
-        {
-            try
-            {
-                Category category = GetCategory(accountId, id);
-
-                JsonSerializerSettings jss = GetPayloadSettings();
-
-                var model = new
-                {
-                    account = category.Account,
-                    category = category
-                };
-
-                return Json(model, jss);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
         }
 
         #endregion
@@ -114,7 +62,7 @@ namespace NerdBudget.Web.ApiControllers
 
         // PUT: api/category/5/sequences
         [HttpPut, Route("{accountId}/sequences")]
-        public IHttpActionResult PutSequences(string accountId, [FromBody]string[] ids)
+        public IHttpActionResult PutSequences(string accountId, [FromBody]Seq sequences)
         {
             Account account = _accountService.Get(accountId);
 
@@ -127,7 +75,7 @@ namespace NerdBudget.Web.ApiControllers
             {
                 int seq = 0;
 
-                foreach (string id in ids)
+                foreach (string id in sequences.Sequence)
                 {
                     Category c = account.Categories[id];
 
@@ -218,7 +166,7 @@ namespace NerdBudget.Web.ApiControllers
         {
             JsonSerializerSettings jss = PayloadManager
                 .AddPayload<Account>("Id,Name")
-                .AddPayload<Category>("Id,Name")
+                .AddPayload<Category>("Id,Name,Multiplier")
                 .ToSettings();
 
             return jss;

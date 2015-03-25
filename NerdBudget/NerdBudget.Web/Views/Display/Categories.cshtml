@@ -4,6 +4,8 @@
   ViewBag.Title = "Categories";
 }
 
+@Html.Partial("_Tabs", Model.Account)
+
 <script src="@Url.Content("~/App/Categories.js")"></script>
 
 <script type="text/javascript">
@@ -14,7 +16,7 @@
   $(function(){
     $('table.table-sortable tbody').sortable({
       items: "tr:not(.ui-state-disabled)",
-      update: function( event, ui ) { alert('done');},
+      update: vm.sequences,
       helper: function(e, tr)
       {
         var $originals = tr.children();
@@ -27,6 +29,9 @@
         return $helper;
       }
     });
+
+    $('li[tab-categories]').addClass('active');
+
     ko.applyBindings(vm);
   });
 </script>
@@ -34,9 +39,8 @@
 <table class="table table-condensed table-striped table-sortable">
   <thead>
     <tr>
-      <th style="width: 50px" class="text-center">ID</th>
       <th>Name</th>
-      <th class="icons text-right">I/E</th>
+      <th class="text-center" style="width: 100px">Income</th>
       <th class="icons">
         <a href="#" data-bind="click: create" nb-create-icon></a>
       </th>
@@ -44,9 +48,8 @@
   </thead>
   <tbody data-bind="foreach: categories">
     <tr data-bind="css: multiplier == 1 ? 'ui-state-disabled' : ''">
-      <td data-bind="text: id" class="text-center"></td>
-      <td data-bind="text: name"></td>
-      <td data-bind="text: multiplier" class="text-right"></td>
+      <td data-bind="text: name, attr: { 'category-id': id }"></td>
+      <td data-bind="text: isIncome()" class="text-center"></td>
       <td class="icons">
         <a href="#" data-bind="click: $parent.update" nb-update-icon></a>
         <a href="#" data-bind="click: $parent.delete" nb-delete-icon></a>
