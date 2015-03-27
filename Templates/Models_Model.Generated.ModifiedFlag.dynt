@@ -42,7 +42,7 @@ namespace {{ PROJECT }}.Models.Entities
 		public virtual {{ column.clr_type }} {{ column.property_name }}
 		{
 			get { return _{{ column.parameter_name }}; }
-			set { IsModified = _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
+			set { IsModified |= _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
 		}
 		private {{ column.clr_type }} _{{ column.parameter_name }};
 		
@@ -59,7 +59,7 @@ namespace {{ PROJECT }}.Models.Entities
 		public virtual {{ column.clr_type }} {{ column.property_name }}
 		{
 			get { return _{{ column.parameter_name }}; }
-			set { IsModified = _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
+			set { IsModified |= _{{ column.parameter_name }} != value; _{{ column.parameter_name }} = value; }
 		}
 		private {{ column.clr_type }} _{{ column.parameter_name }};
 

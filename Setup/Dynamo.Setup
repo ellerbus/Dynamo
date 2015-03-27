@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName     "Dynamo"
-#define MyAppVersion  "1.3"
+#define MyAppVersion  "1.4"
 #define MyAppURL      "https://ellerbus.github.io/Dynamo/"
 #define MyAppExeName  "Dynamo.Forms.exe"
 #define MySrcPath     "..\Dynamo\Dynamo.Forms\bin\Release"
