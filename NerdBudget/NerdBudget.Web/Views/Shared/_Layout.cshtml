@@ -17,6 +17,8 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/string.js/3.0.1/string.min.js"></script>
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
   
   <script src="@Url.Content("~/Scripts/Knockout.Punches.min.js")"></script>
   <script src="@Url.Content("~/Scripts/Knockout-ES5.min.js")"></script>
@@ -26,7 +28,7 @@
   <script type="text/javascript">
     ko.punches.enableAll();
 
-    $.restSetup.rootUrl = '@Url.Content("~/")';
+    $.restSetup.baseUrl = '@Url.Content("~/")';
   </script>
   
 </head>

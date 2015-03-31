@@ -148,6 +148,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Budgets.js" />
     <Content Include="App\Categories.js" />
     <Content Include="App\Accounts.js" />
     <Content Include="App\Accounts\account.controller.js" />
@@ -214,8 +215,8 @@
     <Content Include="Scripts\Knockout.Punches.min.js" />
     <Content Include="Views\Display\Categories.cshtml" />
     <Content Include="Views\Display\_Tabs.cshtml" />
-    <None Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Budgets.cshtml" />
+    <None Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

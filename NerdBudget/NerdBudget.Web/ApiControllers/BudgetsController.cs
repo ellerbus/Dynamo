@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FluentValidation;
-using NerdBudget.Core;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
 using Newtonsoft.Json;
@@ -28,73 +27,6 @@ namespace NerdBudget.Web.ApiControllers
         {
             _accountService = accountSvc;
             _budgetService = budgetSvc;
-        }
-
-        #endregion
-
-        #region GetAll
-
-        // GET: api/category
-        [HttpGet, Route("{accountId}"), ResponseType(typeof(Account))]
-        public IHttpActionResult GetAll(string accountId)
-        {
-            Account account = _accountService.Get(accountId);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            JsonSerializerSettings jss = PayloadManager
-                .AddPayload<Account>("Id,Name,WeeklyAmount,MonthlyAmount,YearlyAmount")
-                .AddPayload<Category>("Id,AccountId,Name,Budgets")
-                .AddPayload<Budget>("Id,AccountId,Name,Frequency,Amount,WeeklyAmount,MonthlyAmount,YearlyAmount")
-                .ToSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories
-            };
-
-            return Json(model, jss);
-        }
-
-        #endregion
-
-        #region Detail Display
-
-        // GET: api/category/5
-        [HttpGet, Route("{accountId}/{id:regex([A-Z0-9]{2})}"), ResponseType(typeof(Budget))]
-        public IHttpActionResult Get(string accountId, string id)
-        {
-            Account account = _accountService.Get(accountId);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            Budget budget = GetBudget(accountId, id);
-
-            //  if null/not-found assume using for "create"
-            budget = budget ?? new Budget()
-            {
-                AccountId = account.Id,
-                BudgetFrequency = BudgetFrequencies.NO
-            };
-
-            JsonSerializerSettings jss = GetPayloadSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories,
-                budget = budget,
-                frequencies = IdNamePair.CreateFromEnum<BudgetFrequencies>()
-            };
-
-            return Json(model, jss);
         }
 
         #endregion

@@ -7,7 +7,6 @@ using FizzWare.NBuilder;
 using FluentValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NerdBudget.Core;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
 using NerdBudget.Web;
@@ -72,130 +71,6 @@ namespace NerdBudget.Tests.Web.ApiControllers
                 .AddPayload<Category>("Id,AccountId,Name")
                 .AddPayload<Budget>("Id,AccountId,CategoryId,Name,StartDate,EndDate,Amount,Frequency")
                 .ToSettings();
-        }
-
-        #endregion
-
-        #region Tests - Get Many/List
-
-        [TestMethod]
-        public void BudgetsController_GetAll_Should_SendOk()
-        {
-            //		arrange
-            var account = GetAccount();
-
-            var settings = PayloadManager
-                .AddPayload<Account>("Id,Name,WeeklyAmount,MonthlyAmount,YearlyAmount")
-                .AddPayload<Category>("Id,AccountId,Name,Budgets")
-                .AddPayload<Budget>("Id,AccountId,Name,Frequency,Amount,WeeklyAmount,MonthlyAmount,YearlyAmount")
-                .ToSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories
-            };
-
-            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
-
-            //		act
-            var msg = SubjectUnderTest.GetAll(account.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.IsSuccessStatusCode);
-
-            msg.Content.AssertJsonObjectEquality(model, settings);
-
-            MockService.VerifyAll();
-        }
-
-        [TestMethod]
-        public void BudgetsController_GetAll_Should_SendNotFound()
-        {
-            //		arrange
-            var account = GetAccount();
-
-            MockAccountService.Setup(x => x.Get(account.Id)).Returns(null as Account);
-
-            //		act
-            var msg = SubjectUnderTest.GetAll(account.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.NotFound);
-
-            MockService.VerifyAll();
-        }
-
-        #endregion
-
-        #region Tests - Get One
-
-        [TestMethod]
-        public void BudgetsController_GetOne_Should_SendOk()
-        {
-            //		arrange
-            var account = GetAccount();
-
-            var budget = account.Categories.Last().Budgets.Last();
-
-            var settings = GetPayloadSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories,
-                budget = budget,
-                frequencies = IdNamePair.CreateFromEnum<BudgetFrequencies>()
-            };
-
-            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
-
-            //		act
-            var msg = SubjectUnderTest.Get(account.Id, budget.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.IsSuccessStatusCode);
-
-            msg.Content.AssertJsonObjectEquality(model, settings);
-
-            MockService.VerifyAll();
-        }
-
-        [TestMethod]
-        public void BudgetsController_GetOne_Should_SendOk_OnBudgetNotFound()
-        {
-            //		arrange
-            var account = GetAccount();
-
-            var category = account.Categories.Last();
-
-            var budget = new Budget
-            {
-                AccountId = account.Id,
-                BudgetFrequency = BudgetFrequencies.NO
-            };
-
-            var settings = GetPayloadSettings();
-
-            var model = new
-            {
-                account = account,
-                categories = account.Categories,
-                budget = budget,
-                frequencies = IdNamePair.CreateFromEnum<BudgetFrequencies>()
-            };
-
-            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
-
-            //		act
-            var msg = SubjectUnderTest.Get(account.Id, budget.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.IsSuccessStatusCode);
-
-            msg.Content.AssertJsonObjectEquality(model, settings);
-
-            MockService.VerifyAll();
         }
 
         #endregion

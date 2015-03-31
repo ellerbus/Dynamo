@@ -1,85 +1,73 @@
-﻿@model CategoriesViewModel
+﻿@model BudgetsViewModel
 
 @{
-  ViewBag.Title = "Categories";
+  ViewBag.Title = "Budgets";
 }
 
 @Html.Partial("_Tabs", Model.Account)
 
-<script src="@Url.Content("~/App/Categories.js")"></script>
+<script src="@Url.Content("~/App/Budgets.js")"></script>
 
 <script type="text/javascript">
   var data = @Html.Raw(Model.ToJson());
 
-  var vm = new CategoriesViewModel(data.account, data.categories);
+  var vm = new BudgetsViewModel(data.account, data.categories, data.frequencies);
 
   $(function(){
     $('table.table-sortable tbody').sortable({
       items: "tr:not(.ui-state-disabled)",
-      update: function( event, ui ) { 
-        var id ='';
-      
-        $('table.table-sortable tbody tr').each(function(idx){
-          var $i = $(this).find('td:first').text();
-
-          id += $i + ',';
-        });
-
-
-        alert(vm.categories.length + '\ndone > ' + id);
-      },
-      helper: function(e, tr)
-      {
-        var $originals = tr.children();
-        var $helper = tr.clone();
-        $helper.children().each(function(index)
-        {
-          // Set helper cell sizes to match the original sizes
-          $(this).width($originals.eq(index).width());
-        });
-        return $helper;
-      }
+      update: vm.sequences,
+      helper: nbHelper.sortable
     });
 
-    $('li[tab-categories]').addClass('active');
+    $('li[tab-budgets]').addClass('active');
 
     ko.applyBindings(vm);
   });
 </script>
 
-<table class="table table-condensed table-striped table-sortable">
-  <thead>
-    <tr>
-      <th style="width: 50px" class="text-center">ID</th>
-      <th>Name</th>
-      <th class="text-center" style="width: 100px">Income</th>
-      <th class="icons">
-        <a href="#" data-bind="click: create" nb-create-icon></a>
-      </th>
-    </tr>
-  </thead>
-  <tbody data-bind="foreach: categories">
-    <tr data-bind="css: multiplier == 1 ? 'ui-state-disabled' : ''">
-      <td data-bind="text: id" class="text-center"></td>
-      <td data-bind="text: name"></td>
-      <td data-bind="text: isIncome()" class="text-center"></td>
-      <td class="icons">
-        <a href="#" data-bind="click: $parent.update" nb-update-icon></a>
-        <a href="#" data-bind="click: $parent.delete" nb-delete-icon></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+
+<div data-bind="foreach: categories" style="margin-top: 16px">
+  <table class="table table-condensed table-striped table-sortable">
+    <thead>
+      <tr>
+        <th data-bind="text: name"></th>
+        <th class="icons"></th>
+        <th style="width: 50px"></th>
+        <th class="text-right" style="width: 85px">W</th>
+        <th class="text-right" style="width: 85px">M</th>
+        <th class="text-right" style="width: 85px">Y</th>
+        <th class="icons">
+          <a href="#" data-bind="click: $parent.create" nb-create-icon></a>
+        </th>
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: budgets">
+      <tr>
+        <td data-bind="text: name"></td>
+        <td class="text-right" data-bind="text: amount | fixed"></td>
+        <td class="text-left">x {{ frequency }}</td>
+        <td class="text-right" data-bind="text: weeklyAmount | fixed"></td>
+        <td class="text-right" data-bind="text: monthlyAmount | fixed"></td>
+        <td class="text-right" data-bind="text: yearlyAmount | fixed"></td>
+        <th class="icons">
+          <a href="#" data-bind="click: $root.update" nb-update-icon></a>
+          <a href="#" data-bind="click: $root.delete" nb-delete-icon></a>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <div class="modal" tabindex="-1" role="dialog" aria-hidden="true" data-bind="with: form">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Category</h4>
+        <h4 class="modal-title">Budget</h4>
       </div>
       <div class="modal-body">
-        <form id="accountForm" class="form-horizontal" data-bind="submit: save">
+        <form id="detailsForm" class="form-horizontal" data-bind="submit: save">
 
           <div class="form-group alert alert-danger" data-bind="visible: errors.length">
             <ul class="col-sm-offset-4 col-sm-8" data-bind="foreach: errors">
@@ -103,10 +91,49 @@
             </div>
           </div>
 
+          <div class="form-group" data-bind="with: clone">
+            <label class="col-sm-4 control-label">
+              Category
+            </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="categoryId" data-bind="options: $parent.categories, optionsText: 'name', optionsValue: 'id', value: categoryId"></select>
+            </div>
+          </div>
+
+          <div class="form-group" data-bind="with: clone">
+            <label class="col-sm-4 control-label">
+              Frequency
+            </label>
+            <div class="col-sm-8">
+              <select class="form-control" name="frequency" data-bind="options: $parent.frequencies, optionsText: 'name', optionsValue: 'id', value: frequency"></select>
+            </div>
+          </div>
+
+          <div class="form-group" data-bind="with: clone">
+            <label class="col-sm-4 control-label">
+              Amount
+            </label>
+            <div class="col-sm-8">
+              <input class="form-control" name="amount" data-bind="value: amount" />
+            </div>
+          </div>
+
+          <div class="form-group" data-bind="with: clone">
+            <label class="col-sm-4 control-label">
+              Start/End Date
+            </label>
+            <div class="col-sm-4">
+              <input class="form-control" name="startDate" data-bind="value: startDate" />
+            </div>
+            <div class="col-sm-4">
+              <input class="form-control" name="endDate" data-bind="value: endDate" />
+            </div>
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit" form="accountForm" class="btn" data-bind="css: buttonClass(), text: buttonText()"></button>
+        <button type="submit" form="detailsForm" class="btn" data-bind="css: buttonClass(), text: buttonText()"></button>
         <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: cancel">Close</button>
       </div>
     </div>

@@ -40,7 +40,7 @@ namespace NerdBudget.Web.Controllers
         [Route("~/Budgets/{id}")]
         public ActionResult Budgets(string id)
         {
-            return View();
+            return View(new BudgetsViewModel(_service.Get(id)));
         }
 
         [Route("~/Import/{id}")]

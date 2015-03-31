@@ -189,12 +189,14 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
             var ids = account.Categories.Select(x => x.Id).OrderBy(x => x).ToList();
 
+            var cs = new CategoriesController.Seq { Sequence = ids.ToArray() };
+
             MockService.Setup(x => x.Update(Any.Enumerable));
 
             MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
 
             //		act
-            var msg = SubjectUnderTest.PutSequences(account.Id, ids.ToArray()).ToMessage();
+            var msg = SubjectUnderTest.PutSequences(account.Id, cs).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.IsSuccessStatusCode);
@@ -219,12 +221,14 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
             var ids = account.Categories.Select(x => x.Id).OrderBy(x => x).ToList();
 
+            var cs = new CategoriesController.Seq { Sequence = ids.ToArray() };
+
             MockService.Setup(x => x.Update(Any.Enumerable)).Throws(new ValidationException(ValidationFailure.Errors));
 
             MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
 
             //		act
-            var msg = SubjectUnderTest.PutSequences(account.Id, ids.ToArray()).ToMessage();
+            var msg = SubjectUnderTest.PutSequences(account.Id, cs).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
@@ -240,10 +244,12 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
             var ids = account.Categories.Select(x => x.Id).OrderBy(x => x).ToList();
 
+            var cs = new CategoriesController.Seq { Sequence = ids.ToArray() };
+
             MockAccountService.Setup(x => x.Get(account.Id)).Returns(null as Account);
 
             //		act
-            var msg = SubjectUnderTest.PutSequences(account.Id, ids.ToArray()).ToMessage();
+            var msg = SubjectUnderTest.PutSequences(account.Id, cs).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.StatusCode == HttpStatusCode.NotFound);

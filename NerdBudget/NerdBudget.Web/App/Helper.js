@@ -1,4 +1,18 @@
-﻿$(function ()
+﻿var nbHelper = {
+    sortable: function (e, tr)
+    {
+        var $originals = tr.children();
+        var $helper = tr.clone();
+        $helper.children().each(function (index)
+        {
+            // Set helper cell sizes to match the original sizes
+            $(this).width($originals.eq(index).width());
+        });
+        return $helper;
+    }
+};
+
+$(function ()
 {
     $('[nb-create-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-plus fa-fw text-success"></i>');
     $('[nb-update-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-pencil fa-fw text-primary"></i>');
@@ -7,6 +21,16 @@
     $('[nb-list-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-list fa-fw"></i>');
     $('[nb-dollar-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-usd fa-fw text-success"></i>');
     $('[nb-import-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-download fa-fw"></i>');
+
+    ko.filters.fixed = function (value, n)
+    {
+        if (n)
+        {
+            return ko.filters.number(value.toFixed(n));
+        }
+
+        return ko.filters.number(value.toFixed(0));
+    };
 });
 
 function DetailsFormView(modalSelector, options)
@@ -25,6 +49,8 @@ function DetailsFormView(modalSelector, options)
     self.state = '';
 
     self.errors = [];
+
+    self.saving = false;
 
     ko.track(self);
 
@@ -88,6 +114,8 @@ function DetailsFormView(modalSelector, options)
 
     self.save = function ()
     {
+        self.saving = true;
+
         self.errors = [];
 
         if (self.state == 'create')
@@ -126,6 +154,8 @@ function DetailsFormView(modalSelector, options)
         self.item = null;
 
         self.clone = null;
+
+        self.saving = false;
 
         $(self.modalSelector).modal('hide');
     };
@@ -182,7 +212,7 @@ function DetailsFormView(modalSelector, options)
 
     // Change the values of this global object if your method parameter is different.
     $.restSetup = {
-        rootUrl: '',
+        baseUrl: '',
         verbs: {
             'create': 'POST',
             'retrieve': 'GET',
@@ -228,13 +258,13 @@ function DetailsFormView(modalSelector, options)
 
         if (data)
         {
-            options.url = $.restSetup.rootUrl + fillUrl(url, data);
+            options.url = $.restSetup.baseUrl + fillUrl(url, data);
 
             options.data = data;
         }
         else
         {
-            options.url = $.restSetup.rootUrl + url;
+            options.url = $.restSetup.baseUrl + url;
         }
 
         return options;

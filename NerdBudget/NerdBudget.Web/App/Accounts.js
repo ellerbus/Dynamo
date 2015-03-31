@@ -64,26 +64,24 @@ function AccountsViewModel(accounts)
 
     self.categoryPath = function (id)
     {
-        return $.restSetup.rootUrl + 'Categories/' + id;
+        return $.restSetup.baseUrl + 'Categories/' + id;
     };
 
     self.budgetPath = function (id)
     {
-        return $.restSetup.rootUrl + 'Budgets/' + id;
+        return $.restSetup.baseUrl + 'Budgets/' + id;
     };
 
     self.importPath = function (id)
     {
-        return $.restSetup.rootUrl + 'Import/' + id;
+        return $.restSetup.baseUrl + 'Import/' + id;
     };
 
     function onCreated()
     {
         var onSuccess = function (data, textStatus, jqXHR)
         {
-            self.accounts.push(new AccountModel(data));
-
-            self.form.close();
+            window.location.href = $.restSetup.baseUrl + 'Categories/' + data.id;
         };
 
         $.create(self.apiUrl, self.form.clone).then(onSuccess, self.form.onError);
@@ -93,9 +91,7 @@ function AccountsViewModel(accounts)
     {
         var onSuccess = function (data, textStatus, jqXHR)
         {
-            self.form.item.update(data);
-
-            self.form.close();
+            window.location.href = $.restSetup.baseUrl + 'Categories/' + data.id;
         };
 
         $.update(self.apiUrl + '/{id}', self.form.clone).then(onSuccess, self.form.onError);

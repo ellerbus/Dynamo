@@ -11,6 +11,8 @@ requirements to UAT and project completion. Once the code is generated, it is up
 development team to the implement logic to meet business requirements for the final
 deliverables.
 
+A little development insight:
+
 #### Helpful Pages
 
 - [Dynamo's API](https://github.com/ellerbus/Dynamo/wiki/Dynamo-API)
