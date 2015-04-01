@@ -14,15 +14,16 @@
   var vm = new BudgetsViewModel(data.account, data.categories, data.frequencies);
 
   $(function(){
+
+    $('li[tab-budgets]').addClass('active');
+
+    ko.applyBindings(vm);
+
     $('table.table-sortable tbody').sortable({
       items: "tr:not(.ui-state-disabled)",
       update: vm.sequences,
       helper: nbHelper.sortable
     });
-
-    $('li[tab-budgets]').addClass('active');
-
-    ko.applyBindings(vm);
   });
 </script>
 
@@ -44,7 +45,7 @@
     </thead>
     <tbody data-bind="foreach: budgets">
       <tr>
-        <td data-bind="text: name"></td>
+        <td data-bind="text: name, attr: { 'budget-id': id }"></td>
         <td class="text-right" data-bind="text: amount | fixed"></td>
         <td class="text-left">x {{ frequency }}</td>
         <td class="text-right" data-bind="text: weeklyAmount | fixed"></td>

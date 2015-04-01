@@ -142,7 +142,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("NN NNNNN 0010 NNN# 9999999 99999 NNNNNNN NNNN", ledger.Description);
             Assert.AreEqual(-1400, ledger.Amount);
             Assert.AreEqual(1138.52, ledger.Balance);
-            Assert.AreEqual(@"NN NNNNN \d+ NNN# ?\d+ \d+ NNNNNNN NNNN", ledger.RegexMap);
+            Assert.AreEqual(@"NNNNNNN[0-9]+NNN[0-9]+NNNNNNNNNNN", ledger.RegexMap);
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("NNNNNNNN'N N99999 NNNNNNN NN 02/08/15 NNN 9999", ledger.Description);
             Assert.AreEqual(-9.82, ledger.Amount);
             Assert.AreEqual(2538.52, ledger.Balance);
-            Assert.AreEqual(@"NNNNNNNNN [A-Z]+\d+ NNNNNNN NN \d{2}/\d{2}/\d{2,4} NNN \d+", ledger.RegexMap);
+            Assert.AreEqual(@"NNNNNNNNNN[0-9]+NNNNNNNNN[0-9]+NNN[0-9]+", ledger.RegexMap);
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("NNNNNNNN : NNNNNNNN NN: 99999999NN: NNNNNNNN NNN NNNNN 99999999", ledger.Description);
             Assert.AreEqual(1406, ledger.Amount);
             Assert.AreEqual(2548.34, ledger.Balance);
-            Assert.AreEqual(@"NNNNNNNN NNNNNNNN NN \d+[A-Z]+ NNNNNNNN NNN NNNNN \d+", ledger.RegexMap);
+            Assert.AreEqual(@"NNNNNNNNNNNNNNNNNN[0-9]+NNNNNNNNNNNNNNNNNN[0-9]+", ledger.RegexMap);
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("NNNNNNN NNNNNNNN #9999 NNNNNNN NN 02/08/15 NNN 9999", ledger.Description);
             Assert.AreEqual(-17.81, ledger.Amount);
             Assert.AreEqual(1142.34, ledger.Balance);
-            Assert.AreEqual(@"NNNNNNN NNNNNNNN # ?\d+ NNNNNNN NN \d{2}/\d{2}/\d{2,4} NNN \d+", ledger.RegexMap);
+            Assert.AreEqual(@"NNNNNNNNNNNNNNN[0-9]+NNNNNNNNN[0-9]+NNN[0-9]+", ledger.RegexMap);
         }
 
         [TestMethod]
@@ -206,7 +206,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("9999-NNNN NNN NNN N-9999, 9999 NN NNNNNNN NN NNN 9999", ledger.Description);
             Assert.AreEqual(-68.16, ledger.Amount);
             Assert.AreEqual(1218.82, ledger.Balance);
-            Assert.AreEqual(@"\d+[A-Z]+ NNN NNN [A-Z]+\d+ \d+ NN NNNNNNN NN NNN \d+", ledger.RegexMap);
+            Assert.AreEqual(@"[0-9]+NNNNNNNNNNN[0-9]+NNNNNNNNNNNNNN[0-9]+", ledger.RegexMap);
         }
 
         #endregion

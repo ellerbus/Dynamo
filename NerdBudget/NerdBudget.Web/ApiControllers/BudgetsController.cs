@@ -16,6 +16,8 @@ namespace NerdBudget.Web.ApiControllers
     {
         #region Members
 
+        public class Seq { public string[] Sequence { get; set; } }
+
         private IAccountService _accountService;
         private IBudgetService _budgetService;
 
@@ -94,7 +96,7 @@ namespace NerdBudget.Web.ApiControllers
 
         // PUT: api/budget/5/sequences
         [HttpPut, Route("{accountId}/sequences")]
-        public IHttpActionResult PutSequences(string accountId, [FromBody]string[] ids)
+        public IHttpActionResult PutSequences(string accountId, [FromBody]Seq sequences)
         {
             Account account = _accountService.Get(accountId);
 
@@ -111,7 +113,7 @@ namespace NerdBudget.Web.ApiControllers
                 {
                     int seq = 0;
 
-                    foreach (string id in ids)
+                    foreach (string id in sequences.Sequence)
                     {
                         if (cat.Budgets.Contains(id))
                         {

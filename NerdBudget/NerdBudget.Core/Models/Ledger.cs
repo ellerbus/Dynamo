@@ -77,28 +77,6 @@ namespace NerdBudget.Core.Models
             return dep.ToDouble();
         }
 
-        private string ReplaceWithPatterns(string input, params string[] patterns)
-        {
-            string pattern = "({0})".FormatArgs(patterns.Join("|"));
-
-            MatchEvaluator me = x =>
-            {
-                foreach (string p in patterns)
-                {
-                    if (Regex.IsMatch(x.Value, p, RegexOptions.Compiled))
-                    {
-                        return p;
-                    }
-                }
-
-                return x.Value;
-            };
-
-            string superPattern = Regex.Replace(input, pattern, me);
-
-            return superPattern;
-        }
-
         #endregion
 
         #region Properties
@@ -153,10 +131,8 @@ namespace NerdBudget.Core.Models
                     return "";
                 }
 
-                //  remove non-whitespace special characters
-                string tmp = Regex.Replace(Description, @"[^0-9A-Z\$\.\#\s\/]", "", RegexOptions.Compiled);
-
-                tmp = Regex.Replace(tmp, @"\s+", " ", RegexOptions.Compiled);
+                //  remove anything but numbers and letters
+                string tmp = Regex.Replace(Description, @"[^0-9A-Z]", "", RegexOptions.Compiled);
 
                 //  add spaces to make regex's easy
                 return "{0}".FormatArgs(tmp).Trim();
@@ -186,14 +162,8 @@ namespace NerdBudget.Core.Models
                     return "";
                 }
 
-                //  01/01/01
-                tmp = ReplaceWithPatterns(tmp,
-                    @"\d{2}/\d{2}/\d{2,4}",
-                    @"# ?\d+",
-                    @"[A-Z]+\d+",
-                    @"\d+[A-Z]+ ",
-                    @"\d+"
-                    );
+                //  replace numbers with [0-9]+
+                tmp = Regex.Replace(CleanDescription, "[0-9]+", "[0-9]+", RegexOptions.Compiled);
 
                 return tmp;
             }

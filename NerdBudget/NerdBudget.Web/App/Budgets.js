@@ -170,9 +170,9 @@ function BudgetsViewModel(account, categories, frequencies)
     {
         var onSuccess = function ()
         {
-            var cat = findCategory(data.categoryId);
+            var cat = findCategory(self.form.item.categoryId);
 
-            cat.budgets.remove(self.form.item);
+            cat.budgets.remove(function (x) { return x.id == self.form.item.id; });
 
             self.form.close();
         };
