@@ -18,6 +18,8 @@ namespace NerdBudget.Web.ApiControllers
     {
         #region Members
 
+        public class Trx { public string Transactions { get; set; } }
+
         private IAccountService _service;
 
         #endregion
@@ -34,8 +36,8 @@ namespace NerdBudget.Web.ApiControllers
         #region Import Actions
 
         // POST: api/ledger
-        [HttpGet, Route("{accountId}/import")]
-        public IHttpActionResult GetImport(string accountId)
+        [HttpGet, Route("{accountId}/recent")]
+        public IHttpActionResult GetRecent(string accountId)
         {
             Account account = GetAccount(accountId);
 
@@ -69,7 +71,7 @@ namespace NerdBudget.Web.ApiControllers
 
         // POST: api/ledger
         [HttpPost, Route("{accountId}/import")]
-        public IHttpActionResult PostImport(string accountId, [FromBody]string transactions)
+        public IHttpActionResult PostImport(string accountId, [FromBody]Trx trx)
         {
             Account account = GetAccount(accountId);
 
@@ -80,7 +82,7 @@ namespace NerdBudget.Web.ApiControllers
 
             try
             {
-                account.Ledgers.Import(transactions);
+                account.Ledgers.Import(trx.Transactions);
 
                 _service.Save(account.Ledgers);
 

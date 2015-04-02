@@ -82,6 +82,8 @@ function BudgetsViewModel(account, categories, frequencies)
 
     self.sequences = function (event, ui)
     {
+        $.notify({ message: 'Saving Budget Order' }, { type: 'warning' });
+
         var ids = [];
 
         $('table.table-sortable tbody tr').each(function (idx)
@@ -91,7 +93,10 @@ function BudgetsViewModel(account, categories, frequencies)
             ids[ids.length] = txt;
         });
 
-        var onSuccess = null;
+        var onSuccess = function ()
+        {
+            $.notify({ message: 'Budget Order has been Saved' });
+        };
 
         $.update(self.apiUrl + '/sequences', { sequence: ids }).then(onSuccess, self.form.onError);
     };
