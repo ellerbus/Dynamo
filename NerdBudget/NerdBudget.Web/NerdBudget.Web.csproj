@@ -148,6 +148,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Import.js" />
     <Content Include="App\Budgets.js" />
     <Content Include="App\Categories.js" />
     <Content Include="App\Accounts.js" />
@@ -178,6 +179,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\BootBox.js" />
     <Content Include="Scripts\Bootstrap-Notify.min.js" />
     <Content Include="Scripts\Knockout-ES5.min.js" />
     <Content Include="Scripts\KnockStrap.min.js" />
@@ -201,6 +203,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ImportViewModel.cs" />
     <Compile Include="ViewModels\BudgetsViewModel.cs" />
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\AccountsViewModel.cs" />

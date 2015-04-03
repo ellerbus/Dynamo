@@ -9,6 +9,16 @@
             $(this).width($originals.eq(index).width());
         });
         return $helper;
+    },
+    overlay: function (source, target)
+    {
+        for (var key in source)
+        {
+            if (target[key])
+            {
+                source[key] = target[key];
+            }
+        }
     }
 };
 
@@ -32,6 +42,12 @@ $(function ()
         return ko.filters.number(value.toFixed(0));
     };
 });
+
+
+
+
+
+
 
 function DetailsFormView(modalSelector, options)
 {
@@ -197,7 +213,104 @@ function DetailsFormView(modalSelector, options)
     };
 }
 
+/*
+ *  Attach errors to form
+ */
 
+(function ($)
+{
+    'use strict';
+
+    $.fn.disableAll = function ()
+    {
+        var form = this;
+
+        form.find("input:not(:disabled), select:not(:disabled), textarea:not(:disabled)").prop("disabled", true);
+
+        return form;
+    };
+
+    $.fn.hideErrors = function ()
+    {
+        var form = this;
+
+        form.find("div.alert-danger").hide();
+
+        form.find('div.form-group').removeClass('has-error');
+
+        return form;
+    };
+
+    $.fn.showErrors = function (jqXHR, textStatus, errorThrown)
+    {
+        var res = jqXHR.responseJSON;
+
+        var form = this;
+
+        var $error = form.find("div.alert-danger");
+
+        if ($error.length == 0)
+        {
+            var html = '<div class="form-group alert alert-danger">' +
+                '<ul class="col-sm-offset-4 col-sm-8"></ul>' +
+                '</div>';
+
+            $error = $(html);
+
+            form.prepend($error);
+        }
+
+        $error.find("ul").empty();
+
+        var errors = [];
+
+        if (jqXHR.status == 500)
+        {
+            if (res)
+            {
+                if (res.message) errors.push(res.message);
+                if (res.exceptionMessage) errors.push(res.exceptionMessage);
+            }
+        }
+        
+        if (jqXHR.status == 400)
+        {
+            if (res)
+            {
+                if (res.message) errors.push(res.message);
+
+                if (res.modelState)
+                {
+                    form.find('div.form-group').removeClass('has-error');
+
+                    for (var key in res.modelState)
+                    {
+                        errors.push(res.modelState[key]);
+
+                        form.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
+                    }
+                }
+            }
+        }
+
+        if (errors.length > 0)
+        {
+            var html = '';
+
+            for (var key in errors)
+            {
+                html += '<li>' + errors[key] + '</li>';
+            }
+
+            $error.find("ul").html(html);
+        }
+
+        $error.show();
+
+        return form;
+    };
+
+})(jQuery);
 
 /*
  * based on : https://github.com/lyconic/jquery.rest

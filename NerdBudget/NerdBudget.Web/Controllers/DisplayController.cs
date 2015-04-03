@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using NerdBudget.Core.Services;
 using NerdBudget.Web.ViewModels;
@@ -28,7 +29,7 @@ namespace NerdBudget.Web.Controllers
         [Route("~/Accounts")]
         public ActionResult Accounts()
         {
-            return View(new AccountsViewModel(_service.GetList()));
+            return View(new AccountsViewModel(_service.GetList().OrderBy(x => x.Name)));
         }
 
         [Route("~/Categories/{id}")]
@@ -46,7 +47,7 @@ namespace NerdBudget.Web.Controllers
         [Route("~/Import/{id}")]
         public ActionResult Import(string id)
         {
-            return View();
+            return View(new ImportViewModel(_service.Get(id)));
         }
 
         [Route("~/Analysis/{id}")]
