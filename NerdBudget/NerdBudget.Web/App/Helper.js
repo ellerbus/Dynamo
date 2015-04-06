@@ -19,6 +19,35 @@
                 source[key] = target[key];
             }
         }
+    },
+    crudDialog: function (crud, element)
+    {
+        var setup = {
+            'create': { label: 'Create', className: 'btn-success' },
+            'update': { label: 'Update', className: 'btn-warning' },
+            'delete': { label: 'Delete', className: 'btn-danger' }
+        };
+
+        var item = setup[crud];
+
+        var options = {
+            title: item.label,
+            message: element,
+            buttons: {
+                ok: {
+                    label: item.label,
+                    className: item.className,
+                    callback: null
+                },
+                cancel: {
+                    label: 'Cancel',
+                    className: 'btn-default',
+                    callback: null
+                }
+            }
+        };
+
+        return options;
     }
 };
 
@@ -49,169 +78,169 @@ $(function ()
 
 
 
-function DetailsFormView(modalSelector, options)
-{
-    var self = this;
+//function DetailsFormView(modalSelector, options)
+//{
+//    var self = this;
 
-    self.modalSelector = modalSelector;
+//    self.modalSelector = modalSelector;
 
-    self.options = options;
+//    self.options = options;
 
-    self.item = null;
+//    self.item = null;
 
-    self.clone = null;
+//    self.clone = null;
 
-    //  creating, updating, deleting
-    self.state = '';
+//    //  creating, updating, deleting
+//    self.state = '';
 
-    self.errors = [];
+//    self.errors = [];
 
-    self.saving = false;
+//    self.saving = false;
 
-    ko.track(self);
+//    ko.track(self);
 
-    self.showId = function ()
-    {
-        return self.state != 'create';
-    };
+//    self.showId = function ()
+//    {
+//        return self.state != 'create';
+//    };
 
-    // 
-    //  'Save' Button Appearance
-    //
-    self.buttonClass = function ()
-    {
-        if (self.state == 'create')
-        {
-            return "btn-success";
-        }
-        if (self.state == 'update')
-        {
-            return "btn-warning";
-        }
-        if (self.state == 'delete')
-        {
-            return "btn-danger";
-        }
+//    // 
+//    //  'Save' Button Appearance
+//    //
+//    self.buttonClass = function ()
+//    {
+//        if (self.state == 'create')
+//        {
+//            return "btn-success";
+//        }
+//        if (self.state == 'update')
+//        {
+//            return "btn-warning";
+//        }
+//        if (self.state == 'delete')
+//        {
+//            return "btn-danger";
+//        }
 
-        return "btn-default";
-    };
+//        return "btn-default";
+//    };
 
-    self.buttonText = function ()
-    {
-        if (self.state == 'create')
-        {
-            return "Creating";
-        }
-        if (self.state == 'update')
-        {
-            return "Updating";
-        }
-        if (self.state == 'delete')
-        {
-            return "Deleting";
-        }
+//    self.buttonText = function ()
+//    {
+//        if (self.state == 'create')
+//        {
+//            return "Creating";
+//        }
+//        if (self.state == 'update')
+//        {
+//            return "Updating";
+//        }
+//        if (self.state == 'delete')
+//        {
+//            return "Deleting";
+//        }
 
-        return "{unknown}";
-    };
+//        return "{unknown}";
+//    };
 
-    //
-    //  modal action results (ok / cancel)
-    //
-    self.cancel = function ()
-    {
-        self.item = null;
+//    //
+//    //  modal action results (ok / cancel)
+//    //
+//    self.cancel = function ()
+//    {
+//        self.item = null;
 
-        self.clone = null;
+//        self.clone = null;
 
-        if (self.options.onCancelled) self.options.onCancelled();
+//        if (self.options.onCancelled) self.options.onCancelled();
 
-        self.close();
-    };
+//        self.close();
+//    };
 
-    self.save = function ()
-    {
-        self.saving = true;
+//    self.save = function ()
+//    {
+//        self.saving = true;
 
-        self.errors = [];
+//        self.errors = [];
 
-        if (self.state == 'create')
-        {
-            if (self.options.onCreated) self.options.onCreated();
-        }
-        else if (self.state == 'update')
-        {
-            if (self.options.onUpdated) self.options.onUpdated();
-        }
-        else if (self.state == 'delete')
-        {
-            if (self.options.onDeleted) self.options.onDeleted();
-        }
+//        if (self.state == 'create')
+//        {
+//            if (self.options.onCreated) self.options.onCreated();
+//        }
+//        else if (self.state == 'update')
+//        {
+//            if (self.options.onUpdated) self.options.onUpdated();
+//        }
+//        else if (self.state == 'delete')
+//        {
+//            if (self.options.onDeleted) self.options.onDeleted();
+//        }
 
-        return false;
-    };
+//        return false;
+//    };
 
-    self.open = function (state, data)
-    {
-        self.errors = [];
+//    self.open = function (state, data)
+//    {
+//        self.errors = [];
 
-        self.state = state;
+//        self.state = state;
 
-        self.item = data;
+//        self.item = data;
 
-        self.clone = new self.options.model(data);
+//        self.clone = new self.options.model(data);
 
-        $(self.modalSelector).modal('show');
-    };
+//        $(self.modalSelector).modal('show');
+//    };
 
-    self.close = function ()
-    {
-        self.state = '';
+//    self.close = function ()
+//    {
+//        self.state = '';
 
-        self.item = null;
+//        self.item = null;
 
-        self.clone = null;
+//        self.clone = null;
 
-        self.saving = false;
+//        self.saving = false;
 
-        $(self.modalSelector).modal('hide');
-    };
+//        $(self.modalSelector).modal('hide');
+//    };
 
-    self.onError = function (jqXHR, textStatus, errorThrown)
-    {
-        var res = jqXHR.responseJSON;
+//    self.onError = function (jqXHR, textStatus, errorThrown)
+//    {
+//        var res = jqXHR.responseJSON;
 
-        if (jqXHR.status == 500)
-        {
-            if (res)
-            {
-                if (res.message) self.errors.push(res.message);
-                if (res.exceptionMessage) self.errors.push(res.exceptionMessage);
-            }
-        }
+//        if (jqXHR.status == 500)
+//        {
+//            if (res)
+//            {
+//                if (res.message) self.errors.push(res.message);
+//                if (res.exceptionMessage) self.errors.push(res.exceptionMessage);
+//            }
+//        }
         
-        if (jqXHR.status == 400)
-        {
-            if (res)
-            {
-                if (res.message) self.errors.push(res.message);
+//        if (jqXHR.status == 400)
+//        {
+//            if (res)
+//            {
+//                if (res.message) self.errors.push(res.message);
 
-                if (res.modelState)
-                {
-                    var $form = $(modalSelector + ' form');
+//                if (res.modelState)
+//                {
+//                    var $form = $(modalSelector + ' form');
 
-                    $form.find('div.form-group').removeClass('has-error');
+//                    $form.find('div.form-group').removeClass('has-error');
 
-                    for (key in res.modelState)
-                    {
-                        self.errors.push(res.modelState[key]);
+//                    for (key in res.modelState)
+//                    {
+//                        self.errors.push(res.modelState[key]);
 
-                        $form.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
-                    }
-                }
-            }
-        }
-    };
-}
+//                        $form.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
+//                    }
+//                }
+//            }
+//        }
+//    };
+//}
 
 /*
  *  Attach errors to form
@@ -223,31 +252,31 @@ function DetailsFormView(modalSelector, options)
 
     $.fn.disableAll = function ()
     {
-        var form = this;
+        var el = this;
 
-        form.find("input:not(:disabled), select:not(:disabled), textarea:not(:disabled)").prop("disabled", true);
+        el.find("input:not(:disabled), select:not(:disabled), textarea:not(:disabled)").prop("disabled", true);
 
-        return form;
+        return el;
     };
 
     $.fn.hideErrors = function ()
     {
-        var form = this;
+        var el = this;
 
-        form.find("div.alert-danger").hide();
+        el.find("div.alert-danger").hide();
 
-        form.find('div.form-group').removeClass('has-error');
+        el.find('div.form-group').removeClass('has-error');
 
-        return form;
+        return el;
     };
 
     $.fn.showErrors = function (jqXHR, textStatus, errorThrown)
     {
         var res = jqXHR.responseJSON;
 
-        var form = this;
+        var el = this;
 
-        var $error = form.find("div.alert-danger");
+        var $error = el.find("div.alert-danger");
 
         if ($error.length == 0)
         {
@@ -257,7 +286,7 @@ function DetailsFormView(modalSelector, options)
 
             $error = $(html);
 
-            form.prepend($error);
+            el.prepend($error);
         }
 
         $error.find("ul").empty();
@@ -281,13 +310,13 @@ function DetailsFormView(modalSelector, options)
 
                 if (res.modelState)
                 {
-                    form.find('div.form-group').removeClass('has-error');
+                    el.find('div.form-group').removeClass('has-error');
 
                     for (var key in res.modelState)
                     {
                         errors.push(res.modelState[key]);
 
-                        form.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
+                        el.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
                     }
                 }
             }
@@ -307,7 +336,7 @@ function DetailsFormView(modalSelector, options)
 
         $error.show();
 
-        return form;
+        return el;
     };
 
 })(jQuery);

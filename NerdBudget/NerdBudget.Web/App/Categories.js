@@ -1,59 +1,166 @@
-﻿function CategoryModel(data)
+﻿'use strict';
+
+function CategoryListViewModel(data)
 {
     var self = this;
 
-    self.id = '';
-    self.name = '';
-    self.multiplier = 0;
+    self.url = 'api/Categories/' + data.account.id;
 
-    ko.track(self);
+    self.account = data.account;
+
+    self.categories = ko.utils.arrayMap(data.categories, trackCategory);
+
+    self.create = create;
 
     self.update = update;
 
-    self.isIncome = function () { return self.multiplier == 1 ? "Yes" : ""; };
+    self.delete = remove;
 
-    self.update(data);
-
-    function update(data)
-    {
-        if (data)
-        {
-            self.id = data.id || '';
-            self.name = data.name || '';
-            self.multiplier = data.multiplier || '';
-        }
-    };
-};
-
-
-function CategoriesViewModel(account, categories)
-{
-    var self = this;
-
-    self.account = account;
-
-    self.categories = ko.utils.arrayMap(categories, function (data) { return new CategoryModel(data); });
-
-    self.apiUrl = 'api/Categories/' + account.id;
-
-    //  selected category
-    self.category = null;
-
-    //  clone to work on for "cancel" purposes
-    self.clone = null;
-
-    var options = {
-        onCreated: onCreated,
-        onUpdated: onUpdated,
-        onDeleted: onDeleted,
-        model: CategoryModel
-    };
-
-    self.form = new DetailsFormView('div.modal', options);
+    self.sequences = sequences;
 
     ko.track(self);
 
-    self.sequences = function (event, ui)
+
+    function trackCategory(x)
+    {
+        x.isIncome = function () { return this.multiplier > 0 ? 'Yes' : ''; };
+        
+        ko.track(x);
+        
+        return x;
+    }
+
+    function getFormElement(disableIt)
+    {
+        var html = $('#form-body').html();
+
+        var $html = $(html);
+
+        $html.submit(function () { return false; });
+
+        if (disableIt)
+        {
+            $html.disableAll();
+        }
+
+        return $html.get(0);
+    };
+
+    function create()
+    {
+        var element = getFormElement();
+
+        var vm = new CategoryDetailModel({ accountId: self.account.id, name: '' });
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('create', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                self.categories.push(trackCategory(data));
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.create(self.url, vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+
+    function update(category)
+    {
+        var element = getFormElement();
+
+        var vm = new CategoryDetailModel(category);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('update', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                nbHelper.overlay(data, category);
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.update(self.url + '/{id}', vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+
+    function remove(category)
+    {
+        var element = getFormElement(true);
+
+        var vm = new CategoryDetailModel(category);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('delete', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                self.categories.remove(category);
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.delete(self.url + '/{id}', vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+    
+    function sequences(event, ui)
     {
         $.notify({ message: 'Saving Category Order' }, { type: 'warning' });
 
@@ -66,62 +173,58 @@ function CategoriesViewModel(account, categories)
             ids[ids.length] = txt;
         });
 
+        $('#categories').hideErrors();
+
         var onSuccess = function ()
         {
             $.notify({ message: 'Category Order has been Saved' });
         };
 
-        $.update(self.apiUrl + '/sequences', { sequence: ids }).then(onSuccess, self.form.onError);
-    };
-
-    self.create = function ()
-    {
-        self.form.open('create');
-    };
-
-    self.update = function (data)
-    {
-        self.form.open('update', data);
-    };
-
-    self.delete = function (data)
-    {
-        self.form.open('delete', data);
-    };
-
-    function onCreated()
-    {
-        var onSuccess = function (data, textStatus, jqXHR)
+        var onError = function (error)
         {
-            self.categories.push(new CategoryModel(data));
-
-            self.form.close();
+            $('#categories').showErrors(error);
         };
 
-        $.create(self.apiUrl, self.form.clone).then(onSuccess, self.form.onError);
+        $.update(self.url + '/sequences', { sequence: ids }).then(onSuccess, onError);
     };
+};
 
-    function onUpdated()
+function CategoryDetailModel(category)
+{
+    var self = this;
+
+    self.id = '';
+    self.name = '';
+
+    self.update = update;
+
+    self.getData = getData;
+
+    self.creating = creating;
+
+    self.update(category);
+
+    ko.track(self, ['id', 'name']);
+
+    function creating()
     {
-        var onSuccess = function (data, textStatus, jqXHR)
-        {
-            self.form.item.update(data);
-
-            self.form.close();
-        };
-
-        $.update(self.apiUrl + '/{id}', self.form.clone).then(onSuccess, self.form.onError);
+        return self.id != '';
     };
 
-    function onDeleted()
+    function update(data)
     {
-        var onSuccess = function ()
+        if (data)
         {
-            self.categories.remove(self.form.item);
-
-            self.form.close();
-        };
-
-        $.delete(self.apiUrl + '/{id}', self.form.clone).then(onSuccess, self.form.onError);
+            self.id = data.id || '';
+            self.name = data.name || '';
+        }
     };
-}
+
+    function getData()
+    {
+        return {
+            id: self.id,
+            name: self.name
+        };
+    }
+};

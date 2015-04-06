@@ -179,6 +179,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Index.html" />
     <Content Include="Scripts\BootBox.js" />
     <Content Include="Scripts\Bootstrap-Notify.min.js" />
     <Content Include="Scripts\Knockout-ES5.min.js" />
@@ -228,7 +229,6 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <Content Include="Index.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

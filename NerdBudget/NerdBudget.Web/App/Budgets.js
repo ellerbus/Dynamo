@@ -1,119 +1,45 @@
-﻿function CategoryModel(data)
+﻿'use strict';
+
+function BudgetListViewModel(data)
 {
     var self = this;
 
-    self.id = data.id;
-    self.name = data.name;
-    self.budgets = ko.utils.arrayMap(data.budgets, function (data) { return new BudgetModel(data); });
+    self.url = 'api/Budgets/' + data.account.id;
 
-    ko.track(self);
-};
+    self.frequencies = data.frequencies;
 
-function BudgetModel(data)
-{
-    var self = this;
+    self.account = data.account;
 
-    self.id = '';
-    self.categoryId = '';
-    self.name = '';
-    self.amount = 0;
-    self.startDate = '';
-    self.endDate = '';
-    self.frequency = '';
-    self.weeklyAmount = 0;
-    self.monthlyAmount = 0;
-    self.yearlyAmount = 0;
-    
-    ko.track(self);
+    self.categories = ko.utils.arrayMap(data.categories, trackCategory);
+
+    self.create = create;
 
     self.update = update;
 
-    self.update(data);
+    self.delete = remove;
 
-    function update(data)
-    {
-        if (data)
-        {
-            self.id = data.id || '';
-            self.categoryId = data.categoryId || '';
-            self.name = data.name || '';
-            self.amount = data.amount || 0;
-            self.startDate = data.startDate || '';
-            self.endDate = data.endDate || '';
-            self.frequency = data.frequency || '';
-            self.weeklyAmount = data.weeklyAmount || 0;
-            self.monthlyAmount = data.monthlyAmount || 0;
-            self.yearlyAmount = data.yearlyAmount || 0;
-        }
-    };
-};
-
-
-function BudgetsViewModel(account, categories, frequencies)
-{
-    var self = this;
-
-    self.account = account;
-
-    self.categories = ko.utils.arrayMap(categories, function (data) { return new CategoryModel(data); });
-
-    self.apiUrl = 'api/Budgets/' + account.id;
-
-    //  selected budget
-    self.budget = null;
-
-    //  clone to work on for "cancel" purposes
-    self.clone = null;
-
-    var options = {
-        onCreated: onCreated,
-        onUpdated: onUpdated,
-        onDeleted: onDeleted,
-        model: BudgetModel
-    };
-
-    self.form = new DetailsFormView('div.modal', options);
-
-    self.form.categories = categories;
-
-    self.form.frequencies = frequencies;
+    self.sequences = sequences;
 
     ko.track(self);
 
-    self.sequences = function (event, ui)
+
+    function trackCategory(x)
     {
-        $.notify({ message: 'Saving Budget Order' }, { type: 'warning' });
-
-        var ids = [];
-
-        $('table.table-sortable tbody tr').each(function (idx)
+        if (x.budgets)
         {
-            var txt = $(this).find('td:first').attr('budget-id');
-
-            ids[ids.length] = txt;
-        });
-
-        var onSuccess = function ()
+            for (var b in x.budgets)
+            {
+                ko.track(x.budgets[b]);
+            }
+        }
+        else
         {
-            $.notify({ message: 'Budget Order has been Saved' });
-        };
+            x.budgets = [];
+        }
 
-        $.update(self.apiUrl + '/sequences', { sequence: ids }).then(onSuccess, self.form.onError);
-    };
+        ko.track(x);
 
-    self.create = function (category)
-    {
-        self.form.open('create');
-    };
-
-    self.update = function (data)
-    {
-        self.form.open('update', data);
-    };
-
-    self.delete = function (data)
-    {
-        self.form.open('delete', data);
+        return x;
     };
 
     function findCategory(id)
@@ -134,54 +60,237 @@ function BudgetsViewModel(account, categories, frequencies)
         }
 
         return null
-    }
-
-    function onCreated()
-    {
-        var onSuccess = function (data, textStatus, jqXHR)
-        {
-            var cat = findCategory(data.categoryId);
-
-            cat.budgets.push(new BudgetModel(data));
-
-            self.form.close();
-        };
-
-        $.create(self.apiUrl, self.form.clone).then(onSuccess, self.form.onError);
     };
 
-    function onUpdated()
+
+    function getFormElement(disableIt)
     {
-        var onSuccess = function (data, textStatus, jqXHR)
+        var html = $('#form-body').html();
+
+        var $html = $(html);
+
+        $html.submit(function () { return false; });
+
+        if (disableIt)
         {
-            if (self.form.item.categoryId != self.form.clone.categoryId)
+            $html.disableAll();
+        }
+
+        return $html.get(0);
+    };
+
+    function create()
+    {
+        var element = getFormElement();
+
+        var vm = new BudgetDetailModel({ accountId: self.account.id, categoryId: '', name: '' }, self.categories, self.frequencies);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('create', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
             {
-                var fr = findCategory(self.form.item.categoryId);
-                var to = findCategory(self.form.clone.categoryId);
+                var cat = findCategory(data.categoryId);
 
-                fr.budgets.remove(function (x) { return x.id == self.form.item.id; });
-                to.budgets.push(self.form.item);
-            }
+                ko.track(data);
 
-            self.form.item.update(data);
+                cat.budgets.push(data);
 
-            self.form.close();
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.create(self.url, vm.getData()).then(onSuccess, onError);
+
+            return false;
         };
 
-        $.update(self.apiUrl + '/{id}', self.form.clone).then(onSuccess, self.form.onError);
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
     };
 
-    function onDeleted()
+    function update(budget)
     {
+        var element = getFormElement();
+
+        var vm = new BudgetDetailModel(budget, self.categories, self.frequencies);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('update', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                if (budget.categoryId != data.categoryId)
+                {
+                    var fr = findCategory(budget.categoryId);
+                    var to = findCategory(data.categoryId);
+
+                    fr.budgets.remove(function (x) { return x.id == budget.id; });
+                    to.budgets.push(budget);
+                }
+
+                nbHelper.overlay(data, budget);
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.update(self.url + '/{id}', vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+
+    function remove(budget)
+    {
+        var element = getFormElement(true);
+
+        var vm = new BudgetDetailModel(budget, self.categories, self.frequencies);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('delete', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                var cat = findCategory(budget.categoryId);
+
+                cat.budgets.remove(function (x) { return x.id == budget.id; });
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            $.delete(self.url + '/{id}', vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+
+    function sequences(event, ui)
+    {
+        $.notify({ message: 'Saving Budget Order' }, { type: 'warning' });
+
+        var ids = [];
+
+        $('table.table-sortable tbody tr').each(function (idx)
+        {
+            var txt = $(this).find('td:first').attr('budget-id');
+
+            ids[ids.length] = txt;
+        });
+
+        $('#budgets').hideErrors();
+
         var onSuccess = function ()
         {
-            var cat = findCategory(self.form.item.categoryId);
-
-            cat.budgets.remove(function (x) { return x.id == self.form.item.id; });
-
-            self.form.close();
+            $.notify({ message: 'Budget Order has been Saved' });
         };
 
-        $.delete(self.apiUrl + '/{id}', self.form.clone).then(onSuccess, self.form.onError);
+        var onError = function (error)
+        {
+            $('#budgets').showErrors(error);
+        };
+
+        $.update(self.url + '/sequences', { sequence: ids }).then(onSuccess, onError);
     };
-}
+};
+
+function BudgetDetailModel(budget, categories, frequencies)
+{
+    var self = this;
+
+    self.categories = categories;
+    self.frequencies = frequencies;
+
+    self.id = '';
+    self.categoryId = '';
+    self.name = '';
+    self.amount = 0;
+    self.startDate = '';
+    self.endDate = '';
+    self.frequency = '';
+
+    self.update = update;
+
+    self.getData = getData;
+
+    self.creating = creating;
+
+    self.update(budget);
+
+    ko.track(self, ['id', 'categoryId', 'name', 'amount', 'startDate', 'endDate', 'frequency']);
+
+    function creating()
+    {
+        return self.id != '';
+    };
+
+    function update(data)
+    {
+        if (data)
+        {
+            self.id = data.id || '';
+            self.categoryId = data.categoryId || '';
+            self.name = data.name || '';
+            self.amount = data.amount || 0;
+            self.startDate = data.startDate || '';
+            self.endDate = data.endDate || '';
+            self.frequency = data.frequency || '';
+        }
+    };
+
+    function getData()
+    {
+        return {
+            id: self.id,
+            categoryId: self.categoryId,
+            name: self.name,
+            amount: self.amount,
+            startDate: self.startDate,
+            endDate: self.endDate,
+            frequency: self.frequency
+        };
+    }
+};
