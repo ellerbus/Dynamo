@@ -52,7 +52,9 @@ namespace NerdBudget.Web.ApiControllers
 
                 _budgetService.Insert(category, budget);
 
-                return Ok(budget);
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(budget, jss);
             }
             catch (KeyNotFoundException)
             {
@@ -86,7 +88,9 @@ namespace NerdBudget.Web.ApiControllers
             {
                 _budgetService.Update(budget);
 
-                return Ok(budget);
+                JsonSerializerSettings jss = GetPayloadSettings();
+
+                return Json(budget, jss);
             }
             catch (ValidationException ve)
             {
@@ -202,7 +206,7 @@ namespace NerdBudget.Web.ApiControllers
             return PayloadManager
                 .AddPayload<Account>("Id,Name")
                 .AddPayload<Category>("Id,AccountId,Name")
-                .AddPayload<Budget>("Id,AccountId,CategoryId,Name,StartDate,EndDate,Amount,Frequency")
+                .AddBasicPayload<Budget>()
                 .ToSettings();
         }
 

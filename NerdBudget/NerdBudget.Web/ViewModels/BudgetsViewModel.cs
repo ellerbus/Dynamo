@@ -20,7 +20,7 @@ namespace NerdBudget.Web.ViewModels
             JsonSerializerSettings jss = PayloadManager
                 .AddPayload<Account>("Id,Name")
                 .AddPayload<Category>("Id,AccountId,Name,Budgets")
-                .AddPayload<Budget>("Id,CategoryId,AccountId,Name,Frequency,Amount,StartDate,EndDate,WeeklyAmount,MonthlyAmount,YearlyAmount")
+                .AddBasicPayload<Budget>()
                 .ToSettings();
 
             string json = JsonConvert.SerializeObject(this, jss);
