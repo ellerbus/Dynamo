@@ -36,40 +36,6 @@ namespace NerdBudget.Web.ApiControllers
         #region Import Actions
 
         // POST: api/ledger
-        [HttpGet, Route("{accountId}/recent")]
-        public IHttpActionResult GetRecent(string accountId)
-        {
-            Account account = GetAccount(accountId);
-
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                JsonSerializerSettings jss = GetPayloadSettings();
-
-                Ledger ledger = account.Ledgers
-                    .OrderBy(x => x.Date)
-                    .ThenBy(x => x.Sequence)
-                    .LastOrDefault();
-
-                var model = new
-                {
-                    account = account,
-                    ledger = ledger
-                };
-
-                return Json(model, jss);
-            }
-            catch (ValidationException exp)
-            {
-                return BadRequest(exp.Errors);
-            }
-        }
-
-        // POST: api/ledger
         [HttpPost, Route("{accountId}/import")]
         public IHttpActionResult PostImport(string accountId, [FromBody]Trx trx)
         {
