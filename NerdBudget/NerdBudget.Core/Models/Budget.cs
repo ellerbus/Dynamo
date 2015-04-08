@@ -44,6 +44,11 @@ namespace NerdBudget.Core.Models
 
         #region Properties
 
+        public string FullName
+        {
+            get { return "{0} {1}".FormatArgs(Name, Category == null ? "?" : Category.Name); }
+        }
+
         public override string Id
         {
             get { return base.Id; }

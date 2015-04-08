@@ -1,10 +1,70 @@
-﻿
+﻿function ImportListModel(data)
+{
+    var self = this;
+
+    self.url = 'api/Ledgers/' + data.account.id;
+
+    self.ledger = null;
+
+    self.budgets = data.budgets;
+
+    self.mapping = null;
+
+    self.loadMap = loadMap;
+
+    self.mapIt = mapIt;
+
+    ko.track(self);
+    
+    function mapIt(d)
+    {
+        self.ledger.date = moment(self.ledger.date).format('YYYY-MM-DD');
+
+        self.ledger.budgetId = d.id;
+
+        var onSuccess = function ()
+        {
+            self.loadMap();
+        };
+
+        var onError = function (error)
+        {
+            $('#ledgers form').showErrors(error);
+        };
+
+        $.update(self.url + '/{id}/{date}', self.ledger).then(onSuccess, onError);
+    };
+
+    function loadMap()
+    {
+        self.mapping = true;
+
+        var onSuccess = function (data)
+        {
+            if (data.status && data.status == 302)
+            {
+                window.location.replace(data.url);
+
+                return;
+            }
+
+            self.ledger = data;
+        };
+
+        var onError = function (error)
+        {
+            $('#ledgers form').showErrors(error);
+        };
+
+        $.retrieve(self.url + '/map').then(onSuccess, onError);
+    };
+};
 
 function ImportDetailModel(data)
 {
     var self = this;
 
-    self.url = 'api/Ledgers/' + data.account.id + '/import';
+    self.url = 'api/Ledgers/' + data.account.id;
 
     self.transactions = '';
 
@@ -14,7 +74,7 @@ function ImportDetailModel(data)
 
     self.start = start;
 
-    ko.track(self, ['transactions']);
+    ko.track(self, ['account', 'ledger', 'transactions']);
 
     function getFormElement()
     {
@@ -27,7 +87,7 @@ function ImportDetailModel(data)
         return $html.get(0);
     };
 
-    function start()
+    function start(lvm)
     {
         var element = getFormElement();
 
@@ -43,6 +103,8 @@ function ImportDetailModel(data)
             {
                 ko.cleanNode(element);
 
+                lvm.loadMap();
+
                 dlg.modal('hide');
             };
 
@@ -51,12 +113,17 @@ function ImportDetailModel(data)
                 dlg.find('form').showErrors(error);
             };
 
-            $.create(self.url, { transactions: self.transactions }).then(onSuccess, onError);
+            $.create(self.url + '/import', { transactions: self.transactions }).then(onSuccess, onError);
 
             return false;
         };
 
-        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+        options.buttons.cancel.callback = function ()
+        {
+            ko.cleanNode(element);
+
+            lvm.loadMap();
+        };
 
         bootbox.dialog(options);
     };

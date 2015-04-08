@@ -72,50 +72,6 @@ namespace NerdBudget.Tests.Web.ApiControllers
         #region Tests - Importing
 
         [TestMethod]
-        public void LedgersController_GetRecent_Should_SendOk()
-        {
-            //		arrange
-            var account = GetAccount(false);
-
-            var settings = GetPayloadSettings();
-
-            var model = new
-            {
-                account = account,
-                ledger = null as Ledger
-            };
-
-            MockService.Setup(x => x.Get(account.Id)).Returns(account);
-
-            //		act
-            var msg = SubjectUnderTest.GetRecent(account.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.IsSuccessStatusCode);
-
-            msg.Content.AssertJsonObjectEquality(model, settings);
-
-            MockService.VerifyAll();
-        }
-
-        [TestMethod]
-        public void LedgersController_GetRecent_Should_NotFound()
-        {
-            //		arrange
-            var account = GetAccount(false);
-
-            MockService.Setup(x => x.Get(account.Id)).Returns(null as Account);
-
-            //		act
-            var msg = SubjectUnderTest.GetRecent(account.Id).ToMessage();
-
-            //		assert
-            Assert.IsTrue(msg.StatusCode == HttpStatusCode.NotFound);
-
-            MockService.VerifyAll();
-        }
-
-        [TestMethod]
         public void LedgersController_PostImport_Should_SendOk()
         {
             //		arrange

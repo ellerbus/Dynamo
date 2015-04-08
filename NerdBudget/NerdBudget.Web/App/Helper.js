@@ -70,6 +70,16 @@ $(function ()
 
         return ko.filters.number(value.toFixed(0));
     };
+
+    ko.filters.date = function (value, format)
+    {
+        if (format)
+        {
+            return moment(value).format(format);
+        }
+
+        return moment(value).format('MM/DD/YYYY');
+    };
 });
 
 
@@ -150,6 +160,16 @@ $(function ()
                         el.find('[name=' + key + ']').closest('div.form-group').addClass('has-error');
                     }
                 }
+            }
+        }
+
+        if (errors.length == 0)
+        {
+            if (jqXHR.status != 200)
+            {
+                var message = '[' + jqXHR.status + '] ' + jqXHR.statusText;
+
+                errors.push(message);
             }
         }
 

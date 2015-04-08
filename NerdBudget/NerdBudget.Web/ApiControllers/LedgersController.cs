@@ -81,27 +81,14 @@ namespace NerdBudget.Web.ApiControllers
 
             Ledger ledger = account.Ledgers.MissingBudget().FirstOrDefault();
 
-            JsonSerializerSettings jss = GetPayloadSettings();
-
             if (ledger == null)
             {
-                var done = new
-                {
-                    account = account,
-                    mappingComplete = true
-                };
-
-                return Json(done, jss);
+                return Ok(new { status = 302, url = Url.Content("~/Analysis/" + account.Id) });
             }
 
-            var model = new
-            {
-                account = account,
-                budgets = account.Categories.SelectMany(x => x.Budgets),
-                ledger = ledger
-            };
+            JsonSerializerSettings jss = GetPayloadSettings();
 
-            return Json(model, jss);
+            return Json(ledger, jss);
         }
 
         // GET: api/ledger/5
@@ -147,8 +134,6 @@ namespace NerdBudget.Web.ApiControllers
 
             Ledger model = account.Ledgers.Find(id, date);
 
-            bool mapping = false;
-
             if (model == null)
             {
                 return NotFound();
@@ -166,8 +151,6 @@ namespace NerdBudget.Web.ApiControllers
                         x.BudgetId = map.BudgetId;
                     }
                 }
-
-                mapping = true;
             }
             else
             {
@@ -180,11 +163,6 @@ namespace NerdBudget.Web.ApiControllers
                 _service.Save(account.Ledgers);
 
                 _service.Save(account.Maps);
-
-                if (mapping)
-                {
-                    return Get(accountId);
-                }
 
                 return Ok();
             }

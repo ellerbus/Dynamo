@@ -53,7 +53,7 @@ namespace NerdBudget.Web.Controllers
         [Route("~/Analysis/{id}")]
         public ActionResult Analysis(string id, DateTime? start)
         {
-            return View();
+            return View(new AnalysisViewModel(_service.Get(id)));
         }
 
         #endregion
