@@ -19,7 +19,7 @@ namespace NerdBudget.Web.ViewModels
         {
             JsonSerializerSettings jss = PayloadManager
                 .AddPayload<Account>("Id,Name")
-                .AddPayload<Category>("Id,AccountId,Name,Budgets")
+                .AddPayload<Category>("Id,AccountId,Name,Budgets,Multiplier")
                 .AddBasicPayload<Budget>()
                 .ToSettings();
 

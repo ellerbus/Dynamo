@@ -27,37 +27,52 @@
   });
 </script>
 
-
-<div id="budgets" data-bind="foreach: categories" style="margin-top: 16px">
-  <table class="table table-condensed table-striped table-sortable">
+<div id="budgets">
+  <table class="table table-condensed table-striped">
     <thead>
       <tr>
-        <th data-bind="text: name"></th>
+        <th></th>
         <th class="icons"></th>
         <th style="width: 50px"></th>
-        <th class="text-right" style="width: 85px">W</th>
-        <th class="text-right" style="width: 85px">M</th>
-        <th class="text-right" style="width: 85px">Y</th>
-        <th class="icons">
-          <a href="#" data-bind="click: $root.create" nb-create-icon></a>
-        </th>
+        <th class="text-right" style="width: 85px" data-bind="text: weekly | fixed, css:  { danger: variance < 0 }"></th>
+        <th class="text-right" style="width: 85px" data-bind="text: monthly | fixed, css:  { danger: variance < 0 }"></th>
+        <th class="text-right" style="width: 85px" data-bind="text: yearly | fixed, css:  { danger: variance < 0 }"></th>
+        <th class="icons"></th>
       </tr>
     </thead>
-    <tbody data-bind="foreach: budgets">
-      <tr>
-        <td data-bind="text: name, attr: { 'budget-id': id }"></td>
-        <td class="text-right" data-bind="text: amount | fixed"></td>
-        <td class="text-left">x {{ frequency }}</td>
-        <td class="text-right" data-bind="text: weeklyAmount | fixed"></td>
-        <td class="text-right" data-bind="text: monthlyAmount | fixed"></td>
-        <td class="text-right" data-bind="text: yearlyAmount | fixed"></td>
-        <th class="icons">
-          <a href="#" data-bind="click: $root.update" nb-update-icon></a>
-          <a href="#" data-bind="click: $root.delete" nb-delete-icon></a>
-        </th>
-      </tr>
-    </tbody>
   </table>
+
+  <div data-bind="foreach: categories" style="margin-top: 16px">
+    <table class="table table-condensed table-striped table-sortable">
+      <thead>
+        <tr>
+          <th data-bind="text: name"></th>
+          <th class="icons"></th>
+          <th style="width: 50px"></th>
+          <th class="text-right" style="width: 85px">W</th>
+          <th class="text-right" style="width: 85px">M</th>
+          <th class="text-right" style="width: 85px">Y</th>
+          <th class="icons">
+            <a href="#" data-bind="click: $root.create" nb-create-icon></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: budgets">
+        <tr>
+          <td data-bind="text: name, attr: { 'budget-id': id }"></td>
+          <td class="text-right" data-bind="text: amount | fixed"></td>
+          <td class="text-left">x {{ frequency }}</td>
+          <td class="text-right" data-bind="text: weeklyAmount | fixed"></td>
+          <td class="text-right" data-bind="text: monthlyAmount | fixed"></td>
+          <td class="text-right" data-bind="text: yearlyAmount | fixed"></td>
+          <th class="icons">
+            <a href="#" data-bind="click: $root.update" nb-update-icon></a>
+            <a href="#" data-bind="click: $root.delete" nb-delete-icon></a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 

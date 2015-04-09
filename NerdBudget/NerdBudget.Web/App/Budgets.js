@@ -20,6 +20,16 @@ function BudgetListViewModel(data)
 
     self.sequences = sequences;
 
+    self.weekly = 0;
+
+    self.monthly = 0;
+
+    self.yearly = 0;
+
+    self.variance = 0;
+
+    updateCalculations();
+
     ko.track(self);
 
 
@@ -103,6 +113,8 @@ function BudgetListViewModel(data)
 
                 ko.cleanNode(element);
 
+                updateCalculations();
+
                 dlg.modal('hide');
             };
 
@@ -150,6 +162,8 @@ function BudgetListViewModel(data)
 
                 ko.cleanNode(element);
 
+                updateCalculations();
+
                 dlg.modal('hide');
             };
 
@@ -189,6 +203,8 @@ function BudgetListViewModel(data)
                 cat.budgets.remove(function (x) { return x.id == budget.id; });
 
                 ko.cleanNode(element);
+
+                updateCalculations();
 
                 dlg.modal('hide');
             };
@@ -234,6 +250,43 @@ function BudgetListViewModel(data)
         };
 
         $.update(self.url + '/sequences', { sequence: ids }).then(onSuccess, onError);
+    };
+
+    function updateCalculations()
+    {
+        self.weekly = getTotal('weekly');
+
+        self.monthly = getTotal('monthly');
+
+        self.yearly = getTotal('yearly');
+
+        self.variance = self.yearly >= 0 ? 1 : -1;
+    };
+
+    function getTotal(field)
+    {
+        field += 'Amount';
+
+        var amount = 0;
+
+        for (var c = 0, lenc = self.categories.length; c < lenc; c++)
+        {
+            var cat = self.categories[c];
+
+            for (var b = 0, lenb = cat.budgets.length; b < lenb; b++)
+            {
+                var budget = cat.budgets[b];
+
+                var a = cat.multiplier * budget[field];
+
+                if (!isNaN(a))
+                {
+                    amount += a;
+                }
+            }
+        }
+
+        return amount;
     };
 };
 
