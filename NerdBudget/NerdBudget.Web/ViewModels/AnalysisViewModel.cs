@@ -71,6 +71,7 @@ namespace NerdBudget.Web.ViewModels
         {
             public double Actual { get; set; }
             public double Budget { get; set; }
+            public double Variance { get { return Budget - Actual; } }
         }
 
         #endregion
