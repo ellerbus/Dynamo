@@ -137,8 +137,11 @@ namespace NerdBudget.Core.Models
                 //  replace date numbers with [DATE]
                 tmp = Regex.Replace(tmp, "[0-9]{2}/[0-9]{2}/[0-9]{2,4}", "(MDY)", RegexOptions.Compiled);
 
-                //  replace date numbers with [DATE]
+                //  replace date numbers with [PHONE]
                 tmp = Regex.Replace(tmp, "[0-9]{3}-[0-9]{3}-[0-9]{4}", "(PHONE)", RegexOptions.Compiled);
+
+                //  replace date numbers with [PHONE]
+                tmp = Regex.Replace(tmp, "ACHTRACE[0-9]+", "(ACHTRACE)", RegexOptions.Compiled);
 
                 return tmp;
             }
