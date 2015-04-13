@@ -228,7 +228,7 @@ function BudgetListViewModel(data)
 
     function sequences(event, ui)
     {
-        $.notify({ message: 'Saving Budget Order' }, { type: 'warning' });
+        $.notify({ message: 'Saving Budget Order' }, { type: 'warning', delay: 2000 });
 
         var ids = [];
 
@@ -243,7 +243,7 @@ function BudgetListViewModel(data)
 
         var onSuccess = function ()
         {
-            $.notify({ message: 'Budget Order has been Saved' });
+            $.notify({ message: 'Budget Order has been Saved' }, { delay: 2000 });
         };
 
         var onError = function (error)

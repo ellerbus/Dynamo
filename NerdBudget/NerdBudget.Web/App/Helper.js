@@ -63,14 +63,21 @@ $(function ()
     $('[nb-import-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-download fa-fw"></i>');
     $('[nb-analysis-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-cogs fa-fw"></i>');
 
-    ko.filters.fixed = function (value, n)
+    ko.filters.fixed = function (value, decimals)
     {
-        if (n)
+        if (decimals)
         {
-            return ko.filters.number(value.toFixed(n));
+            return ko.filters.number(value.toFixed(decimals));
         }
 
-        return ko.filters.number(value.toFixed(0));
+        value = parseInt(value.toFixed(0));
+
+        if (value === 0)
+        {
+            return '-';
+        }
+
+        return ko.filters.number(value);
     };
 
     ko.filters.date = function (value, format)

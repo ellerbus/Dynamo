@@ -162,7 +162,7 @@ function CategoryListViewModel(data)
     
     function sequences(event, ui)
     {
-        $.notify({ message: 'Saving Category Order' }, { type: 'warning' });
+        $.notify({ message: 'Saving Category Order' }, { type: 'warning', delay: 2000 });
 
         var ids = [];
 
@@ -177,7 +177,7 @@ function CategoryListViewModel(data)
 
         var onSuccess = function ()
         {
-            $.notify({ message: 'Category Order has been Saved' });
+            $.notify({ message: 'Category Order has been Saved' }, { delay: 2000 });
         };
 
         var onError = function (error)
