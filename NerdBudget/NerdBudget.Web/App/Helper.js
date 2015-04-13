@@ -60,6 +60,7 @@ $(function ()
     $('[nb-list-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-list fa-fw"></i>');
     $('[nb-dollar-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-usd fa-fw text-success"></i>');
     $('[nb-import-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-download fa-fw"></i>');
+    $('[nb-analysis-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-cogs fa-fw"></i>');
 
     ko.filters.fixed = function (value, n)
     {

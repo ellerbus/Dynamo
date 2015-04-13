@@ -33,11 +33,12 @@
     <tr>
       <td data-bind="text: name, attr: { 'account-id': id }"></td>
       <td class="icons">
-        <a nb-list-icon data-bind="attr: { href: $parent.path('categories', id) }"></a>
-        <a nb-dollar-icon data-bind="attr: { href: $parent.path('budgets', id) }"></a>
+        <a nb-analysis-icon data-bind="attr: { href: $parent.path('analysis', id) }"></a>
+        <a nb-import-icon data-bind="attr: { href: $parent.path('import', id) }"></a>
       </td>
       <td class="icons">
-        <a nb-import-icon data-bind="attr: { href: $parent.path('import', id) }"></a>
+        <a nb-list-icon data-bind="attr: { href: $parent.path('categories', id) }"></a>
+        <a nb-dollar-icon data-bind="attr: { href: $parent.path('budgets', id) }"></a>
       </td>
       <td class="icons">
         <a href="#" data-bind="click: $parent.update" nb-update-icon></a>

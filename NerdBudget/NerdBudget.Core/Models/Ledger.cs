@@ -37,9 +37,9 @@ namespace NerdBudget.Core.Models
             {
                 string pk = "[" + AccountId + "," + Id + "," + Date.ToString("yyyy-MM-dd") + "]";
 
-                string uq = "[" + "]";
+                string txt = "[" + OriginalText + "]";
 
-                return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
+                return "{0}, pk={1}, txt={2}".FormatArgs(GetType().Name, pk, txt);
             }
         }
 
@@ -132,10 +132,15 @@ namespace NerdBudget.Core.Models
                 }
 
                 //  remove anything but numbers and letters
-                string tmp = Regex.Replace(Description, @"[^0-9A-Z]", "", RegexOptions.Compiled);
+                string tmp = Regex.Replace(Description, @"[^0-9A-Z#/]", "", RegexOptions.Compiled);
 
-                //  add spaces to make regex's easy
-                return "{0}".FormatArgs(tmp).Trim();
+                //  replace date numbers with [DATE]
+                tmp = Regex.Replace(tmp, "[0-9]{2}/[0-9]{2}/[0-9]{2,4}", "(MDY)", RegexOptions.Compiled);
+
+                //  replace date numbers with [DATE]
+                tmp = Regex.Replace(tmp, "[0-9]{3}-[0-9]{3}-[0-9]{4}", "(PHONE)", RegexOptions.Compiled);
+
+                return tmp;
             }
         }
 
@@ -162,8 +167,12 @@ namespace NerdBudget.Core.Models
                     return "";
                 }
 
-                //  replace numbers with [0-9]+
-                tmp = Regex.Replace(CleanDescription, "[0-9]+", "[0-9]+", RegexOptions.Compiled);
+                //  replace ref numbers with [0-9]+
+                tmp = Regex.Replace(CleanDescription, "#[0-9]+", "#[0-9]+", RegexOptions.Compiled);
+
+                tmp = Regex.Replace(tmp, @"\(", @"\(", RegexOptions.Compiled);
+
+                tmp = Regex.Replace(tmp, @"\)", @"\)", RegexOptions.Compiled);
 
                 return tmp;
             }

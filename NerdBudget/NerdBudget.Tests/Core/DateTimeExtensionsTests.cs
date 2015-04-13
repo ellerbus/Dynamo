@@ -17,7 +17,7 @@ namespace NerdBudget.Tests.Core
             {
                 dt = dt.AddYears(1);
 
-                Assert.AreEqual(1, dt.ToMonthDate().Day, "Monthly Misfire for {0:MM/dd/yyyy}".FormatArgs(dt));
+                Assert.AreEqual(1, dt.ToMonthlyBudgetDate().Day, "Monthly Misfire for {0:MM/dd/yyyy}".FormatArgs(dt));
             }
         }
 
@@ -30,7 +30,7 @@ namespace NerdBudget.Tests.Core
             {
                 dt = dt.AddDays(7);
 
-                Assert.AreEqual(DayOfWeek.Friday, dt.ToWeekDate().DayOfWeek, "Weekly Misfire for {0:MM/dd/yyyy}".FormatArgs(dt));
+                Assert.AreEqual(DayOfWeek.Friday, dt.ToWeeklyBudgetDate().DayOfWeek, "Weekly Misfire for {0:MM/dd/yyyy}".FormatArgs(dt));
             }
         }
     }

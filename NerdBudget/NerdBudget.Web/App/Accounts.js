@@ -28,6 +28,8 @@ function AccountListViewModel(data)
                 return $.restSetup.baseUrl + 'Budgets/' + id;
             case 'import':
                 return $.restSetup.baseUrl + 'Import/' + id;
+            case 'analysis':
+                return $.restSetup.baseUrl + 'Analysis/' + id;
         }
 
         return type;

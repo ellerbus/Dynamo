@@ -6,17 +6,76 @@
 
 @Html.Partial("_Tabs", Model.Account)
 
-@*<script src="@Url.Content("~/App/Categories.js")"></script>*@
+<script src="@Url.Content("~/App/Analysis.js")"></script>
 
 <script type="text/javascript">
-  //var data = @Html.Raw(Model.ToJson());
+  var data = @Html.Raw(Model.ToJson());
 
-  //var vm = new CategoriesViewModel(data.account, data.categories);
+  var vm = new AnalysisViewModel(data);
 
   $(function(){
     $('li[tab-analysis]').addClass('active');
 
-    //ko.applyBindings(vm);
+    ko.applyBindings(vm, $('#analysis').get(0));
+
+    $('[data-toggle="tooltip"]').tooltip();
   });
 </script>
 
+<div id="analysis">
+  <br />
+  <table class="table table-condensed budget-display-table">
+    <thead>
+      <tr style="color: #777;">
+        <th>&nbsp;</th>
+        <!-- ko foreach: headers -->
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'budget-display-history-week': isHistory, 'budget-display-active-week': isCurrent }">
+          {{ title }}<br />
+          {{ start | date:'MMM' }} {{ start | date:'DD' }} - {{ end | date:'DD' }}
+        </th>
+        <!-- /ko -->
+      </tr>
+      <tr style="color: #777;">
+        <th>
+          BALANCE
+        </th>
+        <!-- ko foreach: headers -->
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': variance < 0, 'success': variance > 0 }">
+          <!-- ko if: isHistory -->
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: variance | fixed"></i>*
+          <!-- /ko -->
+          <!-- ko if: isCurrent -->
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection | fixed"></i>
+          <!-- /ko -->
+          <!-- ko if: isFuture -->
+          <span data-bind="text: projection | fixed"></span>
+          <!-- /ko -->
+        </th>
+        <!-- /ko -->
+      </tr>
+      <tr style="color: #777;">
+        <th>
+          &nbsp;
+        </th>
+        <!-- ko foreach: headers -->
+          <td class="actual" data-bind="text: actual | fixed"></td>
+          <td class="budget" data-bind="text: budget | fixed"></td>
+        <!-- /ko -->
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: details">
+      <tr data-bind="css: { category: isCategory, budget: !isCategory}">
+        <!-- ko if: isCategory -->
+          <td colspan="11" data-bind="text: title"></td>
+        <!-- /ko -->
+        <!-- ko if: !isCategory -->
+          <td data-bind="text: title"></td>
+          <!-- ko foreach: values -->
+          <td class="actual" data-bind="text: actual | fixed"></td>
+          <td class="budget" data-bind="text: budget | fixed"></td>
+          <!-- /ko -->
+        <!-- /ko -->
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using FizzWare.NBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NerdBudget.Core.Models;
@@ -20,7 +18,7 @@ namespace NerdBudget.Tests.Core.Models
             Assert.AreEqual("AA", actual.AccountId);
         }
 
-                
+
         //[TestMethod]
         //public void Balance_AsOf_Should_DoSomething()
         //{
@@ -29,7 +27,7 @@ namespace NerdBudget.Tests.Core.Models
         //	Assert.AreEqual(new DateTime(2000, 1, 1), actual.AsOf);
         //}
 
-                
+
         //[TestMethod]
         //public void Balance_Amount_Should_DoSomething()
         //{
@@ -93,6 +91,40 @@ namespace NerdBudget.Tests.Core.Models
 
             //  assert
             Assert.AreEqual(b1, account.Balances[b1.AsOf]);
+        }
+
+        [TestMethod]
+        public void BalanceCollection_Should_GetBalanceAmount()
+        {
+            //  assign 
+            var account = Builder<Account>.CreateNew().Build();
+
+            var b1 = Builder<Balance>.CreateNew().Build();
+
+            b1.Amount = 120;
+
+            //  act
+            account.Balances.Add(b1);
+
+            //  assert
+            Assert.AreEqual(120, account.Balances.GetBalanceAmount(b1.AsOf));
+        }
+
+        [TestMethod]
+        public void BalanceCollection_Should_GetBalanceAmount_ZeroOnMissing()
+        {
+            //  assign 
+            var account = Builder<Account>.CreateNew().Build();
+
+            var b1 = Builder<Balance>.CreateNew().Build();
+
+            b1.Amount = 120;
+
+            //  act
+            account.Balances.Add(b1);
+
+            //  assert
+            Assert.AreEqual(0, account.Balances.GetBalanceAmount(new DateTime(1999, 1, 1)));
         }
 
         #endregion

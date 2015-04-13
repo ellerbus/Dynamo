@@ -53,12 +53,22 @@ namespace NerdBudget.Core.Models
 
         #region Methods
 
+        public double GetBalanceAmount(DateTime dt)
+        {
+            if (Contains(dt))
+            {
+                return this[dt].Amount;
+            }
+
+            return 0;
+        }
+
         public void Update(IEnumerable<Ledger> ledgers)
         {
             foreach (Ledger led in ledgers.OrderBy(x => x.Date).ThenBy(x => x.Sequence))
             {
-                UpdateBalance(led.Balance, led.Date.ToMonthDate());
-                UpdateBalance(led.Balance, led.Date.ToWeekDate());
+                UpdateBalance(led.Balance, led.Date.ToMonthlyBudgetDate());
+                UpdateBalance(led.Balance, led.Date.ToWeeklyBudgetDate());
             }
         }
 

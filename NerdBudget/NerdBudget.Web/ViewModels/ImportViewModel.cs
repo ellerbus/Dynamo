@@ -11,7 +11,7 @@ namespace NerdBudget.Web.ViewModels
         {
             Account = account;
 
-            Budgets = account.Categories.SelectMany(x => x.Budgets).ToList();
+            Budgets = account.Categories.SelectMany(x => x.Budgets).OrderBy(x => x.Name).ToList();
 
             Ledger = account.Ledgers
                 .OrderBy(x => x.Date)

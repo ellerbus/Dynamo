@@ -148,6 +148,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Analysis.js" />
     <Content Include="App\Import.js" />
     <Content Include="App\Budgets.js" />
     <Content Include="App\Categories.js" />
@@ -160,7 +161,12 @@
     <Content Include="App\Ledgers\ledger.html" />
     <Content Include="App\Ledgers\ledger.route.js" />
     <Content Include="App\Ledgers\ledgers.html" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
@@ -206,6 +212,10 @@
     <Content Include="Views\Display\Categories.cshtml" />
     <Content Include="Views\Display\_Tabs.cshtml" />
     <Content Include="Views\Display\Budgets.cshtml" />
+    <Content Include="Content\Site.less" />
+    <Content Include="Content\Site.css.map">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <None Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
     <None Include="Web.Debug.config">
