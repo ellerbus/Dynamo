@@ -216,6 +216,7 @@
     <Content Include="Content\Site.css.map">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Publish File System.pubxml" />
     <None Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
     <None Include="Web.Debug.config">

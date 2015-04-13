@@ -54,7 +54,12 @@ function AnalysisViewModel(data)
         {
             var prev = self.headers[idx - 1];
 
-            var balance = w.balance + prev.projection + prev.variance;
+            var balance = w.balance + prev.projection;
+
+            if (!w.isCurrent)
+            {
+                balance += prev.variance;
+            }
 
             w.projection = balance + w.variance;
         }
