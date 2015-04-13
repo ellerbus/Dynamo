@@ -153,7 +153,6 @@
     <Content Include="App\Budgets.js" />
     <Content Include="App\Categories.js" />
     <Content Include="App\Accounts.js" />
-    <Content Include="App\app.module.js" />
     <Content Include="App\Helper.js" />
     <Content Include="App\Ledgers\ledger-import.html" />
     <Content Include="App\Ledgers\ledger.controller.js" />

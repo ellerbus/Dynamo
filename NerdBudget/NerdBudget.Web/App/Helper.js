@@ -33,6 +33,7 @@
         var options = {
             title: item.label,
             message: element,
+            closeButton: false,
             buttons: {
                 ok: {
                     label: item.label,

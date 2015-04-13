@@ -89,11 +89,11 @@ function BudgetListViewModel(data)
         return $html.get(0);
     };
 
-    function create()
+    function create(d)
     {
         var element = getFormElement();
 
-        var vm = new BudgetDetailModel({ accountId: self.account.id, categoryId: '', name: '' }, self.categories, self.frequencies);
+        var vm = new BudgetDetailModel({ accountId: self.account.id, categoryId: d.id, name: '' }, self.categories, self.frequencies);
 
         ko.applyBindings(vm, element);
 
@@ -131,6 +131,8 @@ function BudgetListViewModel(data)
         options.buttons.cancel.callback = function () { ko.cleanNode(element); };
 
         bootbox.dialog(options);
+
+        $(element).find('input[name="name"]').focus();
     };
 
     function update(budget)
