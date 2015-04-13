@@ -12,6 +12,14 @@ function AnalysisViewModel(data)
     {
         updateHeader(x);
 
+        var start = self.headers[x].start;
+
+        var end = self.headers[x].end;
+
+        self.headers[x].dateRange = moment(start).format('MMM') + ' ' +
+            moment(start).format('DD') + ' - ' +
+            moment(end).format('DD');
+
         self.headers[x].tooltip = function ()
         {
             var h = this;

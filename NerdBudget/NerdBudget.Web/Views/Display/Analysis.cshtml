@@ -30,8 +30,7 @@
         <th>&nbsp;</th>
         <!-- ko foreach: headers -->
         <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'budget-display-history-week': isHistory, 'budget-display-active-week': isCurrent }">
-          {{ title }}<br />
-          {{ start | date:'MMM' }} {{ start | date:'DD' }} - {{ end | date:'DD' }}
+          <span data-toggle="tooltip" data-bind="text: title, attr: { title: dateRange }">{{ title }}</span>
         </th>
         <!-- /ko -->
       </tr>
@@ -72,7 +71,7 @@
           <td data-bind="text: title"></td>
           <!-- ko foreach: values -->
           <td class="actual" data-bind="text: actual | fixed"></td>
-          <td class="budget" data-bind="text: variance | fixed"></td>
+          <td class="budget" data-bind="text: variance | fixed, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
           <!-- /ko -->
         <!-- /ko -->
       </tr>

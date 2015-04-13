@@ -216,7 +216,7 @@
       <DependentUpon>Site.css</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\Publish File System.pubxml" />
-    <None Include="Views\Display\Import.cshtml" />
+    <Content Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
