@@ -36,7 +36,7 @@ namespace NerdBudget.Tests.Core.Models
         {
             var actual = new Ledger() { Id = "aa" };
 
-            Assert.AreEqual("AA", actual.Id);
+            Assert.AreEqual("XXXXXXAA", actual.Id);
         }
 
 
@@ -201,7 +201,7 @@ namespace NerdBudget.Tests.Core.Models
                 OriginalText = "02/07/2015	9999-NNNN NNN NNN N-9999, 9999 NN NNNNNNN NN NNN 9999	$68.16		$1,218.82	NNNNNNNNNNN NNNNNNN"
             };
 
-            Assert.AreEqual("6A9645D", ledger.Id);
+            Assert.AreEqual("X6A9645D", ledger.Id);
             Assert.AreEqual(new DateTime(2015, 2, 7), ledger.Date);
             Assert.AreEqual("9999-NNNN NNN NNN N-9999, 9999 NN NNNNNNN NN NNN 9999", ledger.Description);
             Assert.AreEqual(-68.16, ledger.Amount);

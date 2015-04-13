@@ -26,7 +26,7 @@ namespace NerdBudget.Tests.Core.Models
         {
             var actual = new Map() { Id = "aa" };
 
-            Assert.AreEqual("AA", actual.Id);
+            Assert.AreEqual("XXXXXXAA", actual.Id);
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace NerdBudget.Tests.Core.Models
         {
             var actual = new Map() { RegexPattern = "aa" };
 
-            Assert.AreEqual(Crc32.Hash("aa").ToUpper(), actual.Id);
+            Assert.AreEqual(Crc32.Hash("aa").ToUpper().PadLeft(8, 'X'), actual.Id);
         }
 
         [TestMethod]

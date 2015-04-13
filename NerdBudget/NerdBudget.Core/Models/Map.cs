@@ -58,7 +58,7 @@ namespace NerdBudget.Core.Models
         public override string Id
         {
             get { return base.Id; }
-            set { base.Id = value.AssertNotNull().ToUpper(); }
+            set { base.Id = value.AssertNotNull().ToUpper().PadLeft(8, 'X'); }
         }
 
         public override string RegexPattern
