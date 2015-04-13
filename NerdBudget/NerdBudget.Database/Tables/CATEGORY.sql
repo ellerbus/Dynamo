@@ -15,6 +15,6 @@ create table dbo.CATEGORY
 	created_at				datetime not null,
 	updated_at				datetime null,
 
-	primary key				(account_id, category_id)
+	primary key				(account_id, category_id),
 	unique					(account_id, category_name)
 )
