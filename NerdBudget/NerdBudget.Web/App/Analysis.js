@@ -4,9 +4,13 @@ function AnalysisViewModel(data)
 {
     var self = this;
 
+    self.account = data.account;
+
     self.headers = data.headers;
 
     self.details = data.details;
+
+    self.showLedgers = showLedgers;
 
     for (var x = 0, y = self.headers.length; x < y; x++)
     {
@@ -20,30 +24,60 @@ function AnalysisViewModel(data)
             moment(start).format('DD') + ' - ' +
             moment(end).format('DD');
 
-        self.headers[x].tooltip = function ()
+        self.headers[x].tooltip = headerTooltip;
+    }
+
+    for (var x = 0, y = self.details.length; x < y; x++)
+    {
+        for (var a = 0, b = self.details[x].values.length; a < b; a++)
         {
-            var h = this;
-
-            if (h.isHistory)
-            {
-                if (h.variance != 0)
-                {
-                    return ko.filters.number(Math.abs(h.variance)) + ' ' + (h.variance > 0 ? 'Under' : 'OVER') + ' Budget';
-                }
-
-                return 'On Target';
-            }
-
-            if (h.isCurrent)
-            {
-                return 'Beginning Balance ' + ko.filters.number(parseInt(h.balance));
-            }
-
-            return '';
-        };
+            self.details[x].values[a].id = self.details[x].id;
+            self.details[x].values[a].header = self.headers[a];
+        }
     }
 
     ko.track(self);
+
+    function getLedgerElement(disableIt)
+    {
+        var html = $('#ledgers').html();
+
+        var $html = $(html);
+
+        return $html.get(0);
+    };
+
+    function showLedgers(d)
+    {
+        if (d.actual !== 0)
+        {
+            var dt = moment(d.header.start);
+
+            var onSuccess = function (data)
+            {
+                var element = getLedgerElement();
+
+                var vm = new LedgersViewModel(data);
+
+                ko.applyBindings(vm, element);
+
+                var date = dt.format('MMM DD');
+
+                var options = nbHelper.displayDialog('Week of ' + date, element);
+
+                options.buttons.ok.callback = function () { ko.cleanNode(element); };
+
+                bootbox.dialog(options);
+            };
+
+            var onError = function (error) { };
+
+            var url = 'api/Ledgers/' + self.account.id + '/' +
+                d.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
+
+            $.retrieve(url).then(onSuccess, onError);
+        }
+    };
 
     function updateHeader(idx)
     {
@@ -73,6 +107,28 @@ function AnalysisViewModel(data)
         }
     };
 
+    function headerTooltip()
+    {
+        var h = this;
+
+        if (h.isHistory)
+        {
+            if (h.variance != 0)
+            {
+                return ko.filters.number(Math.abs(h.variance)) + ' ' + (h.variance > 0 ? 'Under' : 'OVER') + ' Budget';
+            }
+
+            return 'On Target';
+        }
+
+        if (h.isCurrent)
+        {
+            return 'Beginning Balance ' + ko.filters.number(parseInt(h.balance));
+        }
+
+        return '';
+    };
+
     function getValue(idx, field)
     {
         var value = 0;
@@ -87,3 +143,12 @@ function AnalysisViewModel(data)
         return value;
     }
 };
+
+function LedgersViewModel(data)
+{
+    var self = this;
+
+    self.ledgers = data;
+
+    ko.track(self);
+}

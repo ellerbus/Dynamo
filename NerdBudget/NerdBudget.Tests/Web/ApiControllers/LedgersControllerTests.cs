@@ -124,6 +124,79 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
         #endregion
 
+        #region Tests - Get Many
+
+        [TestMethod]
+        public void LedgersController_GetMany_Should_SendOk()
+        {
+            //		arrange
+            var account = GetAccount(true);
+
+            var ledger = account.Ledgers.Last();
+
+            ledger.BudgetId = account.Categories.First().Budgets.First().Id;
+
+            var settings = GetPayloadSettings();
+
+            MockService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.GetLedgers(ledger.AccountId, ledger.BudgetId, ledger.Date).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            msg.Content.AssertJsonObjectEquality(account.Ledgers, settings);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void LedgersController_GetMany_Should_SendEmptySet()
+        {
+            //		arrange
+            var account = GetAccount(true);
+
+            var ledger = account.Ledgers.Last();
+
+            ledger.BudgetId = account.Categories.First().Budgets.First().Id;
+
+            var settings = GetPayloadSettings();
+
+            MockService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.GetLedgers(ledger.AccountId, ledger.BudgetId, ledger.Date.AddDays(7)).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            msg.Content.AssertJsonObjectEquality(new Ledger[0], settings);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void LedgersController_GetMany_Should_SendNotFound_Account()
+        {
+            //		arrange
+            var account = GetAccount(true);
+
+            var ledger = account.Ledgers.Last();
+
+            MockService.Setup(x => x.Get(account.Id)).Returns(null as Account);
+
+            //		act
+            var msg = SubjectUnderTest.Get(ledger.AccountId, ledger.Id, ledger.Date).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.NotFound);
+
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
         #region Tests - Get One
 
         [TestMethod]

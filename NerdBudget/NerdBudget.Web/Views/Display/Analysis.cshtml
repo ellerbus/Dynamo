@@ -57,23 +57,44 @@
           &nbsp;
         </th>
         <!-- ko foreach: headers -->
-          <td class="actual" data-bind="text: actual | fixed"></td>
-          <td class="budget" data-bind="text: budget | fixed"></td>
+        <td class="actual" data-bind="text: actual | fixed"></td>
+        <td class="budget" data-bind="text: budget | fixed"></td>
         <!-- /ko -->
       </tr>
     </thead>
     <tbody data-bind="foreach: details">
       <tr data-bind="css: { category: isCategory, budget: !isCategory}">
         <!-- ko if: isCategory -->
-          <td colspan="11" data-bind="text: title"></td>
+        <td colspan="11" data-bind="text: title"></td>
         <!-- /ko -->
         <!-- ko if: !isCategory -->
-          <td data-bind="text: title"></td>
-          <!-- ko foreach: values -->
-          <td class="actual" data-bind="text: actual | fixed"></td>
-          <td class="budget" data-bind="text: variance | fixed, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
-          <!-- /ko -->
+        <td data-bind="text: title"></td>
+        <!-- ko foreach: values -->
+        <td class="actual" data-bind="text: actual | fixed, click: $root.showLedgers"></td>
+        <td class="budget" data-bind="text: variance | fixed, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
         <!-- /ko -->
+        <!-- /ko -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="ledgers" style="display: none">
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th style="width: 15%">Date</th>
+        <th>Description</th>
+        <th style="width: 7.5%">Amount</th>
+        <th style="width: 7.5%">Balance</th>
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: ledgers">
+      <tr>
+        <td data-bind="text: date | date"></td>
+        <td data-bind="text: description"></td>
+        <td data-bind="text: amount | fixed" style="text-align: right;"></td>
+        <td data-bind="text: balance | fixed" style="text-align: right;"></td>
       </tr>
     </tbody>
   </table>

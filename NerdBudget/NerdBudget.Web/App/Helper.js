@@ -20,6 +20,22 @@
             }
         }
     },
+    displayDialog: function (title, element)
+    {
+        var options = {
+            title: title,
+            message: element,
+            buttons: {
+                ok: {
+                    label: "OK",
+                    className: "btn-primary",
+                    callback: null
+                }
+            }
+        };
+
+        return options;
+    },
     crudDialog: function (crud, element)
     {
         var setup = {

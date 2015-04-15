@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Augment;
 using FluentValidation;
+using NerdBudget.Core;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
 using Newtonsoft.Json;
@@ -67,6 +69,28 @@ namespace NerdBudget.Web.ApiControllers
         #endregion
 
         #region Normal CRUD Actions
+
+        // GET: api/ledger/5
+        [HttpGet, Route("{accountId}/{budgetId}/{date}/weekly"), ResponseType(typeof(Ledger))]
+        public IHttpActionResult GetLedgers(string accountId, string budgetId, DateTime date)
+        {
+            Account account = GetAccount(accountId);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            Range<DateTime> range = date.ToWeeklyBudgetRange();
+
+            IEnumerable<Ledger> ledgers = account.Ledgers
+                .Where(x => x.BudgetId == budgetId && range.Contains(x.Date))
+                .OrderBy(x => x.Date).ThenBy(x => x.Sequence);
+
+            JsonSerializerSettings jss = GetPayloadSettings();
+
+            return Json(ledgers, jss);
+        }
 
         // GET: api/ledger/5
         [HttpGet, Route("{accountId}/map"), ResponseType(typeof(Ledger))]

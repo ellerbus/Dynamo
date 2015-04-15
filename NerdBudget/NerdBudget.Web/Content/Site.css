@@ -62,6 +62,7 @@ td.icons {
   padding-left: 16px;
 }
 .budget-display-table tr.budget td.actual {
+  cursor: pointer;
   border-left-style: solid;
 }
 /*# sourceMappingURL=Site.css.map */
