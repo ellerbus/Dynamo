@@ -95,6 +95,8 @@ function ImportDetailModel(data)
 
         var options = nbHelper.crudDialog('create', element);
 
+        options.buttons.ok.label = 'Import';
+
         options.buttons.ok.callback = function ()
         {
             var dlg = this;

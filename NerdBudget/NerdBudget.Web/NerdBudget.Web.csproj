@@ -154,12 +154,6 @@
     <Content Include="App\Categories.js" />
     <Content Include="App\Accounts.js" />
     <Content Include="App\Helper.js" />
-    <Content Include="App\Ledgers\ledger-import.html" />
-    <Content Include="App\Ledgers\ledger.controller.js" />
-    <Content Include="App\Ledgers\ledger.factory.js" />
-    <Content Include="App\Ledgers\ledger.html" />
-    <Content Include="App\Ledgers\ledger.route.js" />
-    <Content Include="App\Ledgers\ledgers.html" />
     <Content Include="Content\Site.css">
       <DependentUpon>Site.less</DependentUpon>
     </Content>
