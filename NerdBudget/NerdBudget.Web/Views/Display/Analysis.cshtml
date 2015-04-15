@@ -19,6 +19,21 @@
     ko.applyBindings(vm, $('#analysis').get(0));
 
     $('[data-toggle="tooltip"]').tooltip();
+
+    // Change the selector if needed
+    var $table = $('#ledgers table'),
+        $bodyCells = $table.find('tbody tr:first').children(),
+        colWidth;
+
+    // Get the tbody columns width array
+    colWidth = $bodyCells.map(function() {
+      return $(this).width();
+    }).get();
+
+    // Set the width of thead columns
+    $table.find('thead tr').children().each(function(i, v) {
+      $(v).width(colWidth[i]);
+    }); 
   });
 </script>
 
@@ -80,21 +95,13 @@
 </div>
 
 <div id="ledgers" style="display: none">
-  <table class="table table-condensed table-striped">
-    <thead>
-      <tr>
-        <th style="width: 15%">Date</th>
-        <th>Description</th>
-        <th style="width: 7.5%">Amount</th>
-        <th style="width: 7.5%">Balance</th>
-      </tr>
-    </thead>
+  <table class="table table-condensed table-striped ledgers-display-table">
     <tbody data-bind="foreach: ledgers">
       <tr>
-        <td data-bind="text: date | date"></td>
+        <td data-bind="text: date | date" style="width: 15%"></td>
         <td data-bind="text: description"></td>
-        <td data-bind="text: amount | fixed" style="text-align: right;"></td>
-        <td data-bind="text: balance | fixed" style="text-align: right;"></td>
+        <td data-bind="text: amount | fixed" style="text-align: right; width: 7.5%"></td>
+        <td data-bind="text: balance | fixed" style="text-align: right; width: 7.5%"></td>
       </tr>
     </tbody>
   </table>
