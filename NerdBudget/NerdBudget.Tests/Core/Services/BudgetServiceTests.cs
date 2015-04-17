@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentValidation;
@@ -66,6 +67,10 @@ namespace NerdBudget.Tests.Core.Services
 
             var category = account.Categories.Last();
 
+            var po = new PrivateObject(account);
+
+            var allBudgets = po.GetProperty("Budgets") as BudgetCollection;
+
             MockRepo.Setup(x => x.Save(budget));
 
             MockValidator.Setup(x => x.Validate(budget)).Returns(ValidationSuccess);
@@ -81,6 +86,10 @@ namespace NerdBudget.Tests.Core.Services
             Assert.AreEqual(category.Budgets.Count * 10 - 10, budget.Sequence);
             Assert.AreNotEqual(DateTime.MinValue, budget.CreatedAt);
             Assert.AreNotEqual("", budget.Id);
+
+            //  Since we didn't load ACCOUNT from the database, our test will
+            //  only have the newly inserted budget for the "ALL" FK
+            Assert.AreEqual(1, allBudgets.Count);
 
             MockRepo.VerifyAll();
             MockValidator.VerifyAll();

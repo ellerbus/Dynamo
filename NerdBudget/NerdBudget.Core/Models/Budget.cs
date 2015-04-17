@@ -46,7 +46,7 @@ namespace NerdBudget.Core.Models
 
         public string FullName
         {
-            get { return "{0} {1}".FormatArgs(Name, Category == null ? "?" : Category.Name); }
+            get { return "{0} {1}".FormatArgs(Name, Category == null ? "?" : Category.Name.ToLower()); }
         }
 
         public override string Id

@@ -79,6 +79,8 @@ namespace NerdBudget.Core.Services
             _repository.Save(budget);
 
             category.Budgets.Add(budget);
+
+            category.Account.Budgets.Add(budget);
         }
 
         /// <summary>
