@@ -59,8 +59,9 @@
     <Reference Include="FluentValidation">
       <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
-    <Reference Include="Insight.Database">
-      <HintPath>..\packages\Insight.Database.Core.5.2.3\lib\NET45\Insight.Database.dll</HintPath>
+    <Reference Include="Insight.Database, Version=5.2.5.0, Culture=neutral, PublicKeyToken=f35c6ef87e515afc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Insight.Database.Core.5.2.5\lib\NET45\Insight.Database.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
