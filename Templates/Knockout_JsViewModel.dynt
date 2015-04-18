@@ -1,0 +1,200 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
+{% capture CAMELCLASS %}{{ BASECLASS | camel }}{% endcapture -%}
+{% capture CAMELCLASSES %}{{ BASECLASS | plural | camel }}{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}.js{% endcapture -%}
+/*
+  1. THIS TEMPLATE IS VERY TIGHTLY BOUND TO NERDBUDGET'S DESIGN
+  2. THIS NEEDS TO BE IN THE APPROPRIATE CONTROLLER DIRECTORY!!
+  3. THIS TEMPLATE AND ASSOCIATED JAVASCRIPT FILE USE THE
+	App/Helper.js FILE FROM NERDBUDGET
+*/
+'use strict';
+
+function {{ BASECLASS }}ListViewModel(data)
+{
+	var self = this;
+
+	self.url = 'api/{{ BASECLASS | plural }}';
+
+	self.{{ CAMELCLASSES }} = ko.utils.arrayMap(data.{{ CAMELCLASSES }}, function (x) { ko.track(x); return x; });
+
+	self.create = create;
+
+	self.update = update;
+
+	self.delete = remove;
+
+	self.path = path;
+
+	ko.track(self);
+
+	function getFormElement(disableIt)
+	{
+		var html = $('#form-body').html();
+
+		var $html = $(html);
+
+		$html.submit(function () { return false; });
+
+		if (disableIt)
+		{
+			$html.disableAll();
+		}
+
+		return $html.get(0);
+	};
+
+	function create()
+	{
+		var element = getFormElement();
+
+		var vm = new {{ BASECLASS }}DetailModel({ name: '' });
+
+		ko.applyBindings(vm, element);
+
+		var options = nbHelper.crudDialog('create', element);
+
+		options.buttons.ok.callback= function ()
+		{
+			var dlg = this;
+
+			var onSuccess = function (data)
+			{
+				self.{{ CAMELCLASSES }}.push(data);
+
+				ko.cleanNode(element);
+
+				dlg.modal('hide');
+			};
+
+			var onError = function (error)
+			{
+				dlg.find('form').showErrors(error);
+			};
+
+			$.create(self.url, vm.getData()).then(onSuccess, onError);
+
+			return false;
+		};
+
+		options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+		bootbox.dialog(options);
+	};
+
+	function update({{ CAMELCLASS }})
+	{
+		var element = getFormElement();
+
+		var vm = new {{ BASECLASS }}DetailModel({{ CAMELCLASS }});
+
+		ko.applyBindings(vm, element);
+
+		var options = nbHelper.crudDialog('update', element);
+
+		options.buttons.ok.callback = function ()
+		{
+			var dlg = this;
+
+			var onSuccess = function (data)
+			{
+				nbHelper.overlay(data, {{ CAMELCLASS }});
+
+				ko.cleanNode(element);
+
+				dlg.modal('hide');
+			};
+
+			var onError = function (error)
+			{
+				dlg.find('form').showErrors(error);
+			};
+
+			$.update(self.url + '/{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{% if forloop.last == false %}/{% endif %}{% endfor %}', vm.getData()).then(onSuccess, onError);
+
+			return false;
+		};
+
+		options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+		bootbox.dialog(options);
+	};
+
+	function remove({{ CAMELCLASS }})
+	{
+		var element = getFormElement(true);
+
+		var vm = new {{ BASECLASS }}DetailModel({{ CAMELCLASS }});
+
+		ko.applyBindings(vm, element);
+
+		var options = nbHelper.crudDialog('delete', element);
+
+		options.buttons.ok.callback= function ()
+		{
+			var dlg = this;
+
+			var onSuccess = function (data)
+			{
+				self.{{ CAMELCLASSES }}.remove({{ CAMELCLASS }});
+
+				cleanNode(element);
+
+				dlg.modal('hide');
+			};
+
+			var onError = function (error)
+			{
+				dlg.find('form').showErrors(error);
+			};
+
+			$.delete(self.url + '/{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{% if forloop.last == false %}/{% endif %}{% endfor %}', vm.getData()).then(onSuccess, onError);
+
+			return false;
+		};
+
+		options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+		bootbox.dialog(options);
+	};
+};
+
+function {{ BASECLASS }}DetailModel({{ CAMELCLASS }})
+{
+	var self = this;
+
+	self.id = '';
+	self.name = '';
+
+	self.update = update;
+
+	self.getData = getData;
+
+	self.creating = creating;
+
+	self.update({{ CAMELCLASS }});
+
+	ko.track(self, [{% for column in table.columns %}'{{ column.parameter_name }}'{% if forloop.last == false %}, {% endif %}{% endfor %}]);
+
+	function creating()
+	{
+		return {% for column in table.primary_keys %}self.{{ column.parameter_name }} != ''{% if forloop.last == false %} && {% endif %}{% endfor %};
+	};
+
+	function update(data)
+	{
+		if (data)
+		{ {% for column in table.columns %}
+			self.{{ column.parameter_name }} = data.{{ column.parameter_name }} || '';{% endfor %}
+		}
+	};
+
+	function getData()
+	{
+		return { {% for column in table.columns %}
+			{{ column.parameter_name }}: self.{{ column.parameter_name }}{% if forloop.last == false %},{% endif %}{% endfor %}
+		};
+	}
+};

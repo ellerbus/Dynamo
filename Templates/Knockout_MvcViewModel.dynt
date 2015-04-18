@@ -1,0 +1,32 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\ViewModels\{{ BASECLASSES }}ViewModel.cs{% endcapture -%}
+using System.Collections.Generic;
+using System.Linq;
+using {{ SOLUTION }}.Core.Models;
+using Newtonsoft.Json;
+
+namespace {{ PROJECT }}.ViewModels
+{
+    public class {{ BASECLASSES }}ViewModel
+    {
+        public {{ BASECLASSES }}ViewModel(IEnumerable<{{ BASECLASS }}> {{ BASECLASSES | camel }})
+        {
+            {{ BASECLASSES }} = {{ BASECLASSES | camel }}.ToList();
+        }
+
+        public string ToJson()
+        {
+            JsonSerializerSettings jss = PayloadManager
+                .StandardPayload<{{ BASECLASS }}>()
+                .ToSettings();
+
+            string json = JsonConvert.SerializeObject(this, jss);
+
+            return json;
+        }
+
+        public IList<{{ BASECLASS }}> {{ BASECLASSES }} { get; private set; }
+    }
+}
