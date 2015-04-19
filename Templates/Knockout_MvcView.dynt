@@ -21,27 +21,29 @@
 	var vm = new {{ BASECLASS }}ListViewModel(data);
 
 	$(function(){
-		ko.applyBindings(vm, $('#{{ BASECLASSES | lower }}').get(0));
+		ko.applyBindings(vm, $('#{{ BASECLASSES | camel }}').get(0));
 	});
 </script>
 
-<table id="{{ BASECLASSES | lower }}" class="table table-condensed table-striped">
-	<thead>
-		<tr>{% for column in table.columns %}
-			<th>{{ column.property_name | label }}</th>{% endfor %}
-			<th><a href="#" data-bind="click: create" nb-create-icon></a></th>
-		</tr>
-	</thead>
-	<tbody data-bind="foreach: {{ BASECLASSES | lower }}">
-		<tr>{% for column in table.columns %}
-			<td data-bind="text: {{ column.parameter_name }}"></td>{% endfor %}
-			<td class="icons">
-				<a href="#" data-bind="click: $parent.update" nb-update-icon></a>
-				<a href="#" data-bind="click: $parent.delete" nb-delete-icon></a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+<div id="{{ BASECLASSES | camel }}">
+	<table class="table table-condensed table-striped">
+		<thead>
+			<tr>{% for column in table.columns %}
+				<th>{{ column.property_name | label }}</th>{% endfor %}
+				<th><a href="#" data-bind="click: create" nb-create-icon></a></th>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: {{ BASECLASSES | camel }}">
+			<tr>{% for column in table.columns %}
+				<td data-bind="text: {{ column.parameter_name }}"></td>{% endfor %}
+				<td class="icons">
+					<a href="#" data-bind="click: $parent.update" nb-update-icon></a>
+					<a href="#" data-bind="click: $parent.delete" nb-delete-icon></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 
 <div id="form-body" style="display: none;">
