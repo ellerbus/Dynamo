@@ -149,6 +149,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\Adjustments.js" />
     <Content Include="App\Analysis.js" />
     <Content Include="App\Import.js" />
     <Content Include="App\Budgets.js" />
@@ -163,7 +164,6 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Index.html" />
     <Content Include="Scripts\BootBox.js" />
     <Content Include="Scripts\Bootstrap-Notify.min.js" />
     <Content Include="Scripts\Knockout-ES5.min.js" />
@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\AccountsController.cs" />
+    <Compile Include="ApiControllers\AdjustmentsController.cs" />
     <Compile Include="ApiControllers\BaseController.cs" />
     <Compile Include="ApiControllers\BudgetsController.cs" />
     <Compile Include="ApiControllers\CategoriesController.cs">
@@ -188,6 +189,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AdjustmentsViewModel.cs" />
     <Compile Include="ViewModels\AnalysisViewModel.cs" />
     <Compile Include="ViewModels\ImportViewModel.cs" />
     <Compile Include="ViewModels\BudgetsViewModel.cs" />
@@ -213,6 +215,7 @@
     <None Include="Properties\PublishProfiles\Publish File System.pubxml" />
     <Content Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
+    <Content Include="Views\Display\Adjustments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Augment;
-using Augment.Caching;
 using FluentValidation;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Repositories;
@@ -72,7 +72,7 @@ namespace NerdBudget.Core.Services
         {
             category.Account = account;
 
-            category.Id = Utilities.CreateId(2);
+            category.Id = CreateUniqueId(account);
             category.Multiplier = category.Name.AssertNotNull().Contains("INCOME") ? 1 : -1;
             category.CreatedAt = DateTime.UtcNow;
             category.Sequence = account.Categories.Count * 10;
@@ -82,6 +82,29 @@ namespace NerdBudget.Core.Services
             _repository.Save(category);
 
             account.Categories.Add(category);
+        }
+
+        /// <summary>
+        /// Attempt to create a unique ID
+        /// </summary>
+        /// <returns></returns>
+        private string CreateUniqueId(Account account)
+        {
+            IEnumerable<string> list = account.Categories.Select(x => x.Id);
+
+            HashSet<string> ids = new HashSet<string>(list);
+
+            for (int x = 0; x < 5; x++)
+            {
+                string id = Utilities.CreateId(2);
+
+                if (!ids.Contains(id))
+                {
+                    return id;
+                }
+            }
+
+            throw new Exception("CATEGORY - Unable to create unique ID");
         }
 
         /// <summary>

@@ -62,7 +62,7 @@
           <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection | fixed"></i>
           <!-- /ko -->
           <!-- ko if: isFuture -->
-          <span data-bind="text: projection | fixed"></span>
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection | fixed"></i>
           <!-- /ko -->
         </th>
         <!-- /ko -->
@@ -99,7 +99,7 @@
     <tbody data-bind="foreach: ledgers">
       <tr>
         <td data-bind="text: date | date" style="width: 15%"></td>
-        <td data-bind="text: description"></td>
+        <td data-bind="text: description" style="width: 75%"></td>
         <td data-bind="text: amount | fixed" style="text-align: right; width: 10%"></td>
       </tr>
     </tbody>

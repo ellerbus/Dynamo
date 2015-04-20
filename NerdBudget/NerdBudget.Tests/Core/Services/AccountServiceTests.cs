@@ -125,6 +125,8 @@ namespace NerdBudget.Tests.Core.Services
 
             MockRepo.Setup(x => x.Save(account));
 
+            MockRepo.Setup(x => x.GetList()).Returns(new Account[] { });
+
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationSuccess);
 
             MockCache.Setup(x => x.GetAllKeys()).Returns(new[] { Any.ListKey });
@@ -152,6 +154,8 @@ namespace NerdBudget.Tests.Core.Services
             var account = Builder<Account>.CreateNew().Build();
 
             MockRepo.Setup(x => x.Save(account));
+
+            MockRepo.Setup(x => x.GetList()).Returns(new Account[] { });
 
             MockValidator.Setup(x => x.Validate(account)).Returns(ValidationFailure);
 

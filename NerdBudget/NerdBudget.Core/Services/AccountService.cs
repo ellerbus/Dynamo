@@ -138,7 +138,7 @@ namespace NerdBudget.Core.Services
         /// </summary>
         public void Insert(Account account)
         {
-            account.Id = Utilities.CreateId(2);
+            account.Id = CreateUniqueId();
             account.Type = "C";
             account.StartedAt = DateTime.UtcNow;
             account.CreatedAt = DateTime.UtcNow;
@@ -148,6 +148,29 @@ namespace NerdBudget.Core.Services
             _repository.Save(account);
 
             _cache.Find<IList<Account>>().RemoveAll();
+        }
+
+        /// <summary>
+        /// Attempt to create a unique ID
+        /// </summary>
+        /// <returns></returns>
+        private string CreateUniqueId()
+        {
+            IEnumerable<string> list = GetList().Select(x => x.Id);
+
+            HashSet<string> ids = new HashSet<string>(list);
+
+            for (int x = 0; x < 5; x++)
+            {
+                string id = Utilities.CreateId(2);
+
+                if (!ids.Contains(id))
+                {
+                    return id;
+                }
+            }
+
+            throw new Exception("ACCOUNT - Unable to create unique ID");
         }
 
         /// <summary>

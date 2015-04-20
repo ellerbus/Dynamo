@@ -31,9 +31,9 @@ from	dbo.MAP
 where	updated_at is not null
   and	updated_at < @cutoff
 
---delete
---from	dbo.ADJUSTMENT
---where	adjustment_date < @cutoff
+delete
+from	dbo.ADJUSTMENT
+where	adjustment_date < @cutoff
 
 --
 --	GRAB A LIST OF ACCOUNTS

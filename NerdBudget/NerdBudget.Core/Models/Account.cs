@@ -142,26 +142,26 @@ namespace NerdBudget.Core.Models
         }
         private BudgetCollection _budgets;
 
-        ///// <summary>
-        ///// Stub for Insight.Database to load MARS
-        ///// </summary>
-        //private IList<Adjustment> AllAdjustments { get; set; }
+        /// <summary>
+        /// Stub for Insight.Database to load MARS
+        /// </summary>
+        private IList<Adjustment> AllAdjustments { get; set; }
 
-        ///// <summary>
-        ///// List of all adjustments for this Account
-        ///// </summary>
-        //internal AdjustmentCollection Adjustments
-        //{
-        //    get
-        //    {
-        //        if (_adjustments == null)
-        //        {
-        //            _adjustments = new AdjustmentCollection(this, AllAdjustments);
-        //        }
-        //        return _adjustments;
-        //    }
-        //}
-        //private AdjustmentCollection _adjustments;
+        /// <summary>
+        /// List of all adjustments for this Account
+        /// </summary>
+        internal AdjustmentCollection Adjustments
+        {
+            get
+            {
+                if (_adjustments == null)
+                {
+                    _adjustments = new AdjustmentCollection(this, AllAdjustments);
+                }
+                return _adjustments;
+            }
+        }
+        private AdjustmentCollection _adjustments;
 
         /// <summary>
         /// Stub for Insight.Database to load MARS

@@ -86,7 +86,12 @@ function AnalysisViewModel(data)
         w.actual = getValue(idx, 'actual');
         w.budget = getValue(idx, 'budget');
 
-        w.variance = w.budget + w.actual;
+        w.variance = 0;
+
+        for (var x in self.details)
+        {
+            w.variance += self.details[x].values[idx].variance;
+        }
 
         if (w.isHistory)
         {
@@ -103,9 +108,28 @@ function AnalysisViewModel(data)
                 balance += prev.variance;
             }
 
+            if (w.isFuture)
+            {
+                w.balance = prev.projection;
+            }
+
             w.projection = balance + w.variance;
         }
     };
+
+    function getValue(idx, field)
+    {
+        var value = 0;
+
+        for (var key in self.details)
+        {
+            var d = self.details[key];
+
+            value += d.values[idx][field];
+        }
+
+        return value;
+    }
 
     function headerTooltip()
     {
@@ -126,22 +150,13 @@ function AnalysisViewModel(data)
             return 'Beginning Balance ' + ko.filters.number(parseInt(h.balance));
         }
 
-        return '';
-    };
-
-    function getValue(idx, field)
-    {
-        var value = 0;
-
-        for (var key in self.details)
+        if (h.isProjection)
         {
-            var d = self.details[key];
-
-            value += d.values[idx][field];
+            return 'Projected Balance ' + ko.filters.number(parseInt(h.balance));
         }
 
-        return value;
-    }
+        return '';
+    };
 };
 
 function LedgersViewModel(data)

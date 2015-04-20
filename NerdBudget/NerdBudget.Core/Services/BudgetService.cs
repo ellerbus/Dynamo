@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Repositories;
@@ -68,9 +69,11 @@ namespace NerdBudget.Core.Services
         /// </summary>
         public void Insert(Category category, Budget budget)
         {
+            Account account = category.Account;
+
             budget.Category = category;
 
-            budget.Id = Utilities.CreateId(2);
+            budget.Id = CreateUniqueId(account);
             budget.CreatedAt = DateTime.UtcNow;
             budget.Sequence = category.Budgets.Count * 10;
 
@@ -80,7 +83,30 @@ namespace NerdBudget.Core.Services
 
             category.Budgets.Add(budget);
 
-            category.Account.Budgets.Add(budget);
+            account.Budgets.Add(budget);
+        }
+
+        /// <summary>
+        /// Attempt to create a unique ID
+        /// </summary>
+        /// <returns></returns>
+        private string CreateUniqueId(Account account)
+        {
+            IEnumerable<string> list = account.Budgets.Select(x => x.Id);
+
+            HashSet<string> ids = new HashSet<string>(list);
+
+            for (int x = 0; x < 5; x++)
+            {
+                string id = Utilities.CreateId(2);
+
+                if (!ids.Contains(id))
+                {
+                    return id;
+                }
+            }
+
+            throw new Exception("BUDGET - Unable to create unique ID");
         }
 
         /// <summary>

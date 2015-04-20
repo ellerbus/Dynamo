@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Diagnostics;
 using Augment;
 using Insight.Database;
@@ -131,6 +132,23 @@ namespace NerdBudget.Core.Models
             }
         }
         private Category _category;
+
+        /// <summary>
+        /// List of Adjustments for this Budget
+        /// </summary>
+        public AdjustmentCollection Adjustments
+        {
+            get
+            {
+                if (_adjustments == null && Account != null)
+                {
+                    _adjustments = new AdjustmentCollection(this, Account.Adjustments.Where(x => x.BudgetId == Id));
+                }
+
+                return _adjustments;
+            }
+        }
+        private AdjustmentCollection _adjustments;
 
 
         #endregion

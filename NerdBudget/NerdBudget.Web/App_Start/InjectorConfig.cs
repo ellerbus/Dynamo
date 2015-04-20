@@ -49,6 +49,10 @@ namespace NerdBudget.Web
             container.Register<IBudgetService, BudgetService>();
             container.Register<IValidator<Budget>, BudgetValidator>();
 
+            container.RegisterPerWebRequest<IAdjustmentRepository>(() => GetRepository<IAdjustmentRepository>(), true);
+            container.Register<IAdjustmentService, AdjustmentService>();
+            container.Register<IValidator<Adjustment>, AdjustmentValidator>();
+
             // This is an extension method from the integration package.
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 

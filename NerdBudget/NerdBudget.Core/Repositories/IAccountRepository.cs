@@ -24,9 +24,9 @@ namespace NerdBudget.Core.Repositories
         [Recordset(1, typeof(Balance), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBalances")]
         [Recordset(2, typeof(Category), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllCategories")]
         [Recordset(3, typeof(Budget), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllBudgets")]
-        //[Recordset(4, typeof(Adjustment), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllAdjustment")]
-        [Recordset(4, typeof(Map), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllMaps")]
-        [Recordset(5, typeof(Ledger), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllLedgers")]
+        [Recordset(4, typeof(Adjustment), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllAdjustments")]
+        [Recordset(5, typeof(Map), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllMaps")]
+        [Recordset(6, typeof(Ledger), IsChild = true, Id = "Id", GroupBy = "AccountId", Into = "AllLedgers")]
         Account Get(string account_id);
 
         ///	<summary>

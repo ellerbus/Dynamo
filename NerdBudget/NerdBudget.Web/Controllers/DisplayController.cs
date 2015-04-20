@@ -26,6 +26,12 @@ namespace NerdBudget.Web.Controllers
 
         #region Methods
 
+        [Route("~/")]
+        public ActionResult Index()
+        {
+            return RedirectToAction("Accounts");
+        }
+
         [Route("~/Accounts")]
         public ActionResult Accounts()
         {
@@ -42,6 +48,12 @@ namespace NerdBudget.Web.Controllers
         public ActionResult Budgets(string id)
         {
             return View(new BudgetsViewModel(_service.Get(id)));
+        }
+
+        [Route("~/Adjustments/{id}")]
+        public ActionResult Adjustments(string id)
+        {
+            return View(new AdjustmentsViewModel(_service.Get(id)));
         }
 
         [Route("~/Import/{id}")]

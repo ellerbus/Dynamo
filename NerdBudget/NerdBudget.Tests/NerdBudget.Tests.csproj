@@ -111,6 +111,7 @@
     <Compile Include="Core\DateTimeExtensionsTests.cs" />
     <Compile Include="Core\Crc32Tests.cs" />
     <Compile Include="Core\Models\AccountModelTests.cs" />
+    <Compile Include="Core\Models\AdjustmentModelTests.cs" />
     <Compile Include="Core\Models\BalanceModelTests.cs" />
     <Compile Include="Core\Models\BudgetModelTests.cs" />
     <Compile Include="Core\Models\CategoryModelTests.cs" />
@@ -118,16 +119,19 @@
     <Compile Include="Core\Models\MapModelTests.cs" />
     <Compile Include="Core\Models\MemberModelTests.cs" />
     <Compile Include="Core\Services\AccountServiceTests.cs" />
+    <Compile Include="Core\Services\AdjustmentServiceTests.cs" />
     <Compile Include="Core\Services\BudgetServiceTests.cs" />
     <Compile Include="Core\Services\CategoryServiceTests.cs" />
     <Compile Include="Core\Services\MemberServiceTests.cs" />
     <Compile Include="Core\Services\ServiceTestHelper.cs" />
     <Compile Include="Core\Validators\AccountValidatorTests.cs" />
+    <Compile Include="Core\Validators\AdjustmentValidatorTests.cs" />
     <Compile Include="Core\Validators\BudgetValidatorTests.cs" />
     <Compile Include="Core\Validators\CategoryValidatorTests.cs" />
     <Compile Include="JsonTestExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\ApiControllers\AccountsControllerTests.cs" />
+    <Compile Include="Web\ApiControllers\AdjustmentsControllerTests.cs" />
     <Compile Include="Web\ApiControllers\BudgetsControllerTests.cs" />
     <Compile Include="Web\ApiControllers\CategoriesControllerTests.cs" />
     <Compile Include="Web\ApiControllers\ControllerTestHelper.cs" />

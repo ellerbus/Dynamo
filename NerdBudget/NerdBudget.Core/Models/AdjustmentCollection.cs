@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using Augment;
 
 namespace NerdBudget.Core.Models
@@ -10,29 +9,29 @@ namespace NerdBudget.Core.Models
     ///
     ///	</summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public partial class BudgetCollection : KeyedCollection<string, Budget>
+    public partial class AdjustmentCollection : KeyedCollection<string, Adjustment>
     {
         #region Constructors
 
-        internal BudgetCollection(Account account, IEnumerable<Budget> budgets)
+        internal AdjustmentCollection(Account account, IEnumerable<Adjustment> adjustments)
         {
             Account = account;
 
-            if (budgets != null)
+            if (adjustments != null)
             {
-                AddRange(budgets.OrderBy(x => x.Sequence));
+                AddRange(adjustments);
             }
         }
 
-        internal BudgetCollection(Category category, IEnumerable<Budget> budgets)
+        internal AdjustmentCollection(Budget budget, IEnumerable<Adjustment> adjustments)
         {
-            Account = category.Account;
+            Account = budget.Account;
 
-            Category = category;
+            Budget = budget;
 
-            if (budgets != null)
+            if (adjustments != null)
             {
-                AddRange(budgets.OrderBy(x => x.Sequence));
+                AddRange(adjustments);
             }
         }
 
@@ -58,62 +57,50 @@ namespace NerdBudget.Core.Models
         public Account Account { get; private set; }
 
         ///	<summary>
-        ///	Gets / Sets the foreign key to 'category_id'
+        ///	Gets / Sets the foreign key to 'budget_id'
         ///	</summary>
-        public Category Category { get; private set; }
+        public Budget Budget { get; private set; }
 
         #endregion
 
         #region Methods
 
-        public void AddRange(IEnumerable<Budget> budgets)
+        public void AddRange(IEnumerable<Adjustment> adjustments)
         {
-            foreach (Budget bgt in budgets)
+            foreach (Adjustment adj in adjustments)
             {
-                Add(bgt);
+                Add(adj);
             }
         }
 
-        public void Resort()
-        {
-            IList<Budget> budget = this.OrderBy(x => x.Sequence).ToList();
-
-            Clear();
-
-            foreach (Budget bgt in budget)
-            {
-                Add(bgt);
-            }
-        }
-
-        protected override string GetKeyForItem(Budget item)
+        protected override string GetKeyForItem(Adjustment item)
         {
             return item.Id;
         }
 
-        protected override void InsertItem(int index, Budget item)
+        protected override void InsertItem(int index, Adjustment item)
         {
             base.InsertItem(index, item);
 
             SetOwner(item);
         }
 
-        protected override void SetItem(int index, Budget item)
+        protected override void SetItem(int index, Adjustment item)
         {
             base.SetItem(index, item);
 
             SetOwner(item);
         }
 
-        private void SetOwner(Budget bgt)
+        private void SetOwner(Adjustment bgt)
         {
-            if (Category == null)
+            if (Budget == null)
             {
                 bgt.Account = Account;
             }
             else
             {
-                bgt.Category = Category;
+                bgt.Budget = Budget;
             }
         }
 

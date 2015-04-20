@@ -68,6 +68,7 @@ namespace NerdBudget.Web.ApiControllers
 
         // PUT: api/budget/5
         [HttpPut, Route("{accountId}/{id:regex([A-Z0-9]{2})}")]
+        //  NOTE regex is used so we don't interfere with /sequences
         public IHttpActionResult Put(string accountId, string id, [FromBody]Budget item)
         {
             Budget budget = GetBudget(accountId, id);
@@ -152,6 +153,7 @@ namespace NerdBudget.Web.ApiControllers
         }
 
         // DELETE: api/budget/5/5
+        //  NOTE regex is used so we don't interfere with /sequences
         [HttpDelete, Route("{accountId}/{id:regex([A-Z0-9]{2})}")]
         public IHttpActionResult Delete(string accountId, string id)
         {

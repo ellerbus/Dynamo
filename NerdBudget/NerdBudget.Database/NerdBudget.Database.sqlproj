@@ -68,6 +68,7 @@
     <Folder Include="Procedures\Ledger" />
     <Folder Include="Procedures\Map" />
     <Folder Include="Procedures\Member" />
+    <Folder Include="Procedures\Adjustment" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tables\ACCOUNT.sql" />
@@ -129,5 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Procedures\Member\MemberUpsertOne.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Procedures\Adjustment\AdjustmentDeleteOne.sql" />
+    <None Include="Procedures\Adjustment\AdjustmentUpsertOne.sql" />
   </ItemGroup>
 </Project>
