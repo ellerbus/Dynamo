@@ -138,7 +138,7 @@ function {{ BASECLASS }}ListViewModel(data)
 			{
 				self.{{ CAMELCLASSES }}.remove({{ CAMELCLASS }});
 
-				cleanNode(element);
+				ko.cleanNode(element);
 
 				dlg.modal('hide');
 			};
