@@ -21,9 +21,9 @@ namespace NerdBudget.Core.Models
             {
                 string pk = "[" + AccountId + "," + Id + "]";
 
-                string uq = "[" + "]";
+                string uq = "[" + Name + "]";
 
-                return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
+                return "{0}, pk={1}, {2}".FormatArgs(GetType().Name, pk, uq);
             }
         }
 

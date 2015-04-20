@@ -137,6 +137,14 @@ namespace NerdBudget.Web.ViewModels
                             v.Budget = b.Amount * c.Multiplier;
                         }
 
+                        foreach (Adjustment adj in b.Adjustments)
+                        {
+                            if (adj.Date == null || h.Range.Contains(adj.Date.Value))
+                            {
+                                v.Budget += adj.Amount * c.Multiplier;
+                            }
+                        }
+
                         IEnumerable<Ledger> ledgers = Account.Ledgers.Where(x => x.BudgetId == b.Id);
 
                         foreach (Ledger l in ledgers)

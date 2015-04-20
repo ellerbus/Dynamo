@@ -107,11 +107,11 @@ namespace NerdBudget.Web.ApiControllers
 
             try
             {
-                _adjustmentService.Update(adjustment);
+                _adjustmentService.Update(model);
 
                 JsonSerializerSettings jss = GetPayloadSettings();
 
-                return Json(adjustment, jss);
+                return Json(model, jss);
             }
             catch (ValidationException ve)
             {

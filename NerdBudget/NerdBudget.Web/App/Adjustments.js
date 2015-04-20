@@ -136,7 +136,7 @@ function AdjustmentListViewModel(data)
             {
                 self.adjustments.remove(adjustment);
 
-                cleanNode(element);
+                ko.cleanNode(element);
 
                 dlg.modal('hide');
             };
