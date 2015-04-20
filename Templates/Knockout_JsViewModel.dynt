@@ -26,8 +26,6 @@ function {{ BASECLASS }}ListViewModel(data)
 
 	self.delete = remove;
 
-	self.path = path;
-
 	ko.track(self);
 
 	function getFormElement(disableIt)
@@ -165,8 +163,8 @@ function {{ BASECLASS }}DetailModel({{ CAMELCLASS }})
 {
 	var self = this;
 
-	self.id = '';
-	self.name = '';
+	{% for column in table.columns %}
+	self.{{ column.parameter_name }} = '';{% endfor %}
 
 	self.update = update;
 
