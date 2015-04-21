@@ -90,7 +90,20 @@ function AnalysisViewModel(data)
 
         for (var x in self.details)
         {
-            w.variance += self.details[x].values[idx].variance;
+            var d = self.details[x];
+
+            var v = d.values[idx].variance;
+
+            if (d.multiplier == -1 && v < 0)
+            {
+                //  expense and missing the expected budget
+                w.variance += v;
+            }
+            else if (d.mutliplier == 1 && v > 0)
+            {
+                //  income and missing the expected budget
+                w.variance += v;
+            }
         }
 
         if (w.isHistory)
