@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html manifest="@Url.Content("~/cache.manifest")">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,12 +21,12 @@
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 
-  
+
   <script src="@Url.Content("~/Scripts/Knockout.Punches.min.js")"></script>
   <script src="@Url.Content("~/Scripts/Knockout-ES5.min.js")"></script>
   <script src="@Url.Content("~/Scripts/Bootstrap-Notify.min.js")"></script>
   <script src="@Url.Content("~/Scripts/BootBox.js")"></script>
-  
+
   <script src="@Url.Content("~/App/Helper.js")"></script>
 
   <script type="text/javascript">
@@ -36,7 +36,7 @@
 
     $(document).on("shown.bs.modal", function () { $(this).find('input[name="name"]').focus(); });
   </script>
-  
+
 </head>
 <body>
   <br />

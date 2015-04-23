@@ -35,9 +35,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Augment.1.1.5590.23370\lib\net45\Augment.dll</HintPath>
     </Reference>
-    <Reference Include="Augment.Caching, Version=1.0.5526.35655, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Augment.Caching, Version=1.1.5591.15489, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Augment.Caching.1.0.5526.35655\lib\net45\Augment.Caching.dll</HintPath>
+      <HintPath>..\packages\Augment.Caching.1.1.5591.15489\lib\net45\Augment.Caching.dll</HintPath>
     </Reference>
     <Reference Include="BCrypt.Net">
       <HintPath>..\packages\BCrypt-Official.0.1.109\lib\BCrypt.Net.dll</HintPath>
