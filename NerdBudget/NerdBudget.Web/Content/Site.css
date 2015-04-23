@@ -65,15 +65,22 @@ td.icons {
   cursor: pointer;
   border-left-style: solid;
 }
-.ledgers-display-table {
+.budget-display-table tr.budget td.budget {
+  cursor: pointer;
+}
+.ledgers-display-table,
+.adjustments-display-table {
   font-size: .85em;
 }
 .ledgers-display-table thead,
-.ledgers-display-table tbody {
+.adjustments-display-table thead,
+.ledgers-display-table tbody,
+.adjustments-display-table tbody {
   display: block;
   width: 100%;
 }
-.ledgers-display-table tbody {
+.ledgers-display-table tbody,
+.adjustments-display-table tbody {
   height: 400px;
   /* Just for the demo          */
   overflow-y: auto;

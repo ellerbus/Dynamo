@@ -86,7 +86,7 @@
         <td data-bind="text: title"></td>
         <!-- ko foreach: values -->
         <td class="actual" data-bind="text: actual | fixed, click: $root.showLedgers"></td>
-        <td class="budget" data-bind="text: variance | fixed, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
+        <td class="budget" data-bind="text: variance | fixed, click: $root.showAdjustments, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
         <!-- /ko -->
         <!-- /ko -->
       </tr>
@@ -100,6 +100,18 @@
       <tr>
         <td data-bind="text: date | date" style="width: 15%"></td>
         <td data-bind="text: description" style="width: 75%"></td>
+        <td data-bind="text: amount | fixed" style="text-align: right; width: 10%"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="adjustments" style="display: none">
+  <table class="table table-condensed table-striped adjustments-display-table">
+    <tbody data-bind="foreach: adjustments">
+      <tr>
+        <td data-bind="text: date | date" style="width: 15%"></td>
+        <td data-bind="text: name" style="width: 75%"></td>
         <td data-bind="text: amount | fixed" style="text-align: right; width: 10%"></td>
       </tr>
     </tbody>

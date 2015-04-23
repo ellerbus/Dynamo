@@ -12,6 +12,8 @@ function AnalysisViewModel(data)
 
     self.showLedgers = showLedgers;
 
+    self.showAdjustments = showAdjustments;
+
     for (var x = 0, y = self.headers.length; x < y; x++)
     {
         updateHeader(x);
@@ -63,7 +65,7 @@ function AnalysisViewModel(data)
 
                 var date = dt.format('MMM DD');
 
-                var options = nbHelper.displayDialog('Week of ' + date, element);
+                var options = nbHelper.displayDialog('Transactions Week of ' + date, element);
 
                 options.buttons.ok.callback = function () { ko.cleanNode(element); };
 
@@ -77,6 +79,44 @@ function AnalysisViewModel(data)
 
             $.retrieve(url).then(onSuccess, onError);
         }
+    };
+
+    function getAdjustmentElement(disableIt)
+    {
+        var html = $('#adjustments').html();
+
+        var $html = $(html);
+
+        return $html.get(0);
+    };
+
+    function showAdjustments(d)
+    {
+        var dt = moment(d.header.start);
+
+        var onSuccess = function (data)
+        {
+            var element = getAdjustmentElement();
+
+            var vm = new AdjustmentsViewModel(data);
+
+            ko.applyBindings(vm, element);
+
+            var date = dt.format('MMM DD');
+
+            var options = nbHelper.displayDialog('Adjustments Week of ' + date, element);
+
+            options.buttons.ok.callback = function () { ko.cleanNode(element); };
+
+            bootbox.dialog(options);
+        };
+
+        var onError = function (error) { };
+
+        var url = 'api/Adjustments/' + self.account.id + '/' +
+            d.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
+
+        $.retrieve(url).then(onSuccess, onError);
     };
 
     function updateHeader(idx)
@@ -179,4 +219,13 @@ function LedgersViewModel(data)
     self.ledgers = data;
 
     ko.track(self);
-}
+};
+
+function AdjustmentsViewModel(data)
+{
+    var self = this;
+
+    self.adjustments = data;
+
+    ko.track(self);
+};

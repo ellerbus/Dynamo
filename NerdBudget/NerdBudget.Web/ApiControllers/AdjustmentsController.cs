@@ -50,10 +50,26 @@ namespace NerdBudget.Web.ApiControllers
 
             Range<DateTime> range = date.ToWeeklyBudgetRange();
 
-            IEnumerable<Adjustment> adjustments = account.Categories
-                .SelectMany(x => x.Budgets).SelectMany(x => x.Adjustments)
-                .Where(x => x.BudgetId == budgetId && (x.Date == null || range.Contains(x.Date.Value)))
-                .OrderBy(x => x.Date).ThenBy(x => x.Name);
+            Budget budget = account.Categories
+                .SelectMany(x => x.Budgets).Where(x => x.Id == budgetId)
+                .FirstOrDefault();
+
+            IList<Adjustment> adjustments = budget.Adjustments
+                .Where(x => x.Date == null || range.Contains(x.Date.Value))
+                .OrderBy(x => x.Date).ThenBy(x => x.Name)
+                .ToList();
+
+            if (budget.IsValidFor(range))
+            {
+                Adjustment bgt = new Adjustment()
+                {
+                    Date = date,
+                    Name = "BUDGET: " + budget.Name,
+                    Amount = budget.Amount
+                };
+
+                adjustments.Insert(0, bgt);
+            }
 
             JsonSerializerSettings jss = GetPayloadSettings();
 
