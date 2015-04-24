@@ -20,21 +20,28 @@
 
     $('[data-toggle="tooltip"]').tooltip();
 
+  });
+
+
+
+  function updateTable($table)
+  {
     // Change the selector if needed
-    var $table = $('#ledgers table'),
-        $bodyCells = $table.find('tbody tr:first').children(),
+    var $bodyCells = $table.find('tbody tr:first').children(),
         colWidth;
 
     // Get the tbody columns width array
-    colWidth = $bodyCells.map(function() {
+    colWidth = $bodyCells.map(function ()
+    {
       return $(this).width();
     }).get();
 
     // Set the width of thead columns
-    $table.find('thead tr').children().each(function(i, v) {
+    $table.find('thead tr').children().each(function (i, v)
+    {
       $(v).width(colWidth[i]);
-    }); 
-  });
+    });
+  }
 </script>
 
 <div id="analysis">
@@ -54,15 +61,15 @@
           ANALYSIS
         </th>
         <!-- ko foreach: headers -->
-        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': variance < 0, 'success': variance > 0 }">
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': variance() < 0, 'success': variance() > 0 }">
           <!-- ko if: isHistory -->
-          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: variance | fixed"></i>*
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: variance() | fixed"></i>*
           <!-- /ko -->
           <!-- ko if: isCurrent -->
-          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection | fixed"></i>
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
           <!-- /ko -->
           <!-- ko if: isFuture -->
-          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection | fixed"></i>
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
           <!-- /ko -->
         </th>
         <!-- /ko -->
@@ -72,8 +79,8 @@
           &nbsp;
         </th>
         <!-- ko foreach: headers -->
-        <td class="actual" data-bind="text: actual | fixed"></td>
-        <td class="budget" data-bind="text: budget | fixed"></td>
+        <td class="actual" data-bind="text: actual() | fixed"></td>
+        <td class="budget" data-bind="text: budget() | fixed"></td>
         <!-- /ko -->
       </tr>
     </thead>
@@ -85,8 +92,8 @@
         <!-- ko if: !isCategory -->
         <td data-bind="text: title"></td>
         <!-- ko foreach: values -->
-        <td class="actual" data-bind="text: actual | fixed, click: $root.showLedgers"></td>
-        <td class="budget" data-bind="text: variance | fixed, click: $root.showAdjustments, css: { 'danger': Math.round(variance, 0) > 0 }"></td>
+        <td class="actual" data-bind="text: actual | fixed, click: $root.showLedgers.bind($data, $parent, $index())"></td>
+        <td class="budget" data-bind="text: variance() | fixed, click: $root.showAdjustments.bind($data, $parent, $index()), css: { 'danger': Math.round(variance(), 0) > 0 }"></td>
         <!-- /ko -->
         <!-- /ko -->
       </tr>
@@ -95,25 +102,43 @@
 </div>
 
 <div id="ledgers" style="display: none">
-  <table class="table table-condensed table-striped ledgers-display-table">
-    <tbody data-bind="foreach: ledgers">
-      <tr>
-        <td data-bind="text: date | date" style="width: 15%"></td>
-        <td data-bind="text: description" style="width: 75%"></td>
-        <td data-bind="text: amount | fixed" style="text-align: right; width: 10%"></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="ledgers-display">
+    <table class="table table-condensed table-striped">
+      <tbody data-bind="foreach: ledgers">
+        <tr>
+          <td data-bind="text: date | date"></td>
+          <td data-bind="text: description"></td>
+          <td data-bind="text: amount | fixed"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div id="adjustments" style="display: none">
-  <table class="table table-condensed table-striped adjustments-display-table">
-    <tbody data-bind="foreach: adjustments">
-      <tr>
-        <td data-bind="text: date | date" style="width: 15%"></td>
-        <td data-bind="text: name" style="width: 75%"></td>
-        <td data-bind="text: amount | fixed" style="text-align: right; width: 10%"></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="adjustments-display form-group">
+    <form class="form-horizontal">
+      <table class="table table-condensed table-striped">
+        <!--
+        <thead>
+          <tr>
+            <td colspan="2">
+              <input class="form-control input-sm" placeholder="description" />
+            </td>
+            <td>
+              <input class="form-control input-sm" placeholder="amount" />
+            </td>
+          </tr>
+        </thead>
+        -->
+        <tbody data-bind="foreach: adjustments">
+          <tr>
+            <td data-bind="text: date | date"></td>
+            <td data-bind="text: name"></td>
+            <td data-bind="text: amount | fixed"></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
 </div>

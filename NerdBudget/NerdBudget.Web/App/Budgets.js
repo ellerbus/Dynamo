@@ -10,7 +10,7 @@ function BudgetListViewModel(data)
 
     self.account = data.account;
 
-    self.categories = ko.utils.arrayMap(data.categories, trackCategory);
+    self.categories = ko.utils.arrayMap(data.categories, mapCategory);
 
     self.create = create;
 
@@ -33,7 +33,7 @@ function BudgetListViewModel(data)
     ko.track(self);
 
 
-    function trackCategory(x)
+    function mapCategory(x)
     {
         if (x.budgets)
         {

@@ -8,7 +8,7 @@ function CategoryListViewModel(data)
 
     self.account = data.account;
 
-    self.categories = ko.utils.arrayMap(data.categories, trackCategory);
+    self.categories = ko.utils.arrayMap(data.categories, mapCategory);
 
     self.create = create;
 
@@ -21,7 +21,7 @@ function CategoryListViewModel(data)
     ko.track(self);
 
 
-    function trackCategory(x)
+    function mapCategory(x)
     {
         x.isIncome = function () { return this.multiplier > 0 ? 'Yes' : ''; };
         
@@ -62,7 +62,7 @@ function CategoryListViewModel(data)
 
             var onSuccess = function (data)
             {
-                self.categories.push(trackCategory(data));
+                self.categories.push(mapCategory(data));
 
                 ko.cleanNode(element);
 

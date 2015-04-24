@@ -68,24 +68,25 @@ td.icons {
 .budget-display-table tr.budget td.budget {
   cursor: pointer;
 }
-.ledgers-display-table,
-.adjustments-display-table {
+.ledgers-display,
+.adjustments-display {
   font-size: .85em;
-}
-.ledgers-display-table thead,
-.adjustments-display-table thead,
-.ledgers-display-table tbody,
-.adjustments-display-table tbody {
-  display: block;
-  width: 100%;
-}
-.ledgers-display-table tbody,
-.adjustments-display-table tbody {
   height: 400px;
   /* Just for the demo          */
   overflow-y: auto;
   /* Trigger vertical scroll    */
   overflow-x: hidden;
   /* Hide the horizontal scroll */
+}
+.ledgers-display table td:first-child,
+.adjustments-display table td:first-child,
+.ledgers-display table td:last-child,
+.adjustments-display table td:last-child {
+  width: 100px;
+}
+.ledgers-display table td:last-child,
+.adjustments-display table td:last-child {
+  text-align: right;
+  width: 100px;
 }
 /*# sourceMappingURL=Site.css.map */

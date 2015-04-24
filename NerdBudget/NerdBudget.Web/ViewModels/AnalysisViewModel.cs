@@ -16,14 +16,18 @@ namespace NerdBudget.Web.ViewModels
 
         public class Header
         {
-            public Header(DateTime start, DateTime end, string title)
+            public Header(int index, DateTime start, DateTime end, string title)
             {
                 Range = new Range<DateTime>(start, end);
+
+                Index = index;
 
                 Title = title;
             }
 
             internal Range<DateTime> Range { get; private set; }
+
+            public int Index { get; private set; }
 
             public string Title { get; private set; }
 
@@ -57,7 +61,7 @@ namespace NerdBudget.Web.ViewModels
                 Id = id;
                 Title = title;
 
-                Values = new[] { new Value(), new Value(), new Value(), new Value(), new Value() };
+                Values = new[] { new Value(0), new Value(1), new Value(2), new Value(3), new Value(4) };
             }
 
             public bool IsCategory { get; private set; }
@@ -69,9 +73,11 @@ namespace NerdBudget.Web.ViewModels
 
         public class Value
         {
+            public Value(int index) { Index = index; }
+            public int Index { get; private set; }
             public double Actual { get; set; }
             public double Budget { get; set; }
-            public double Variance { get { return Budget - Actual; } }
+            //public double Variance { get { return Budget - Actual; } }
         }
 
         #endregion
@@ -99,11 +105,11 @@ namespace NerdBudget.Web.ViewModels
 
             Headers = new Header[Weeks];
 
-            Headers[0] = new Header(BudgetMonth.Start, BudgetMonth.Start.AddDays(6), "W -2");
-            Headers[1] = new Header(Headers[0].End.AddDays(1), Headers[0].End.AddDays(7), "W -1");
-            Headers[2] = new Header(Headers[1].End.AddDays(1), Headers[1].End.AddDays(7), "NOW");
-            Headers[3] = new Header(Headers[2].End.AddDays(1), Headers[2].End.AddDays(7), "W +1");
-            Headers[4] = new Header(Headers[3].End.AddDays(1), Headers[3].End.AddDays(7), "W +2");
+            Headers[0] = new Header(0, BudgetMonth.Start, BudgetMonth.Start.AddDays(6), "W -2");
+            Headers[1] = new Header(1, Headers[0].End.AddDays(1), Headers[0].End.AddDays(7), "W -1");
+            Headers[2] = new Header(2, Headers[1].End.AddDays(1), Headers[1].End.AddDays(7), "NOW");
+            Headers[3] = new Header(3, Headers[2].End.AddDays(1), Headers[2].End.AddDays(7), "W +1");
+            Headers[4] = new Header(4, Headers[3].End.AddDays(1), Headers[3].End.AddDays(7), "W +2");
         }
 
         private void SetupHeaderBalances()

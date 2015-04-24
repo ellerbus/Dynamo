@@ -6,58 +6,151 @@ function AnalysisViewModel(data)
 
     self.account = data.account;
 
-    self.headers = data.headers;
+    self.details = ko.utils.arrayMap(data.details, mapDetail);
 
-    self.details = data.details;
+    self.headers = ko.utils.arrayMap(data.headers, mapHeader);
 
     self.showLedgers = showLedgers;
 
     self.showAdjustments = showAdjustments;
 
-    for (var x = 0, y = self.headers.length; x < y; x++)
-    {
-        updateHeader(x);
-
-        var start = self.headers[x].start;
-
-        var end = self.headers[x].end;
-
-        self.headers[x].dateRange = moment(start).format('MMM') + ' ' +
-            moment(start).format('DD') + ' - ' +
-            moment(end).format('DD');
-
-        self.headers[x].tooltip = headerTooltip;
-    }
-
-    for (var x = 0, y = self.details.length; x < y; x++)
-    {
-        for (var a = 0, b = self.details[x].values.length; a < b; a++)
-        {
-            self.details[x].values[a].id = self.details[x].id;
-            self.details[x].values[a].header = self.headers[a];
-        }
-    }
-
     ko.track(self);
 
-    function getLedgerElement(disableIt)
+    function mapDetail(detail)
     {
-        var html = $('#ledgers').html();
+        for (var a = 0, b = detail.values.length; a < b; a++)
+        {
+            detail.values[a].multiplier = detail.multiplier;
+            detail.values[a].variance = function () { return (this.budget - this.actual); };
+        }
+
+        return detail;
+    };
+
+    function mapHeader(header)
+    {
+        header.dateRange = moment(header.start).format('MMM') + ' ' +
+            moment(header.start).format('DD') + ' - ' +
+            moment(header.end).format('DD');
+
+        header.values = [];
+
+        for (var a = 0, b = self.details.length; a < b; a++)
+        {
+            header.values.push(self.details[a].values[header.index]);
+        }
+
+        header.tooltip = function ()
+        {
+            if (this.isHistory)
+            {
+                var v = this.variance();
+
+                if (v != 0)
+                {
+                    return (v > 0 ? 'Under' : 'OVER') + ' Budget';
+                }
+
+                return 'On Target';
+            }
+
+            if (this.isCurrent)
+            {
+                return 'Beginning Balance ' + ko.filters.fixed(this.balance);
+            }
+
+            return 'Estimated Projection';
+        };
+
+        header.actual = function ()
+        {
+            var x = 0;
+
+            for (var key in this.values)
+            {
+                x += this.values[key].actual;
+            }
+
+            return x;
+        };
+
+        header.budget = function ()
+        {
+            var x = 0;
+
+            for (var key in this.values)
+            {
+                x += this.values[key].budget;
+            }
+
+            return x;
+        };
+
+        header.variance = function ()
+        {
+            var x = 0;
+
+            for (var key in this.values)
+            {
+                var val = this.values[key];
+
+                var v = val.variance();
+
+                if (val.multiplier == -1 && v < 0)
+                {
+                    //  expense and missing the expected budget
+                    x += v;
+                }
+                else if (val.mutliplier == 1 && v > 0)
+                {
+                    //  income and missing the expected budget
+                    x += v;
+                }
+            }
+    
+            return x;
+        };
+
+        header.projection = function ()
+        {
+            if (this.isHistory)
+            {
+                return 0;
+            }
+
+            if (this.isCurrent)
+            {
+                return this.balance + this.variance();
+            }
+
+            var prev = self.headers[this.index - 1];
+
+            return prev.projection() + this.variance();
+        };
+
+        return header;
+    };
+
+    function getElement(selector)
+    {
+        var html = $(selector).html();
 
         var $html = $(html);
 
         return $html.get(0);
     };
 
-    function showLedgers(d)
+    function showLedgers(budget, index)
     {
-        if (d.actual !== 0)
+        if (budget.values[index].actual !== 0)
         {
-            var dt = moment(d.header.start);
+            var header = self.headers[index];
+
+            var dt = moment(header.start);
 
             var onSuccess = function (data)
             {
-                var element = getLedgerElement();
+                var element = getElement('#ledgers');
 
                 var vm = new LedgersViewModel(data);
 
@@ -75,28 +168,21 @@ function AnalysisViewModel(data)
             var onError = function (error) { };
 
             var url = 'api/Ledgers/' + self.account.id + '/' +
-                d.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
+                budget.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
 
             $.retrieve(url).then(onSuccess, onError);
         }
     };
 
-    function getAdjustmentElement(disableIt)
+    function showAdjustments(budget, index)
     {
-        var html = $('#adjustments').html();
+        var header = self.headers[index];
 
-        var $html = $(html);
-
-        return $html.get(0);
-    };
-
-    function showAdjustments(d)
-    {
-        var dt = moment(d.header.start);
+        var dt = moment(header.start);
 
         var onSuccess = function (data)
         {
-            var element = getAdjustmentElement();
+            var element = getElement('#adjustments');
 
             var vm = new AdjustmentsViewModel(data);
 
@@ -114,101 +200,9 @@ function AnalysisViewModel(data)
         var onError = function (error) { };
 
         var url = 'api/Adjustments/' + self.account.id + '/' +
-            d.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
+            budget.id + '/' + dt.format('YYYY-MM-DD') + '/weekly';
 
         $.retrieve(url).then(onSuccess, onError);
-    };
-
-    function updateHeader(idx)
-    {
-        var w = self.headers[idx];
-
-        w.actual = getValue(idx, 'actual');
-        w.budget = getValue(idx, 'budget');
-
-        w.variance = 0;
-
-        for (var x in self.details)
-        {
-            var d = self.details[x];
-
-            var v = d.values[idx].variance;
-
-            if (d.multiplier == -1 && v < 0)
-            {
-                //  expense and missing the expected budget
-                w.variance += v;
-            }
-            else if (d.mutliplier == 1 && v > 0)
-            {
-                //  income and missing the expected budget
-                w.variance += v;
-            }
-        }
-
-        if (w.isHistory)
-        {
-            w.projection = 0;
-        }
-        else
-        {
-            var prev = self.headers[idx - 1];
-
-            var balance = w.balance + prev.projection;
-
-            if (!w.isCurrent)
-            {
-                balance += prev.variance;
-            }
-
-            if (w.isFuture)
-            {
-                w.balance = prev.projection;
-            }
-
-            w.projection = balance + w.variance;
-        }
-    };
-
-    function getValue(idx, field)
-    {
-        var value = 0;
-
-        for (var key in self.details)
-        {
-            var d = self.details[key];
-
-            value += d.values[idx][field];
-        }
-
-        return value;
-    }
-
-    function headerTooltip()
-    {
-        var h = this;
-
-        if (h.isHistory)
-        {
-            if (h.variance != 0)
-            {
-                return ko.filters.number(Math.abs(h.variance)) + ' ' + (h.variance > 0 ? 'Under' : 'OVER') + ' Budget';
-            }
-
-            return 'On Target';
-        }
-
-        if (h.isCurrent)
-        {
-            return 'Beginning Balance ' + ko.filters.number(parseInt(h.balance));
-        }
-
-        if (h.isProjection)
-        {
-            return 'Projected Balance ' + ko.filters.number(parseInt(h.balance));
-        }
-
-        return '';
     };
 };
 
