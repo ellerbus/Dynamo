@@ -7,6 +7,10 @@
     height: 5px;
 }
 
+body {
+    font-family: 'Source Code Pro', monospace;
+}
+
 .table {
     & td {
         border-left: 1px dashed #bbb;
@@ -84,6 +88,7 @@ th.icons, td.icons {
         td.actual {
             cursor: pointer;
             border-left-style: solid;
+            color: #484;
         }
 
         td.budget {
@@ -93,11 +98,9 @@ th.icons, td.icons {
 }
 
 .ledgers-display, .adjustments-display {
-    font-size: .85em;
     height: 400px; /* Just for the demo          */
     overflow-y: auto; /* Trigger vertical scroll    */
     overflow-x: hidden; /* Hide the horizontal scroll */
-
     table {
         td:first-child, td:last-child {
             width: 100px;

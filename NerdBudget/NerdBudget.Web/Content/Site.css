@@ -6,6 +6,9 @@
   width: 100%;
   height: 5px;
 }
+body {
+  font-family: 'Source Code Pro', monospace;
+}
 .table td {
   border-left: 1px dashed #bbb;
 }
@@ -64,13 +67,13 @@ td.icons {
 .budget-display-table tr.budget td.actual {
   cursor: pointer;
   border-left-style: solid;
+  color: #484;
 }
 .budget-display-table tr.budget td.budget {
   cursor: pointer;
 }
 .ledgers-display,
 .adjustments-display {
-  font-size: .85em;
   height: 400px;
   /* Just for the demo          */
   overflow-y: auto;
