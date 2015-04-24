@@ -9,6 +9,9 @@
 body {
   font-family: 'Source Code Pro', monospace;
 }
+.table {
+  font-size: .85em;
+}
 .table td {
   border-left: 1px dashed #bbb;
 }
@@ -19,9 +22,6 @@ th.icons,
 td.icons {
   width: 100px;
   text-align: right;
-}
-.budget-display-table {
-  font-size: .85em;
 }
 .budget-display-table thead tr:first-child th {
   border-bottom-width: 0;

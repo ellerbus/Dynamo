@@ -70,14 +70,14 @@
 
 $(function ()
 {
-    $('[nb-create-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-plus fa-fw text-success"></i>');
-    $('[nb-update-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-pencil fa-fw text-primary"></i>');
-    $('[nb-delete-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-times fa-fw text-danger"></i>');
+    $('[nb-create-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-plus fa-fw text-success"></i>');
+    $('[nb-update-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-pencil fa-fw text-primary"></i>');
+    $('[nb-delete-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-times fa-fw text-danger"></i>');
     
-    $('[nb-list-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-list fa-fw"></i>');
-    $('[nb-dollar-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-usd fa-fw text-success"></i>');
-    $('[nb-import-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-download fa-fw"></i>');
-    $('[nb-analysis-icon]').addClass('btn btn-default btn-sm').html('<i class="fa fa-cogs fa-fw"></i>');
+    $('[nb-list-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-list fa-fw"></i>');
+    $('[nb-dollar-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-usd fa-fw text-success"></i>');
+    $('[nb-import-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-download fa-fw"></i>');
+    $('[nb-analysis-icon]').addClass('btn btn-default btn-xs').html('<i class="fa fa-cogs fa-fw"></i>');
 
     ko.filters.fixed = function (value, decimals)
     {

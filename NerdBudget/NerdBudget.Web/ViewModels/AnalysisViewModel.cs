@@ -105,11 +105,11 @@ namespace NerdBudget.Web.ViewModels
 
             Headers = new Header[Weeks];
 
-            Headers[0] = new Header(0, BudgetMonth.Start, BudgetMonth.Start.AddDays(6), "W -2");
-            Headers[1] = new Header(1, Headers[0].End.AddDays(1), Headers[0].End.AddDays(7), "W -1");
+            Headers[0] = new Header(0, BudgetMonth.Start, BudgetMonth.Start.AddDays(6), "W-2");
+            Headers[1] = new Header(1, Headers[0].End.AddDays(1), Headers[0].End.AddDays(7), "W-1");
             Headers[2] = new Header(2, Headers[1].End.AddDays(1), Headers[1].End.AddDays(7), "NOW");
-            Headers[3] = new Header(3, Headers[2].End.AddDays(1), Headers[2].End.AddDays(7), "W +1");
-            Headers[4] = new Header(4, Headers[3].End.AddDays(1), Headers[3].End.AddDays(7), "W +2");
+            Headers[3] = new Header(3, Headers[2].End.AddDays(1), Headers[2].End.AddDays(7), "W+1");
+            Headers[4] = new Header(4, Headers[3].End.AddDays(1), Headers[3].End.AddDays(7), "W+2");
         }
 
         private void SetupHeaderBalances()

@@ -13,7 +13,9 @@ namespace NerdBudget.Web.ViewModels
 
             Budgets = account.Categories.SelectMany(x => x.Budgets).OrderBy(x => x.Name).ToList();
 
-            Adjustments = Budgets.SelectMany(x => x.Adjustments).OrderBy(x => x.FullName).ToList();
+            Adjustments = Budgets.SelectMany(x => x.Adjustments)
+                .OrderByDescending(x => x.Date).ThenBy(x => x.FullName)
+                .ToList();
         }
 
         public string ToJson()
