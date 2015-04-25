@@ -54,6 +54,12 @@ namespace NerdBudget.Core.Models
             set { base.BudgetId = value.AssertNotNull().ToUpper(); }
         }
 
+        public override DateTime? Date
+        {
+            get { return base.Date; }
+            set { base.Date = value.Value.EnsureUtc().BeginningOfDay(); }
+        }
+
         public override string Name
         {
             get { return base.Name; }

@@ -1,7 +1,7 @@
 using System;
+using Augment;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NerdBudget.Core.Models;
-using Augment;
 
 namespace NerdBudget.Tests.Core.Models
 {
@@ -43,13 +43,13 @@ namespace NerdBudget.Tests.Core.Models
         }
 
 
-        //[TestMethod]
-        //public void Adjustment_Date_Should_DoSomething()
-        //{
-        //	var actual = new Adjustment() { Date =  };
-        //
-        //	Assert.AreEqual(, actual.Date);
-        //}
+        [TestMethod]
+        public void Adjustment_Date_Should_DoSomething()
+        {
+            var actual = new Adjustment() { Date = DateTime.Now };
+
+            Assert.AreEqual(DateTime.Now.EnsureUtc().BeginningOfDay(), actual.Date);
+        }
 
 
         //[TestMethod]
