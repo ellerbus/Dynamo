@@ -1,21 +1,17 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
 using FizzWare.NBuilder;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
-using NerdBudget.Web.ApiControllers;
 using NerdBudget.Web;
+using NerdBudget.Web.ApiControllers;
 using Newtonsoft.Json;
 
 namespace NerdBudget.Tests.Web.ApiControllers
@@ -207,6 +203,29 @@ namespace NerdBudget.Tests.Web.ApiControllers
             MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
 
             MockService.Setup(x => x.Insert(budget, adjustment)).Throws(new ValidationException(new[] { new ValidationFailure("", "") }));
+
+            //		act
+            var msg = SubjectUnderTest.Post(account.Id, adjustment).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AdjustmentsController_PostOne_Should_SendBadRequest_MissingBudget()
+        {
+            //		arrange
+            var account = GetAccount(false);
+
+            var budget = account.Categories.Last().Budgets.Last();
+
+            var adjustment = Builder<Adjustment>.CreateNew().Build();
+
+            adjustment.BudgetId = null;
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
 
             //		act
             var msg = SubjectUnderTest.Post(account.Id, adjustment).ToMessage();

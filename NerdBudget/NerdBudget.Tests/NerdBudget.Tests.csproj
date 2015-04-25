@@ -36,9 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Augment, Version=1.1.5590.23370, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Augment, Version=1.1.5593.16444, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Augment.1.1.5590.23370\lib\net45\Augment.dll</HintPath>
+      <HintPath>..\packages\Augment.1.1.5593.16444\lib\net45\Augment.dll</HintPath>
     </Reference>
     <Reference Include="Augment.Caching, Version=1.1.5591.15489, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

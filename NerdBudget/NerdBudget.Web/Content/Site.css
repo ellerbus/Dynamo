@@ -67,7 +67,6 @@ td.icons {
 .budget-display-table tr.budget td.actual {
   cursor: pointer;
   border-left-style: solid;
-  color: #484;
 }
 .budget-display-table tr.budget td.budget {
   cursor: pointer;

@@ -93,7 +93,11 @@ function BudgetListViewModel(data)
     {
         var element = getFormElement();
 
-        var vm = new BudgetDetailModel({ accountId: self.account.id, categoryId: d.id, name: '' }, self.categories, self.frequencies);
+        var startDate = moment('01/01/' + (new Date()).getFullYear()).format('MM/DD/YYYY')
+
+        var budget = { accountId: self.account.id, categoryId: d.id, name: '', startDate: startDate };
+
+        var vm = new BudgetDetailModel(budget, self.categories, self.frequencies);
 
         ko.applyBindings(vm, element);
 
@@ -330,11 +334,21 @@ function BudgetDetailModel(budget, categories, frequencies)
             self.categoryId = data.categoryId || '';
             self.name = data.name || '';
             self.amount = data.amount || 0;
-            self.startDate = data.startDate || '';
-            self.endDate = data.endDate || '';
+            self.startDate = dateToText(data.startDate);
+            self.endDate = dateToText(data.endDate);
             self.frequency = data.frequency || '';
         }
     };
+
+    function dateToText(date)
+    {
+        if (date)
+        {
+            return moment(date).format('MM/DD/YYYY');
+        }
+
+        return date;
+    }
 
     function getData()
     {

@@ -72,13 +72,13 @@ namespace NerdBudget.Core.Models
         public override DateTime CreatedAt
         {
             get { return base.CreatedAt; }
-            set { base.CreatedAt = value.ToUniversalTime(); }
+            set { base.CreatedAt = value.EnsureUtc(); }
         }
 
         public override DateTime? UpdatedAt
         {
             get { return base.UpdatedAt; }
-            set { base.UpdatedAt = value == null ? null as DateTime? : value.Value.ToUniversalTime(); }
+            set { base.UpdatedAt = value == null ? null as DateTime? : value.Value.EnsureUtc(); }
         }
 
         #endregion

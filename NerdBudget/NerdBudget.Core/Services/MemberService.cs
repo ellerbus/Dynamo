@@ -71,9 +71,10 @@ namespace NerdBudget.Core.Services
                     {
                         Name = name,
                         Password = BCrypt.Net.BCrypt.HashPassword(password),
-                        LoggedInAt = DateTime.UtcNow,
-                        CreatedAt = DateTime.UtcNow
+                        LoggedInAt = DateTime.UtcNow
                     };
+
+                    Utilities.AuditUpdate(member);
 
                     _repository.Save(member);
 
@@ -87,7 +88,9 @@ namespace NerdBudget.Core.Services
 
             if (isvalid)
             {
-                member.UpdatedAt = member.LoggedInAt = DateTime.UtcNow;
+                member.LoggedInAt = DateTime.UtcNow;
+
+                Utilities.AuditUpdate(member);
 
                 _repository.Save(member);
             }

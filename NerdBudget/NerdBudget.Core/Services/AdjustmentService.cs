@@ -69,7 +69,8 @@ namespace NerdBudget.Core.Services
             adjustment.Budget = budget;
 
             adjustment.Id = CreateUniqueId(account);
-            adjustment.CreatedAt = DateTime.UtcNow;
+
+            Utilities.AuditUpdate(adjustment);
 
             _validator.ValidateAndThrow(adjustment);
 
@@ -110,7 +111,7 @@ namespace NerdBudget.Core.Services
         {
             _validator.ValidateAndThrow(adjustment);
 
-            adjustment.UpdatedAt = DateTime.UtcNow;
+            Utilities.AuditUpdate(adjustment);
 
             _repository.Save(adjustment);
 

@@ -141,7 +141,8 @@ namespace NerdBudget.Core.Services
             account.Id = CreateUniqueId();
             account.Type = "C";
             account.StartedAt = DateTime.UtcNow;
-            account.CreatedAt = DateTime.UtcNow;
+
+            Utilities.AuditUpdate(account);
 
             _validator.ValidateAndThrow(account);
 
@@ -180,7 +181,7 @@ namespace NerdBudget.Core.Services
         {
             _validator.ValidateAndThrow(account);
 
-            account.UpdatedAt = DateTime.UtcNow;
+            Utilities.AuditUpdate(account);
 
             _repository.Save(account);
 

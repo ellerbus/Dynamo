@@ -5,6 +5,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Augment;
 using FluentValidation;
+using FluentValidation.Results;
 using NerdBudget.Core;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
@@ -86,6 +87,11 @@ namespace NerdBudget.Web.ApiControllers
         {
             try
             {
+                if (adjustment.BudgetId.IsNullOrEmpty())
+                {
+                    throw new ValidationException(new[] { new ValidationFailure("BudgetId", "Budget is Required") });
+                }
+
                 Budget budget = GetBudget(accountId, adjustment.BudgetId);
 
                 if (budget == null)

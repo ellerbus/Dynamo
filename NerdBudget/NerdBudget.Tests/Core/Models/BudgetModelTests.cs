@@ -3,6 +3,7 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NerdBudget.Core.Models;
+using Augment;
 
 namespace NerdBudget.Tests.Core.Models
 {
@@ -96,7 +97,7 @@ namespace NerdBudget.Tests.Core.Models
 
             var actual = new Budget() { CreatedAt = dt };
 
-            Assert.AreEqual(dt.ToUniversalTime(), actual.CreatedAt);
+            Assert.AreEqual(dt.EnsureUtc(), actual.CreatedAt);
         }
 
 
@@ -107,7 +108,7 @@ namespace NerdBudget.Tests.Core.Models
 
             var actual = new Budget() { UpdatedAt = dt };
 
-            Assert.AreEqual(dt.ToUniversalTime(), actual.UpdatedAt);
+            Assert.AreEqual(dt.EnsureUtc(), actual.UpdatedAt);
         }
 
 

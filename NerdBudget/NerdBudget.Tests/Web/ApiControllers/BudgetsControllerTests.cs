@@ -127,6 +127,29 @@ namespace NerdBudget.Tests.Web.ApiControllers
             MockService.VerifyAll();
         }
 
+        [TestMethod]
+        public void BudgetsController_PostOne_Should_SendBadRequest_MissingCategory()
+        {
+            //		arrange
+            var account = GetAccount();
+
+            var category = account.Categories.Last();
+
+            var budget = Builder<Budget>.CreateNew().Build();
+
+            budget.CategoryId = null;
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.Post(account.Id, budget).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
+
+            MockService.VerifyAll();
+        }
+
         #endregion
 
         #region Tests - Put One

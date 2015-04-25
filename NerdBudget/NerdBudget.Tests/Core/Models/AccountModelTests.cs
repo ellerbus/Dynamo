@@ -70,7 +70,7 @@ namespace NerdBudget.Tests.Core.Models
 
             var actual = new Account() { CreatedAt = dt };
 
-            Assert.AreEqual(dt.ToUniversalTime(), actual.CreatedAt);
+            Assert.AreEqual(dt.EnsureUtc(), actual.CreatedAt);
         }
 
 
@@ -81,7 +81,7 @@ namespace NerdBudget.Tests.Core.Models
 
             var actual = new Account() { UpdatedAt = dt };
 
-            Assert.AreEqual(dt.ToUniversalTime(), actual.UpdatedAt);
+            Assert.AreEqual(dt.EnsureUtc(), actual.UpdatedAt);
         }
 
 

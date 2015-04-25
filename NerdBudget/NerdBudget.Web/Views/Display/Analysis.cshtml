@@ -22,8 +22,6 @@
 
   });
 
-
-
   function updateTable($table)
   {
     // Change the selector if needed
@@ -61,7 +59,7 @@
           ANALYSIS
         </th>
         <!-- ko foreach: headers -->
-        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': variance() < 0, 'success': variance() > 0 }">
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': Math.round(variance(), 0) < 0, 'success': Math.round(variance(), 0) > 0 }">
           <!-- ko if: isHistory -->
           <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: variance() | fixed"></i>*
           <!-- /ko -->
@@ -93,7 +91,7 @@
         <td data-bind="text: title"></td>
         <!-- ko foreach: values -->
         <td class="actual" data-bind="text: actual | fixed, click: $root.showLedgers.bind($data, $parent, $index())"></td>
-        <td class="budget" data-bind="text: variance() | fixed, click: $root.showAdjustments.bind($data, $parent, $index()), css: { 'danger': Math.round(variance(), 0) > 0 }"></td>
+        <td class="budget" data-bind="text: variance() | fixed, click: $root.showAdjustments.bind($data, $parent, $index()), css: { 'danger': Math.round(variance() * multiplier, 0) < 0, 'success': Math.round(variance() * multiplier, 0) > 0 }"></td>
         <!-- /ko -->
         <!-- /ko -->
       </tr>

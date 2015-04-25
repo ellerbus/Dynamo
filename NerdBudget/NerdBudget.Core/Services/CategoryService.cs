@@ -74,8 +74,9 @@ namespace NerdBudget.Core.Services
 
             category.Id = CreateUniqueId(account);
             category.Multiplier = category.Name.AssertNotNull().Contains("INCOME") ? 1 : -1;
-            category.CreatedAt = DateTime.UtcNow;
             category.Sequence = account.Categories.Count * 10;
+
+            Utilities.AuditUpdate(category);
 
             _validator.ValidateAndThrow(category);
 
@@ -114,7 +115,7 @@ namespace NerdBudget.Core.Services
         {
             _validator.ValidateAndThrow(category);
 
-            category.UpdatedAt = DateTime.UtcNow;
+            Utilities.AuditUpdate(category);
 
             _repository.Save(category);
         }
@@ -131,7 +132,7 @@ namespace NerdBudget.Core.Services
 
             foreach (Category cat in categories)
             {
-                cat.UpdatedAt = DateTime.UtcNow;
+                Utilities.AuditUpdate(cat);
             }
 
             _repository.Save(categories);

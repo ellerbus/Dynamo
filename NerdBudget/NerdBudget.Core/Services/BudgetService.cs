@@ -74,8 +74,9 @@ namespace NerdBudget.Core.Services
             budget.Category = category;
 
             budget.Id = CreateUniqueId(account);
-            budget.CreatedAt = DateTime.UtcNow;
             budget.Sequence = category.Budgets.Count * 10;
+
+            Utilities.AuditUpdate(budget);
 
             _validator.ValidateAndThrow(budget);
 
@@ -116,7 +117,7 @@ namespace NerdBudget.Core.Services
         {
             _validator.ValidateAndThrow(budget);
 
-            budget.UpdatedAt = DateTime.UtcNow;
+            Utilities.AuditUpdate(budget);
 
             _repository.Save(budget);
 
@@ -146,7 +147,7 @@ namespace NerdBudget.Core.Services
 
             foreach (Budget bud in budgets)
             {
-                bud.UpdatedAt = DateTime.UtcNow;
+                Utilities.AuditUpdate(bud);
             }
 
             _repository.Save(budgets);

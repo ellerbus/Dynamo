@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using Augment;
 
 namespace NerdBudget.Core
 {
@@ -16,6 +17,35 @@ namespace NerdBudget.Core
             NumberStyles.AllowTrailingWhite |
             NumberStyles.AllowParentheses
             ;
+
+        #endregion
+
+        #region Audit Helpers
+
+        public static void AuditUpdate(object item)
+        {
+            if (ReflectionHelper.HasProperty(item, "CreatedAt"))
+            {
+                DateTime dt = (DateTime)ReflectionHelper.GetValueOfProperty(item, "CreatedAt");
+
+                if (dt == DateTime.MinValue)
+                {
+                    ReflectionHelper.SetValueOfProperty(item, "CreatedAt", DateTime.Now);
+
+                    return;
+                }
+            }
+
+            if (ReflectionHelper.HasProperty(item, "UpdatedAt"))
+            {
+                DateTime? dt = (DateTime?)ReflectionHelper.GetValueOfProperty(item, "UpdatedAt");
+
+                if (dt == null || dt == DateTime.MinValue)
+                {
+                    ReflectionHelper.SetValueOfProperty(item, "UpdatedAt", DateTime.Now);
+                }
+            }
+        }
 
         #endregion
 

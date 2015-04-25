@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Augment;
 using FluentValidation;
+using FluentValidation.Results;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
 using Newtonsoft.Json;
@@ -48,6 +50,11 @@ namespace NerdBudget.Web.ApiControllers
 
             try
             {
+                if (budget.CategoryId.IsNullOrEmpty())
+                {
+                    throw new ValidationException(new[] { new ValidationFailure("CategoryId", "Category is Required") });
+                }
+
                 Category category = account.Categories[budget.CategoryId];
 
                 _budgetService.Insert(category, budget);

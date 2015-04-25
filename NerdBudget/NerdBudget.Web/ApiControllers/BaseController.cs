@@ -10,6 +10,8 @@ namespace NerdBudget.Web.ApiControllers
 
         protected IHttpActionResult BadRequest(IEnumerable<ValidationFailure> errors)
         {
+            ModelState.Clear();
+
             foreach (ValidationFailure vf in errors)
             {
                 ModelState.AddModelError(vf.PropertyName, vf.ErrorMessage);
