@@ -88,9 +88,10 @@ namespace NerdBudget.Tests.Core.Validators
 		public void AdjustmentValidator_RuleFor_Amount()
 		{
 			//	TODO
-			//_validator.ShouldHaveValidationErrorFor(v => v.Amount, default(double));
-			
-			
+            _validator.ShouldHaveValidationErrorFor(v => v.Amount, default(double));
+
+            _validator.ShouldNotHaveValidationErrorFor(v => v.Amount, -1);
+            _validator.ShouldNotHaveValidationErrorFor(v => v.Amount, 1);
 		}
 		
 		

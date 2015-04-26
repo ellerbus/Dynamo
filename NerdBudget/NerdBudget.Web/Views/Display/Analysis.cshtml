@@ -117,18 +117,16 @@
   <div class="adjustments-display form-group">
     <form class="form-horizontal">
       <table class="table table-condensed table-striped">
-        <!--
-        <thead>
+        <thead data-bind="with: adjustment">
           <tr>
             <td colspan="2">
-              <input class="form-control input-sm" placeholder="description" />
+              <input class="form-control input-sm" placeholder="name (description)" data-bind="value: name" />
             </td>
             <td>
-              <input class="form-control input-sm" placeholder="amount" />
+              <input class="form-control input-sm" placeholder="amount" data-bind="value: amount, valueUpdate: 'afterkeydown', event: { keypress: $parent.addAdjustment }" />
             </td>
           </tr>
         </thead>
-        -->
         <tbody data-bind="foreach: adjustments">
           <tr>
             <td data-bind="text: date | date"></td>
@@ -136,6 +134,13 @@
             <td data-bind="text: amount | fixed"></td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td>&nbsp;</td>
+            <td>SUMMARY</td>
+            <td data-bind="text: summaryAmount() | fixed"></td>
+          </tr>
+        </tfoot>
       </table>
     </form>
   </div>

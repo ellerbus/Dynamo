@@ -52,6 +52,15 @@ namespace NerdBudget.Tests.Core.Models
         }
 
 
+        [TestMethod]
+        public void Adjustment_Date_ShouldNot_DoSomething()
+        {
+            var actual = new Adjustment() { Date = null };
+
+            Assert.IsNull(actual.Date);
+        }
+
+
         //[TestMethod]
         //public void Adjustment_Amount_Should_DoSomething()
         //{

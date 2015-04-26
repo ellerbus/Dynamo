@@ -1,9 +1,3 @@
-/*
-  1. THIS TEMPLATE IS VERY TIGHTLY BOUND TO NERDBUDGET'S DESIGN
-  2. THIS NEEDS TO BE IN THE APPROPRIATE CONTROLLER DIRECTORY!!
-  3. THIS TEMPLATE AND ASSOCIATED JAVASCRIPT FILE USE THE
-    App/Helper.js FILE FROM NERDBUDGET
-*/
 'use strict';
 
 function AdjustmentListViewModel(data)
@@ -52,7 +46,7 @@ function AdjustmentListViewModel(data)
 
         var options = nbHelper.crudDialog('create', element);
 
-        options.buttons.ok.callback= function ()
+        options.buttons.ok.callback = function ()
         {
             var dlg = this;
 

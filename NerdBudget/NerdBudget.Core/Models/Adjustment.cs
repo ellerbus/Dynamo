@@ -57,7 +57,10 @@ namespace NerdBudget.Core.Models
         public override DateTime? Date
         {
             get { return base.Date; }
-            set { base.Date = value.Value.EnsureUtc().BeginningOfDay(); }
+            set
+            {
+                base.Date = value == null ? null as DateTime? : value.Value.EnsureUtc().BeginningOfDay();
+            }
         }
 
         public override string Name

@@ -86,7 +86,7 @@ $(function ()
             return ko.filters.number(value.toFixed(decimals));
         }
 
-        value = parseInt(value.toFixed(0));
+        value = parseInt(value);
 
         if (value === 0)
         {

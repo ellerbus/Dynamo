@@ -184,7 +184,7 @@ function AnalysisViewModel(data)
         {
             var element = getElement('#adjustments');
 
-            var vm = new AdjustmentsViewModel(data);
+            var vm = new AdjustmentsViewModel({ account: self.account, budget: budget, adjustments: data });
 
             ko.applyBindings(vm, element);
 
@@ -219,7 +219,65 @@ function AdjustmentsViewModel(data)
 {
     var self = this;
 
-    self.adjustments = data;
+    self.url = 'api/Adjustments/' + data.account.id;
+
+    self.account = data.account;
+
+    self.budget = data.budget;
+
+    self.adjustments = data.adjustments;
+
+    self.adjustment = ko.track({ date: moment().format('MM/DD/YYYY'), name: null, amount: null });
+
+    self.addAdjustment = addAdjustment;
+
+    self.summaryAmount = summaryAmount;
+
+    function addAdjustment(d, e)
+    {
+        if (e.keyCode === 13)
+        {
+            var onSuccess = function (data)
+            {
+                self.adjustments.push(data);
+
+                self.adjustment.name = null;
+                self.adjustment.amount = null;
+
+                $('form').hideErrors();
+            };
+
+            var onError = function (error)
+            {
+                $('form').showErrors(error);
+            };
+
+            var adj = {
+                    budgetId: self.budget.id,
+                    date: self.adjustment.date,
+                    name: self.adjustment.name,
+                    amount: self.adjustment.amount
+            };
+
+            $.create(self.url, adj).then(onSuccess, onError);
+
+            return false;
+        }
+
+        return true;
+    };
+
+    function summaryAmount()
+    {
+        var x = 0;
+
+        for (var a = 0, b = self.adjustments.length; a < b; a++)
+        {
+            x += self.adjustments[a].amount;
+        }
+
+        return x;
+    };
 
     ko.track(self);
 };
