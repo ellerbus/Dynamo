@@ -22,7 +22,11 @@ function AnalysisViewModel(data)
         {
             detail.values[a].multiplier = detail.multiplier;
             detail.values[a].variance = function () { return (this.budget - this.actual); };
+
+            ko.track(detail.values[a]);
         }
+        
+        ko.track(detail);
 
         return detail;
     };
@@ -176,6 +180,8 @@ function AnalysisViewModel(data)
 
     function showAdjustments(budget, index)
     {
+        var values = this;
+
         var header = self.headers[index];
 
         var dt = moment(header.start);
@@ -192,7 +198,12 @@ function AnalysisViewModel(data)
 
             var options = nbHelper.displayDialog('Adjustments Week of ' + date, element);
 
-            options.buttons.ok.callback = function () { ko.cleanNode(element); };
+            options.buttons.ok.callback = function ()
+            {
+                values.budget = vm.adjustedBudget() * budget.multiplier;
+
+                ko.cleanNode(element);
+            };
 
             bootbox.dialog(options);
         };
@@ -231,7 +242,7 @@ function AdjustmentsViewModel(data)
 
     self.addAdjustment = addAdjustment;
 
-    self.summaryAmount = summaryAmount;
+    self.adjustedBudget = adjustedBudget;
 
     function addAdjustment(d, e)
     {
@@ -267,7 +278,7 @@ function AdjustmentsViewModel(data)
         return true;
     };
 
-    function summaryAmount()
+    function adjustedBudget()
     {
         var x = 0;
 
