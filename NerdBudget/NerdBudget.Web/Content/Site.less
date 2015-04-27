@@ -31,17 +31,29 @@ th.icons, td.icons {
 
 .budget-display-table {
 
-    thead tr:first-child th {
-        border-bottom-width: 0;
-    }
+    thead {
+        tr {
+            th {
+                border-bottom-width: 0;
+                border-left: 1px dashed #bbb;
 
-    th {
-        border-left: 1px dashed #bbb;
+                &:first-child {
+                    border-left: none;
+                }
+            }
 
-        &:first-child {
-            border-left: none;
+            td.budget {
+                cursor: pointer;
+            }
+
+            &:last-child {
+                th, td {
+                    background-color: #efefef;
+                }
+            }
         }
     }
+
 
     .budget-display-row {
         font-family: "Lucida Console", "Courier New";

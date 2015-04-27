@@ -135,8 +135,6 @@ function BudgetListViewModel(data)
         options.buttons.cancel.callback = function () { ko.cleanNode(element); };
 
         bootbox.dialog(options);
-
-        $(element).find('input[name="name"]').focus();
     };
 
     function update(budget)

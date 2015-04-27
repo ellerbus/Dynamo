@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -229,6 +230,107 @@ namespace NerdBudget.Tests.Web.ApiControllers
 
             //		act
             var msg = SubjectUnderTest.Post(account.Id, adjustment).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
+
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
+        #region Tests - Post One Transfer
+
+        [TestMethod]
+        public void AdjustmentsController_PostOneTransfer_Should_SendOk()
+        {
+            //		arrange
+            var account = GetAccount(false);
+
+            var fromBudget = account.Categories.Last().Budgets.Last();
+
+            var toBudget = account.Categories.First().Budgets.First();
+
+            var adjustment = new Adjustment { Date = DateTime.Now, Amount = 99 };
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            MockService.Setup(x => x.Insert(fromBudget, Any.Item));
+            MockService.Setup(x => x.Insert(toBudget, Any.Item));
+
+            //		act
+            var msg = SubjectUnderTest.PostTransfer(account.Id, fromBudget.Id, toBudget.Id, adjustment).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AdjustmentsController_PostOneTransfer_Should_SendBadRequest()
+        {
+            //		arrange
+            var account = GetAccount(false);
+
+            var fromBudget = account.Categories.Last().Budgets.Last();
+
+            var toBudget = account.Categories.First().Budgets.First();
+
+            var adjustment = new Adjustment { Date = DateTime.Now, Amount = 99 };
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            MockService.Setup(x => x.Insert(fromBudget, Any.Item)).Throws(new ValidationException(new[] { new ValidationFailure("", "") }));
+
+            //		act
+            var msg = SubjectUnderTest.PostTransfer(account.Id, fromBudget.Id, toBudget.Id, adjustment).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AdjustmentsController_PostOneTransfer_Should_SendBadRequest_MissingFromBudget()
+        {
+            //		arrange
+            var account = GetAccount(false);
+
+            var fromBudget = account.Categories.Last().Budgets.Last();
+
+            var toBudget = account.Categories.First().Budgets.First();
+
+            var adjustment = new Adjustment { Date = DateTime.Now, Amount = 99 };
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.PostTransfer(account.Id, "x", toBudget.Id, adjustment).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);
+
+            MockService.VerifyAll();
+        }
+
+        [TestMethod]
+        public void AdjustmentsController_PostOneTransfer_Should_SendBadRequest_MissingToBudget()
+        {
+            //		arrange
+            var account = GetAccount(false);
+
+            var fromBudget = account.Categories.Last().Budgets.Last();
+
+            var toBudget = account.Categories.First().Budgets.First();
+
+            var adjustment = new Adjustment { Date = DateTime.Now, Amount = 99 };
+
+            MockAccountService.Setup(x => x.Get(account.Id)).Returns(account);
+
+            //		act
+            var msg = SubjectUnderTest.PostTransfer(account.Id, fromBudget.Id, "x", adjustment).ToMessage();
 
             //		assert
             Assert.IsTrue(msg.StatusCode == HttpStatusCode.BadRequest);

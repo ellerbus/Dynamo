@@ -6,6 +6,8 @@ function AnalysisViewModel(data)
 
     self.account = data.account;
 
+    self.budgets = data.budgets;
+
     self.details = ko.utils.arrayMap(data.details, mapDetail);
 
     self.headers = ko.utils.arrayMap(data.headers, mapHeader);
@@ -13,6 +15,8 @@ function AnalysisViewModel(data)
     self.showLedgers = showLedgers;
 
     self.showAdjustments = showAdjustments;
+
+    self.budgetTransfer = budgetTransfer;
 
     ko.track(self);
 
@@ -215,6 +219,65 @@ function AnalysisViewModel(data)
 
         $.retrieve(url).then(onSuccess, onError);
     };
+
+    function budgetTransfer(header)
+    {
+        var element = getElement('#budgetTransfer');
+
+        var vm = new TransferViewModel(header, self.budgets);
+
+        ko.applyBindings(vm, element);
+
+        var options = nbHelper.crudDialog('create', element);
+
+        options.buttons.ok.callback = function ()
+        {
+            var dlg = this;
+
+            var onSuccess = function (data)
+            {
+                updateBudgets(header.index, vm.fromBudgetId, vm.toBudgetId, vm.amount);
+
+                ko.cleanNode(element);
+
+                dlg.modal('hide');
+            };
+
+            var onError = function (error)
+            {
+                dlg.find('form').showErrors(error);
+            };
+
+            var url = 'api/Adjustments/' + self.account.id + '/' +
+                vm.fromBudgetId + '/' + vm.toBudgetId + '/transfer';
+
+            $.create(url, vm.getData()).then(onSuccess, onError);
+
+            return false;
+        };
+
+        options.buttons.cancel.callback = function () { ko.cleanNode(element); };
+
+        bootbox.dialog(options);
+    };
+
+    function updateBudgets(index, fromBudgetId, toBudgetId, amount)
+    {
+        for (var a = 0, b = self.details.length; a < b; a++)
+        {
+            var d = self.details[a];
+
+            if (d.id == fromBudgetId)
+            {
+                d.values[index].budget += -amount * d.multiplier;
+            }
+
+            if (d.id == toBudgetId)
+            {
+                d.values[index].budget += amount * d.multiplier;
+            }
+        }
+    };
 };
 
 function LedgersViewModel(data)
@@ -291,4 +354,28 @@ function AdjustmentsViewModel(data)
     };
 
     ko.track(self);
+};
+
+function TransferViewModel(header, budgets)
+{
+    var self = this;
+
+    self.header = header;
+
+    self.budgets = budgets;
+
+    self.fromBudgetId = '';
+
+    self.toBudgetId = '';
+
+    self.amount = null;
+
+    self.getData = getData;
+
+    ko.track(self);
+
+    function getData()
+    {
+        return { amount: self.amount, date: moment(header.start).format('MM/DD/YYYY') };
+    };
 };

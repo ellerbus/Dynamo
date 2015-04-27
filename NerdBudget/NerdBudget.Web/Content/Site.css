@@ -23,14 +23,19 @@ td.icons {
   width: 100px;
   text-align: right;
 }
-.budget-display-table thead tr:first-child th {
+.budget-display-table thead tr th {
   border-bottom-width: 0;
-}
-.budget-display-table th {
   border-left: 1px dashed #bbb;
 }
-.budget-display-table th:first-child {
+.budget-display-table thead tr th:first-child {
   border-left: none;
+}
+.budget-display-table thead tr td.budget {
+  cursor: pointer;
+}
+.budget-display-table thead tr:last-child th,
+.budget-display-table thead tr:last-child td {
+  background-color: #efefef;
 }
 .budget-display-table .budget-display-row {
   font-family: "Lucida Console", "Courier New";

@@ -88,6 +88,8 @@ namespace NerdBudget.Web.ViewModels
         {
             Account = account;
 
+            Budgets = account.Categories.SelectMany(x => x.Budgets).OrderBy(x => x.Name).ToList();
+
             Details = new List<Detail>();
 
             SetupDateRanges(DateTime.Now.Date);
@@ -175,6 +177,7 @@ namespace NerdBudget.Web.ViewModels
         {
             JsonSerializerSettings jss = PayloadManager
                 .AddPayload<Account>("Id,Name")
+                .AddPayload<Budget>("Id,FullName")
                 .ToSettings();
 
             string json = JsonConvert.SerializeObject(this, jss);
@@ -187,6 +190,8 @@ namespace NerdBudget.Web.ViewModels
         #region Properties
 
         public Account Account { get; private set; }
+
+        public IList<Budget> Budgets { get; private set; }
 
         public Range<DateTime> BudgetMonth { get; private set; }
 

@@ -59,17 +59,21 @@
           ANALYSIS
         </th>
         <!-- ko foreach: headers -->
+        <!-- ko if: isHistory -->
         <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': Math.round(variance(), 0) < 0, 'success': Math.round(variance(), 0) > 0 }">
-          <!-- ko if: isHistory -->
           <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: variance() | fixed"></i>*
-          <!-- /ko -->
-          <!-- ko if: isCurrent -->
-          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
-          <!-- /ko -->
-          <!-- ko if: isFuture -->
-          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
-          <!-- /ko -->
         </th>
+        <!-- /ko -->
+        <!-- ko if: isCurrent -->
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': Math.round(projection(), 0) < 0, 'success': Math.round(projection(), 0) > 0 }">
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
+        </th>
+        <!-- /ko -->
+        <!-- ko if: isFuture -->
+        <th class="text-center" colspan="2" style="width: 12.5%" data-bind="css: { 'danger': Math.round(projection(), 0) < 0, 'success': Math.round(projection(), 0) > 0 }">
+          <i data-placement="top" data-toggle="tooltip" data-bind="attr: { title: tooltip() }, text: projection() | fixed"></i>
+        </th>
+        <!-- /ko -->
         <!-- /ko -->
       </tr>
       <tr style="color: #777;">
@@ -78,7 +82,9 @@
         </th>
         <!-- ko foreach: headers -->
         <td class="actual" data-bind="text: actual() | fixed"></td>
-        <td class="budget" data-bind="text: budget() | fixed"></td>
+        <td class="budget">
+          <i data-toggle="tooltip" data-bind="text: budget() | fixed, click: $parent.budgetTransfer, attr: { title: 'Create Adjustment Transfer' }"></i>
+        </td>
         <!-- /ko -->
       </tr>
     </thead>
@@ -144,4 +150,33 @@
       </table>
     </form>
   </div>
+</div>
+
+<div id="budgetTransfer" style="display: none">
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        From Budget
+      </label>
+      <div class="col-sm-8">
+        <select class="form-control" name="fromBudgetId" data-bind="options: budgets, optionsText: 'fullName', optionsValue: 'id', optionsCaption: '(select from budget)', value: fromBudgetId"></select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        To Budget
+      </label>
+      <div class="col-sm-8">
+        <select class="form-control" name="toBudgetId" data-bind="options: budgets, optionsText: 'fullName', optionsValue: 'id', optionsCaption: '(select to budget)', value: toBudgetId"></select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        Amount
+      </label>
+      <div class="col-sm-8">
+        <input class="form-control" name="amount" data-bind="value: amount" />
+      </div>
+    </div>
+  </form>
 </div>

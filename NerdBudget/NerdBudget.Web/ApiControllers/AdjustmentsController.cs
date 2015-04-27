@@ -82,6 +82,51 @@ namespace NerdBudget.Web.ApiControllers
         #region Insert/Update/Delete
 
         // POST: api/adjustment
+        [HttpPost, Route("{accountId}/{fromBudgetId}/{toBudgetId}/transfer")]
+        public IHttpActionResult PostTransfer(string accountId, string fromBudgetId, string toBudgetId, [FromBody]Adjustment adjustment)
+        {
+            try
+            {
+                Budget fromBudget = GetBudget(accountId, fromBudgetId);
+
+                if (fromBudget == null)
+                {
+                    throw new ValidationException(new[] { new ValidationFailure("FromBudgetId", "From Budget is Required") });
+                }
+
+                Budget toBudget = GetBudget(accountId, toBudgetId);
+
+                if (toBudget == null)
+                {
+                    throw new ValidationException(new[] { new ValidationFailure("ToBudgetId", "To Budget is Required") });
+                }
+
+                Adjustment fromAdjustment = new Adjustment
+                {
+                    Date = adjustment.Date,
+                    Amount = -adjustment.Amount,
+                    Name = "XFER to " + toBudget.Name
+                };
+
+                Adjustment toAdjustment = new Adjustment
+                {
+                    Date = adjustment.Date,
+                    Amount = adjustment.Amount,
+                    Name = "XFER from " + fromBudget.Name
+                };
+
+                _adjustmentService.Insert(fromBudget, fromAdjustment);
+                _adjustmentService.Insert(toBudget, toAdjustment);
+
+                return Ok();
+            }
+            catch (ValidationException ve)
+            {
+                return BadRequest(ve.Errors);
+            }
+        }
+
+        // POST: api/adjustment
         [HttpPost, Route("{accountId}")]
         public IHttpActionResult Post(string accountId, [FromBody]Adjustment adjustment)
         {
