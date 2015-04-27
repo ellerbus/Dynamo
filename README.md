@@ -6,7 +6,13 @@ and [DotLiquid Syntax](https://github.com/formosatek/dotliquid) to generate code
 #### Quick Start
 
 For those that simply what to jump in and check things out download and view the [Sample
-Solution](https://github.com/ellerbus/Dynamo/tree/master/Sample).
+Solution](https://github.com/ellerbus/Dynamo/tree/master/Sample). For a more in depth
+sample there's [NerdBudget](https://github.com/ellerbus/Dynamo/tree/master/NerdBudget).
+NerdBudget is a simple application for tracking a budget, but is a completely implemented
+system whereby output from a template was modified based on the need of the application.
+Whereas the Sample Solution focuses on a straight out-of-the-box implementation of
+non-modified templates. For all intents and purposes, NerdBudget is maintained and more
+up-to-date compared with the Sample Solution.
 
 #### Helpful Pages
 
