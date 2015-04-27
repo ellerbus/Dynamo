@@ -83,7 +83,7 @@ namespace NerdBudget.Tests.Web.ApiControllers
             return PayloadManager
                 .AddPayload<Account>("Id,Name")
                 .AddPayload<Budget>("Id,FullName")
-                .AddBasicPayload<Adjustment>()
+                .AddStandardPayload<Adjustment>()
                 .ToSettings();
         }
 

@@ -215,7 +215,7 @@ namespace NerdBudget.Web.ApiControllers
             return PayloadManager
                 .AddPayload<Account>("Id,Name")
                 .AddPayload<Category>("Id,AccountId,Name")
-                .AddBasicPayload<Budget>()
+                .AddStandardPayload<Budget>()
                 .ToSettings();
         }
 
