@@ -95,9 +95,9 @@ namespace Dynamo.Core
                 .IsTrue()
                 ;
 
-            FileName = filename;
+            DynamoFileName = filename;
 
-            using (StreamReader sr = new StreamReader(FileName))
+            using (StreamReader sr = new StreamReader(DynamoFileName))
             {
                 XmlSerializer s = new XmlSerializer(typeof(GeneratorProject));
 
@@ -107,7 +107,7 @@ namespace Dynamo.Core
 
                 Project.IsDirty = false;
 
-                UpdateRecentFiles(FileName);
+                UpdateRecentFiles(DynamoFileName);
             }
         }
 
@@ -116,13 +116,13 @@ namespace Dynamo.Core
         /// </summary>
         public void SaveProject()
         {
-            using (StreamWriter sw = new StreamWriter(FileName))
+            using (StreamWriter sw = new StreamWriter(DynamoFileName))
             {
                 //  in case of save-as or new project
                 //  ensure relative paths
-                Project.SolutionFile = Utilities.GetRelativePath(FileName, SolutionFile);
+                Project.SolutionFile = Utilities.GetRelativePath(DynamoFileName, SolutionFile);
 
-                Project.TemplateFolder = Utilities.GetRelativePath(FileName, TemplateFolder);
+                Project.TemplateFolder = Utilities.GetRelativePath(DynamoFileName, TemplateFolder);
 
                 XmlSerializer s = new XmlSerializer(typeof(GeneratorProject));
 
@@ -130,7 +130,7 @@ namespace Dynamo.Core
 
                 Project.IsDirty = false;
 
-                UpdateRecentFiles(FileName);
+                UpdateRecentFiles(DynamoFileName);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Dynamo.Core
         /// </summary>
         public void SaveAsProject(string filename)
         {
-            FileName = filename;
+            DynamoFileName = filename;
 
             SaveProject();
         }
@@ -387,17 +387,29 @@ namespace Dynamo.Core
                     return "(none)";
                 }
 
-                string dir = Path.GetDirectoryName(FileName);
+                if (DynamoFileName.IsNotEmpty())
+                {
+                    string dir = Path.GetDirectoryName(DynamoFileName);
 
-                string combine = Path.Combine(dir, Project.SolutionFile);
+                    string combine = Path.Combine(dir, Project.SolutionFile);
 
-                FileInfo fi = new FileInfo(Path.GetFullPath(combine));
+                    FileInfo fi = new FileInfo(Path.GetFullPath(combine));
 
-                return fi.FullName;
+                    return fi.FullName;
+                }
+
+                return Project.SolutionFile;
             }
             set
             {
-                Project.SolutionFile = Utilities.GetRelativePath(FileName, value);
+                if (DynamoFileName.IsNotEmpty())
+                {
+                    Project.SolutionFile = Utilities.GetRelativePath(DynamoFileName, value);
+                }
+                else
+                {
+                    Project.SolutionFile = value;
+                }
 
                 if (TemplateFolder.IsNullOrEmpty() || TemplateFolder == "(none)")
                 {
@@ -426,17 +438,29 @@ namespace Dynamo.Core
                     return "(none)";
                 }
 
-                string dir = Path.GetDirectoryName(FileName);
+                if (DynamoFileName.IsNotEmpty())
+                {
+                    string dir = Path.GetDirectoryName(DynamoFileName);
 
-                string combine = Path.Combine(dir, Project.TemplateFolder);
+                    string combine = Path.Combine(dir, Project.TemplateFolder);
 
-                DirectoryInfo di = new DirectoryInfo(Path.GetFullPath(combine));
+                    DirectoryInfo di = new DirectoryInfo(Path.GetFullPath(combine));
 
-                return di.FullName;
+                    return di.FullName;
+                }
+
+                return Project.TemplateFolder;
             }
             set
             {
-                Project.TemplateFolder = Utilities.GetRelativePath(FileName, value);
+                if (DynamoFileName.IsNotEmpty())
+                {
+                    Project.TemplateFolder = Utilities.GetRelativePath(DynamoFileName, value);
+                }
+                else
+                {
+                    Project.TemplateFolder = value;
+                }
 
                 if (value == null)
                 {
@@ -455,7 +479,7 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
-        public string FileName
+        public string DynamoFileName
         {
             get { return _fileName; }
             set
@@ -472,7 +496,7 @@ namespace Dynamo.Core
         /// <summary>
         /// 
         /// </summary>
-        public bool IsValidFileName { get { return File.Exists(FileName); } }
+        public bool IsValidFileName { get { return File.Exists(DynamoFileName); } }
 
         /// <summary>
         /// 
@@ -506,11 +530,11 @@ namespace Dynamo.Core
         {
             get
             {
-                if (FileName.IsNullOrEmpty())
+                if (DynamoFileName.IsNullOrEmpty())
                 {
                     return "New Project";
                 }
-                return FileName + (Project.IsDirty ? " *" : "");
+                return DynamoFileName + (Project.IsDirty ? " *" : "");
             }
         }
 
