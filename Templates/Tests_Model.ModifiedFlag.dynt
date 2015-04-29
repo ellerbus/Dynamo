@@ -1,0 +1,55 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture TEST %}{{ BASECLASS }}ModelTests{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ TEST }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using {{ SOLUTION }}.Core.Models;
+
+namespace {{ PROJECT }}.Core.Models
+{
+	[TestClass]
+	public class {{ TEST }}
+	{
+		#region Constructor Tests
+
+		[TestMethod]
+		public void {{ BASECLASS }}_EmptyConstructor_Should_FlagModified()
+		{
+			var actual = new {{ BASECLASS }}()
+			{
+				{% for column in table.columns %}{{ column.property_name }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}DateTime.Now{% endif %}{% if column.clr_type == 'bool' %}true{% endif %}{%if forloop.last == false %},
+				{% endif %}{% endfor %}
+			};
+
+			Assert.IsTrue(actual.IsModified);
+		}
+
+		[TestMethod]
+		public void {{ BASECLASS }}_FullConstructor_Should_FlagNotModified()
+		{
+			var actual = new {{ BASECLASS }}({% for column in table.columns %}{% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}DateTime.Now{% endif %}{% if column.clr_type == 'bool' %}true{% endif %}{%if forloop.last == false %}, {% endif %}{% endfor %});
+
+			Assert.IsFalse(actual.IsModified);
+		}
+
+		
+		#endregion
+
+		#region Property Tests
+		{% for column in table.columns %}
+		//[TestMethod]
+		//public void {{ BASECLASS }}_{{ column.property_name }}_Should_DoSomething()
+		//{
+		//	var actual = new {{ BASECLASS }}() { {{ column.property_name }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %} };
+		//
+		//	Assert.AreEqual({% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %}, actual.{{ column.property_name }});
+		//}
+
+		{% endfor -%}
+
+		#endregion
+	}
+}
