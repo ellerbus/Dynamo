@@ -43,18 +43,20 @@ namespace Dynamo.Core
                 ClrType += "?";
             }
 
-            if (PropertyName.StartsWith(column.TableName, StringComparison.InvariantCultureIgnoreCase))
-            {
-                int pos = PropertyName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
+            string className = DotLiquidFilters.Pascal(column.TableName);
 
-                PropertyName = DotLiquidFilters.Pascal(PropertyName.Remove(pos, column.TableName.Length));
+            if (PropertyName.StartsWith(className, StringComparison.InvariantCultureIgnoreCase))
+            {
+                int pos = PropertyName.IndexOf(className, StringComparison.InvariantCultureIgnoreCase);
+
+                PropertyName = DotLiquidFilters.Pascal(PropertyName.Remove(pos, className.Length));
             }
 
-            if (ParameterName.StartsWith(column.TableName, StringComparison.InvariantCultureIgnoreCase))
+            if (ParameterName.StartsWith(className, StringComparison.InvariantCultureIgnoreCase))
             {
-                int pos = ParameterName.IndexOf(column.TableName, StringComparison.InvariantCultureIgnoreCase);
+                int pos = ParameterName.IndexOf(className, StringComparison.InvariantCultureIgnoreCase);
 
-                ParameterName = DotLiquidFilters.Camel( ParameterName.Remove(pos, column.TableName.Length));
+                ParameterName = DotLiquidFilters.Camel(ParameterName.Remove(pos, className.Length));
             }
         }
 
