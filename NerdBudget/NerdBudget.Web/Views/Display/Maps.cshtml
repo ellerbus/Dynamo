@@ -1,0 +1,78 @@
+@model MapsViewModel
+
+@{
+  ViewBag.Title = "Maps";
+}
+
+@Html.Partial("_Tabs", Model.Account)
+
+<script src="@Url.Content("~/App/Maps.js")"></script>
+
+<script type="text/javascript">
+  var data = @Html.Raw(Model.ToJson());
+
+  var vm = new MapListViewModel(data);
+
+  $(function(){
+    $('li[tab-maps]').addClass('active');
+
+    ko.applyBindings(vm, $('#maps').get(0));
+  });
+</script>
+
+<div id="maps">
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Budget</th>
+        <th>Regex Pattern</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: maps">
+      <tr>
+        <td data-bind="text: id"></td>
+        <td data-bind="text: budgetName"></td>
+        <td data-bind="text: regexPattern"></td>
+        <td class="icons">
+          <a href="#" data-bind="click: $parent.update" nb-update-icon></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div id="form-body" style="display: none;">
+  <form class="form-horizontal">
+
+    <div class="form-group" data-bind="visible: creating()">
+      <label class="col-sm-4 control-label">
+        ID
+      </label>
+      <div class="col-sm-8 form-control-static" data-bind="text: id"></div>
+    </div>
+
+
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        Budget
+      </label>
+      <div class="col-sm-8">
+        <select class="form-control" name="budgetId" data-bind="options: budgets, optionsText: 'fullName', optionsValue: 'id', optionsCaption: '(select budget)', value: budgetId"></select>
+      </div>
+    </div>
+
+    
+    <div class="form-group">
+      <label class="col-sm-4 control-label">
+        Regex Pattern
+      </label>
+      <div class="col-sm-8">
+        <input class="form-control" name="regexPattern" data-bind="value: regexPattern" />
+      </div>
+    </div>    
+
+  </form>
+</div>

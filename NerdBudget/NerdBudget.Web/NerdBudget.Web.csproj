@@ -156,6 +156,7 @@
     <Content Include="App\Categories.js" />
     <Content Include="App\Accounts.js" />
     <Content Include="App\Helper.js" />
+    <Content Include="App\Maps.js" />
     <Content Include="Content\Site.css">
       <DependentUpon>Site.less</DependentUpon>
     </Content>
@@ -164,6 +165,7 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\BootBox.js" />
     <Content Include="Scripts\Bootstrap-Notify.min.js" />
     <Content Include="Scripts\Knockout-ES5.min.js" />
@@ -179,6 +181,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ApiControllers\LedgersController.cs" />
+    <Compile Include="ApiControllers\MapsController.cs" />
     <Compile Include="App_Start\CacheManifestHttpHandler.cs" />
     <Compile Include="App_Start\InjectorConfig.cs" />
     <Compile Include="App_Start\ReducedPayloadContractResolver.cs" />
@@ -197,6 +200,7 @@
     <Compile Include="ViewModels\CategoriesViewModel.cs" />
     <Compile Include="ViewModels\AccountsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MapsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -217,6 +221,7 @@
     <Content Include="Views\Display\Import.cshtml" />
     <Content Include="Views\Display\Analysis.cshtml" />
     <Content Include="Views\Display\Adjustments.cshtml" />
+    <Content Include="Views\Display\Maps.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

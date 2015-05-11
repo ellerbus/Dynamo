@@ -7,14 +7,14 @@ using EnsureThat;
 
 namespace NerdBudget.Core.Models
 {
-    internal static class IEnumerableMapExtenions
+    public static class IEnumerableMapExtenions
     {
         public static IList<Map> ToMatchList(this IEnumerable<Map> maps)
         {
             return maps.OrderByDescending(x => x.RegexPattern.Length).ToArray();
         }
 
-        public static Map FindMatchFor(this IEnumerable<Map> maps, Ledger led)
+        internal static Map FindMatchFor(this IEnumerable<Map> maps, Ledger led)
         {
             return maps.FirstOrDefault(x => x.IsMatchFor(led));
         }

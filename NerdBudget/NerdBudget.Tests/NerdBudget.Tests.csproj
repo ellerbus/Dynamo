@@ -136,6 +136,7 @@
     <Compile Include="Web\ApiControllers\CategoriesControllerTests.cs" />
     <Compile Include="Web\ApiControllers\ControllerTestHelper.cs" />
     <Compile Include="Web\ApiControllers\LedgersControllerTests.cs" />
+    <Compile Include="Web\ApiControllers\MapsControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NerdBudget.Core\NerdBudget.Core.csproj">

@@ -257,6 +257,15 @@ namespace NerdBudget.Core.Services
 
                 foreach (Map map in mapsToSave)
                 {
+                    //  budgetId rules them ALL
+                    Budget current = map.Budget;
+
+                    if (current != null && current.Id != map.BudgetId)
+                    {
+                        //  OK - we need to move somethings around
+                        map.Budget = map.Account.Categories.SelectMany(x => x.Budgets).First(x => x.Id == map.BudgetId);
+                    }
+
                     map.IsModified = false;
                 }
             }

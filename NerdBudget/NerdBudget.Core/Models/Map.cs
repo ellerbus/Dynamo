@@ -43,6 +43,11 @@ namespace NerdBudget.Core.Models
 
         #region Properties
 
+        public string BudgetName
+        {
+            get { return "{0}".FormatArgs(Budget == null ? "?" : Budget.Name.ToLower()); }
+        }
+
         public override string AccountId
         {
             get { return base.AccountId; }
