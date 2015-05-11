@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
 using FluentValidation;
-using FluentValidation.Results;
 using NerdBudget.Core.Models;
 using NerdBudget.Core.Services;
-using NerdBudget.Core.Validators;
 using Newtonsoft.Json;
 
 namespace NerdBudget.Web.ApiControllers
@@ -38,8 +31,8 @@ namespace NerdBudget.Web.ApiControllers
         #region Verb Actions
 
         // PUT: api/map/5
-        [HttpPut, Route("{accountId}/{budgetId}/{id}")]
-        public IHttpActionResult Put(string accountId, string budgetId, string id, [FromBody]Map map)
+        [HttpPut, Route("{accountId}/{id}")]
+        public IHttpActionResult Put(string accountId, string id, [FromBody]Map map)
         {
             Account account = GetAccount(accountId);
 
@@ -48,7 +41,7 @@ namespace NerdBudget.Web.ApiControllers
                 return NotFound();
             }
 
-            Budget toBudget = GetBudget(accountId, budgetId);
+            Budget toBudget = GetBudget(accountId, map.BudgetId);
 
             if (toBudget == null)
             {

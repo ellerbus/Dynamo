@@ -60,7 +60,7 @@ function MapListViewModel(data)
                 dlg.find('form').showErrors(error);
             };
 
-            $.update(self.url + '/{accountId}/{budgetId}/{id}', vm.getData()).then(onSuccess, onError);
+            $.update(self.url + '/{accountId}/{id}', vm.getData()).then(onSuccess, onError);
 
             return false;
         };
@@ -78,8 +78,8 @@ function MapDetailModel(map, budgets)
     self.budgets = budgets;
     
     self.accountId = '';
-    self.budgetId = '';
     self.id = '';
+    self.budgetId = '';
     self.regexPattern = '';
 
     self.update = update;
@@ -90,7 +90,7 @@ function MapDetailModel(map, budgets)
 
     self.update(map);
 
-    ko.track(self, ['accountId', 'budgetId', 'id', 'regexPattern']);
+    ko.track(self, ['accountId', 'id', 'budgetId', 'regexPattern']);
 
     function creating()
     {
@@ -102,8 +102,8 @@ function MapDetailModel(map, budgets)
         if (data)
         { 
             self.accountId = data.accountId || '';
-            self.budgetId = data.budgetId || '';
             self.id = data.id || '';
+            self.budgetId = data.budgetId || '';
             self.regexPattern = data.regexPattern || '';
         }
     };
@@ -112,8 +112,8 @@ function MapDetailModel(map, budgets)
     {
         return { 
             accountId: self.accountId,
-            budgetId: self.budgetId,
             id: self.id,
+            budgetId: self.budgetId,
             regexPattern: self.regexPattern
         };
     }

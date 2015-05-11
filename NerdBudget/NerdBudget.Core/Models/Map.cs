@@ -15,8 +15,8 @@ namespace NerdBudget.Core.Models
 
         public Map() : base() { }
 
-        public Map(string accountId, string budgetId, string id, string regexPattern, DateTime createdAt, DateTime? updatedAt)
-            : base(accountId, budgetId, id, regexPattern, createdAt, updatedAt)
+        public Map(string accountId, string id, string budgetId, string regexPattern, DateTime createdAt, DateTime? updatedAt)
+            : base(accountId, id, budgetId, regexPattern, createdAt, updatedAt)
         {
         }
 

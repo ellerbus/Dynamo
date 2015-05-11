@@ -13,11 +13,11 @@ namespace NerdBudget.Core.Models.Entities
 
 		protected MapEntity() {}
 
-		protected MapEntity(string accountId, string budgetId, string id, string regexPattern, DateTime createdAt, DateTime? updatedAt)
+		protected MapEntity(string accountId, string id, string budgetId, string regexPattern, DateTime createdAt, DateTime? updatedAt)
 		{ 
 			_accountId = accountId;
-			_budgetId = budgetId;
 			_id = id;
+			_budgetId = budgetId;
 			_regexPattern = regexPattern;
 			_createdAt = createdAt;
 			_updatedAt = updatedAt;
@@ -49,18 +49,6 @@ namespace NerdBudget.Core.Models.Entities
 		
 		
 		///	<summary>
-		///	Gets / Sets database column 'budget_id' (primary key)
-		///	</summary>
-		[Column("budget_id")]
-		public virtual string BudgetId
-		{
-			get { return _budgetId; }
-			set { IsModified |= _budgetId != value; _budgetId = value; }
-		}
-		private string _budgetId;
-		
-		
-		///	<summary>
 		///	Gets / Sets database column 'map_id' (primary key)
 		///	</summary>
 		[Column("map_id")]
@@ -75,6 +63,18 @@ namespace NerdBudget.Core.Models.Entities
 		#endregion
 		
 		#region Properties
+		
+		///	<summary>
+		///	Gets / Sets database column 'budget_id'
+		///	</summary>
+		[Column("budget_id")]
+		public virtual string BudgetId
+		{
+			get { return _budgetId; }
+			set { IsModified |= _budgetId != value; _budgetId = value; }
+		}
+		private string _budgetId;
+
 		
 		///	<summary>
 		///	Gets / Sets database column 'regex_pattern'
