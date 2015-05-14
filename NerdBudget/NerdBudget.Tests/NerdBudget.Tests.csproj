@@ -132,6 +132,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\ApiControllers\AccountsControllerTests.cs" />
     <Compile Include="Web\ApiControllers\AdjustmentsControllerTests.cs" />
+    <Compile Include="Web\ApiControllers\BalancesControllerTests.cs" />
     <Compile Include="Web\ApiControllers\BudgetsControllerTests.cs" />
     <Compile Include="Web\ApiControllers\CategoriesControllerTests.cs" />
     <Compile Include="Web\ApiControllers\ControllerTestHelper.cs" />

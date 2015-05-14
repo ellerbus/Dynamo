@@ -62,6 +62,12 @@ namespace NerdBudget.Web.Controllers
             return View(new MapsViewModel(_service.Get(id)));
         }
 
+        [Route("~/Balances/{id}")]
+        public ActionResult Balances(string id)
+        {
+            return View(new BalancesViewModel(_service.Get(id)));
+        }
+
         [Route("~/Import/{id}")]
         public ActionResult Import(string id)
         {
