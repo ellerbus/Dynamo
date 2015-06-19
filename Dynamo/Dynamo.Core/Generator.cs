@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotLiquid;
+using DotLiquid.FileSystems;
 
 namespace Dynamo.Core
 {
@@ -38,7 +40,7 @@ namespace Dynamo.Core
         /// <param name="variables"></param>
         /// <param name="source"></param>
         /// <returns></returns>
-        public string GetContents(GeneratorTable table, IDictionary<string, string> variables, string source)
+        public string GetContents(GeneratorTable table, IDictionary<string, string> variables, string templatePath)
         {
             _table = table;
 
@@ -54,6 +56,12 @@ namespace Dynamo.Core
             _context = new Context(new List<Hash>(), h, new Hash(), true);
 
             RenderParameters p = new RenderParameters { Context = _context };
+
+            string dir = Path.GetDirectoryName(templatePath);
+
+            Template.FileSystem = new LocalFileSystem(dir);
+
+            string source = File.ReadAllText(templatePath);
 
             Template t = Template.Parse(source);
 

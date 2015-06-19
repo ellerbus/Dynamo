@@ -198,9 +198,7 @@ namespace Dynamo.Core
                 {
                     Current += 1;
 
-                    string source = File.ReadAllText(inPath);
-
-                    string contents = g.GetContents(table, variables, source);
+                    string contents = g.GetContents(table, variables, inPath);
 
                     string outPath = Path.Combine(SolutionFolder, g.FileName);
 

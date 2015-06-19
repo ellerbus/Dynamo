@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeGeneratorForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +57,6 @@
             this.tableTabPage = new System.Windows.Forms.TabPage();
             this.tablesDataGridView = new System.Windows.Forms.DataGridView();
             this.displayDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.templateTabPage = new System.Windows.Forms.TabPage();
             this.templatesDataGridView = new System.Windows.Forms.DataGridView();
             this.displayDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,17 +79,21 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.generatorStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.mainMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).BeginInit();
             this.mainTabControl.SuspendLayout();
             this.tableTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).BeginInit();
-            this.templateTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).BeginInit();
             this.linesOfCodeTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).BeginInit();
             this.mainStatusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -125,7 +128,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -135,14 +138,14 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(143, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -150,32 +153,32 @@
             this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveAsToolStripMenuItem.Text = "Save &As";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(143, 6);
             // 
             // recentFilesToolStripMenuItem
             // 
             this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.recentFilesToolStripMenuItem.Text = "&Recent Files";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -276,7 +279,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mainTabControl.Controls.Add(this.tableTabPage);
-            this.mainTabControl.Controls.Add(this.templateTabPage);
             this.mainTabControl.Controls.Add(this.linesOfCodeTabPage);
             this.mainTabControl.Location = new System.Drawing.Point(13, 186);
             this.mainTabControl.Name = "mainTabControl";
@@ -286,33 +288,31 @@
             // 
             // tableTabPage
             // 
-            this.tableTabPage.Controls.Add(this.tablesDataGridView);
+            this.tableTabPage.Controls.Add(this.splitContainer1);
             this.tableTabPage.Location = new System.Drawing.Point(4, 22);
             this.tableTabPage.Name = "tableTabPage";
             this.tableTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.tableTabPage.Size = new System.Drawing.Size(751, 211);
             this.tableTabPage.TabIndex = 0;
-            this.tableTabPage.Text = "Tables";
+            this.tableTabPage.Text = "Generator";
             this.tableTabPage.UseVisualStyleBackColor = true;
             // 
             // tablesDataGridView
             // 
             this.tablesDataGridView.AllowUserToAddRows = false;
             this.tablesDataGridView.AllowUserToDeleteRows = false;
-            this.tablesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tablesDataGridView.AutoGenerateColumns = false;
             this.tablesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.displayDataGridViewTextBoxColumn1});
             this.tablesDataGridView.DataMember = "Tables";
             this.tablesDataGridView.DataSource = this.viewModelBindingSource;
-            this.tablesDataGridView.Location = new System.Drawing.Point(6, 6);
+            this.tablesDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablesDataGridView.Location = new System.Drawing.Point(0, 0);
             this.tablesDataGridView.Name = "tablesDataGridView";
             this.tablesDataGridView.ReadOnly = true;
             this.tablesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tablesDataGridView.Size = new System.Drawing.Size(739, 199);
+            this.tablesDataGridView.Size = new System.Drawing.Size(392, 205);
             this.tablesDataGridView.TabIndex = 0;
             // 
             // displayDataGridViewTextBoxColumn1
@@ -323,24 +323,10 @@
             this.displayDataGridViewTextBoxColumn1.Name = "displayDataGridViewTextBoxColumn1";
             this.displayDataGridViewTextBoxColumn1.ReadOnly = true;
             // 
-            // templateTabPage
-            // 
-            this.templateTabPage.Controls.Add(this.templatesDataGridView);
-            this.templateTabPage.Location = new System.Drawing.Point(4, 22);
-            this.templateTabPage.Name = "templateTabPage";
-            this.templateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.templateTabPage.Size = new System.Drawing.Size(751, 211);
-            this.templateTabPage.TabIndex = 1;
-            this.templateTabPage.Text = "Templates";
-            this.templateTabPage.UseVisualStyleBackColor = true;
-            // 
             // templatesDataGridView
             // 
             this.templatesDataGridView.AllowUserToAddRows = false;
             this.templatesDataGridView.AllowUserToDeleteRows = false;
-            this.templatesDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.templatesDataGridView.AutoGenerateColumns = false;
             this.templatesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.templatesDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -349,11 +335,12 @@
             this.fileInfoDataGridViewTextBoxColumn});
             this.templatesDataGridView.DataMember = "Templates";
             this.templatesDataGridView.DataSource = this.viewModelBindingSource;
-            this.templatesDataGridView.Location = new System.Drawing.Point(6, 6);
+            this.templatesDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.templatesDataGridView.Location = new System.Drawing.Point(0, 0);
             this.templatesDataGridView.Name = "templatesDataGridView";
             this.templatesDataGridView.ReadOnly = true;
             this.templatesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.templatesDataGridView.Size = new System.Drawing.Size(739, 199);
+            this.templatesDataGridView.Size = new System.Drawing.Size(349, 205);
             this.templatesDataGridView.TabIndex = 3;
             // 
             // displayDataGridViewTextBoxColumn
@@ -436,9 +423,9 @@
             // commentsDataGridViewTextBoxColumn
             // 
             this.commentsDataGridViewTextBoxColumn.DataPropertyName = "Comments";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.Format = "N0";
-            this.commentsDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Format = "N0";
+            this.commentsDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.commentsDataGridViewTextBoxColumn.HeaderText = "Comments";
             this.commentsDataGridViewTextBoxColumn.Name = "commentsDataGridViewTextBoxColumn";
             this.commentsDataGridViewTextBoxColumn.ReadOnly = true;
@@ -446,9 +433,9 @@
             // blankDataGridViewTextBoxColumn
             // 
             this.blankDataGridViewTextBoxColumn.DataPropertyName = "Blank";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.Format = "N0";
-            this.blankDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "N0";
+            this.blankDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
             this.blankDataGridViewTextBoxColumn.HeaderText = "Blank";
             this.blankDataGridViewTextBoxColumn.Name = "blankDataGridViewTextBoxColumn";
             this.blankDataGridViewTextBoxColumn.ReadOnly = true;
@@ -456,9 +443,9 @@
             // codeDataGridViewTextBoxColumn
             // 
             this.codeDataGridViewTextBoxColumn.DataPropertyName = "Code";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "N0";
-            this.codeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Format = "N0";
+            this.codeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.codeDataGridViewTextBoxColumn.HeaderText = "Code";
             this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
             this.codeDataGridViewTextBoxColumn.ReadOnly = true;
@@ -466,9 +453,9 @@
             // totalDataGridViewTextBoxColumn
             // 
             this.totalDataGridViewTextBoxColumn.DataPropertyName = "Total";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.Format = "N0";
-            this.totalDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Format = "N0";
+            this.totalDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
             this.totalDataGridViewTextBoxColumn.HeaderText = "Total";
             this.totalDataGridViewTextBoxColumn.Name = "totalDataGridViewTextBoxColumn";
             this.totalDataGridViewTextBoxColumn.ReadOnly = true;
@@ -560,6 +547,23 @@
             this.generatorStatusLabel.Text = "...";
             this.generatorStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tablesDataGridView);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.templatesDataGridView);
+            this.splitContainer1.Size = new System.Drawing.Size(745, 205);
+            this.splitContainer1.SplitterDistance = 392;
+            this.splitContainer1.TabIndex = 1;
+            // 
             // CodeGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -591,13 +595,16 @@
             this.mainTabControl.ResumeLayout(false);
             this.tableTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).EndInit();
-            this.templateTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).EndInit();
             this.linesOfCodeTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).EndInit();
             this.mainStatusStrip.ResumeLayout(false);
             this.mainStatusStrip.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -624,7 +631,6 @@
         private BindableToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.TabControl mainTabControl;
         private System.Windows.Forms.TabPage tableTabPage;
-        private System.Windows.Forms.TabPage templateTabPage;
         private System.Windows.Forms.BindingSource viewModelBindingSource;
         private System.Windows.Forms.DataGridView tablesDataGridView;
         private System.Windows.Forms.DataGridView templatesDataGridView;
@@ -651,5 +657,6 @@
         private System.Windows.Forms.StatusStrip mainStatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel generatorStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
