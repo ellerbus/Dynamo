@@ -1,9 +1,8 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture FACTORY %}{{ BASECLASS }}Factory{% endcapture -%}
 {% capture FORM %}{{ CAMELCLASS }}Form{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.controller.js{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ CAMELCLASS }}.controller.js{% endcapture -%}
 
 (function ()
 {
@@ -75,7 +74,7 @@
 
 	//	setup the application controllers for multiple and single interactions
 	angular
-		.module('app.{{ CAMELCLASS | plural }}')
+		.module('app.{{ CAMELCLASSES }}')
 		.controller('{{ BASECLASS }}ListController', {{ BASECLASS  }}ListController)
 		.controller('{{ BASECLASS }}DetailController', {{ BASECLASS }}DetailController);
 
@@ -102,12 +101,12 @@
 		
 		function hasData()
 		{
-			return typeof vm.{{ CAMELCLASS | plural }} != 'undefined';
+			return typeof vm.{{ CAMELCLASSES }} != 'undefined';
 		}
 		
 		function querySuccess(data)
 		{
-			vm.{{ CAMELCLASS | plural }} = data;
+			vm.{{ CAMELCLASSES }} = data;
 		}
 		
 		function queryError(error)
@@ -184,7 +183,7 @@
 		
 		function saveSuccess(data)
 		{
-			$location.path('/{{ CAMELCLASS | plural }}');
+			$location.path('/{{ CAMELCLASSES }}');
 		}
 		
 		function saveError(error)

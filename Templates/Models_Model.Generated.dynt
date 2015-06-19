@@ -1,6 +1,6 @@
-{% capture BASECLASS %}{{ table.class_name }}Entity{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASSENTITY }}.cs{% endcapture -%}
 using System;
 using Insight.Database;
 
@@ -10,7 +10,7 @@ namespace {{ PROJECT }}.Models.Entities
 	/// Base Entity class that represents {{ table.name }} - Intended to be extended
 	///	for business rule implementation
 	///	</summary>
-	public abstract class {{ BASECLASS }}
+	public abstract class {{ BASECLASSENTITY }}
 	{
 		#region Primary Key Properties
 		{% for column in table.primary_keys %}

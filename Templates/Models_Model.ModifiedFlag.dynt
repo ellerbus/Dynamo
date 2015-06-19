@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
 using System;
@@ -12,7 +12,7 @@ namespace {{ PROJECT }}.Models
 	///
 	///	</summary>
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public class {{ BASECLASS }} : Entities.{{ BASECLASS }}Entity
+	public class {{ BASECLASS }} : Entities.{{ BASECLASSENTITY }}
 	{
 		#region Constructors
 

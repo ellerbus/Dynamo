@@ -1,7 +1,6 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture TEST %}{{ BASECLASS }}ModelTests{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ TEST }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ BASECLASS }}ModelTests.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +10,19 @@ using {{ SOLUTION }}.Core.Models;
 namespace {{ PROJECT }}.Core.Models
 {
 	[TestClass]
-	public class {{ TEST }}
+	public class {{ BASECLASS }}ModelTests
 	{
 		#region Property Tests
-		{% for column in table.columns %}		
+		{% for column in table.columns %}
 		//[TestMethod]
 		//public void {{ BASECLASS }}_{{ column.property_name }}_Should_DoSomething()
-		//{
-		//	var actual = new {{ BASECLASS }}() { {{ column.property_name }} = {% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %} };
+		//{ {% capture VALUE %}{% case column.clr_type %}{% when 'int' or 'double' %}9{% when 'string' %}"aa"{% when 'DateTime' %}DateTime.Now{% when 'bool' %}true{% else %}default({{ column.clr_type }}){% endcase %}{% endcapture %}
 		//
-		//	Assert.AreEqual({% if column.clr_type == 'int' or column.clr_type == 'double' %}9{% endif %}{% if column.clr_type == 'string' %}"aa"{% endif %}{% if column.clr_type == 'DateTime' %}new DateTime(2000, 1, 1){% endif %}, actual.{{ column.property_name }});
+		//	var expected = {{ VALUE  }};
+		//
+		//	var actual = new {{ BASECLASS }}() { {{ column.property_name }} = {{ VALUE }} };
+		//
+		//	Assert.AreEqual(expected, actual.{{ column.property_name }});
 		//}
 
 		{% endfor -%}

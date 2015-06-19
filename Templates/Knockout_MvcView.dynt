@@ -1,5 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Views\Display\{{ BASECLASSES }}.cshtml{% endcapture -%}
 @model {{ BASECLASSES }}ViewModel
@@ -21,11 +20,11 @@
 	var vm = new {{ BASECLASS }}ListViewModel(data);
 
 	$(function(){
-		ko.applyBindings(vm, $('#{{ BASECLASSES | camel }}').get(0));
+		ko.applyBindings(vm, $('#{{ CAMELCLASS }}').get(0));
 	});
 </script>
 
-<div id="{{ BASECLASSES | camel }}">
+<div id="{{ CAMELCLASS }}">
 	<table class="table table-condensed table-striped">
 		<thead>
 			<tr>{% for column in table.columns %}
@@ -33,7 +32,7 @@
 				<th><a href="#" data-bind="click: create" nb-create-icon></a></th>
 			</tr>
 		</thead>
-		<tbody data-bind="foreach: {{ BASECLASSES | camel }}">
+		<tbody data-bind="foreach: {{ CAMELCLASS }}">
 			<tr>{% for column in table.columns %}
 				<td data-bind="text: {{ column.parameter_name }}"></td>{% endfor %}
 				<td class="icons">
@@ -60,7 +59,7 @@
 		{% for column in table.columns %}{% if column.is_primary_key == false %}
 		<div class="form-group">
 			<label class="col-sm-4 control-label">
-				{{ column.property_name | .label }}
+				{{ column.property_name | label }}
 			</label>
 			<div class="col-sm-8">
 				<input class="form-control" name="{{ column.parameter_name }}" data-bind="value: {{ column.parameter_name }}" />

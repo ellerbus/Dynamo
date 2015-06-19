@@ -1,0 +1,15 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture BASEENTITY %}{{ table.class_name }}Entity{% endcapture -%}
+{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
+{% capture COLLECTION %}{{ BASECLASS }}Collection{% endcapture -%}
+{% capture CAMELCLASS %}{{ BASECLASS | camel }}{% endcapture -%}
+{% capture CAMELCLASSES %}{{ BASECLASS | plural | camel }}{% endcapture -%}
+{% capture CONTROLLER %}{{ BASECLASS | plural }}Controller{% endcapture -%}
+{% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
+{% capture ISERVICE %}I{{ BASECLASS }}Service{% endcapture -%}
+{% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
+{% capture IVALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
+{% capture IREPOSITORY %}I{{ BASECLASS }}Repository{% endcapture -%}
+{% capture DATABASE %}TSS{% endcapture -%}
+{% capture TABLETYPE %}{{ BASECLASS }}TableType{% endcapture -%}
+{% capture APIPREFIX %}api/{{ BASECLASSES }}{% endcapture -%}

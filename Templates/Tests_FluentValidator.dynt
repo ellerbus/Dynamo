@@ -1,8 +1,6 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture TEST %}{{ BASECLASS }}ValidatorTests{% endcapture -%}
-{% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Core\Validators\{{ TEST }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Validators\{{ BASECLASS }}ValidatorTests.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +11,7 @@ using {{ SOLUTION }}.Core.Validators;
 namespace {{ PROJECT }}.Core.Validators
 {
 	[TestClass]
-	public class {{ TEST }}
+	public class {{ BASECLASS }}ValidatorTests
 	{
 		#region Members
 

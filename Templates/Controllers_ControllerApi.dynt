@@ -22,18 +22,18 @@ namespace {{ PROJECT }}.ApiControllers
 	///	<summary>
 	/// Represents a basic controller for {{ BASECLASS }}
 	///	</summary>
-	[RoutePrefix("api/{{ BASECLASS | camel | plural }}")]
+	[RoutePrefix("{{ APIPREFIX }}")]
 	public class {{ CONTROLLER }} : ApiController
 	{
 		#region Members
 	
-		private {{ SERVICE }} _service;
+		private {{ ISERVICE }} _service;
 		
 		#endregion
 		
 		#region Contructors
 
-		public {{ CONTROLLER }}({{ SERVICE }} service)
+		public {{ CONTROLLER }}({{ ISERVICE }} service)
 		{
 			_service = service;
 		}
@@ -42,34 +42,34 @@ namespace {{ PROJECT }}.ApiControllers
 		
 		#region Verb Actions
 
-		// GET: api/{{ BASECLASS | camel }}
+		// GET: {{ APIPREFIX }}
 		[HttpGet, Route("")]
 		public IHttpActionResult GetAll()
 		{
 			return Ok(_service.GetList());
 		}
 
-		// GET: api/{{ BASECLASS | camel }}/5
+		// GET: {{ APIPREFIX }}/5
 		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}"), ResponseType(typeof({{ BASECLASS }}))]
 		public IHttpActionResult Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{
-			{{ BASECLASS }} {{ BASECLASS | camel }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			{{ BASECLASS }} {{ CAMELCLASS }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 			
-			if ({{ BASECLASS | camel }} == null)
+			if ({{ CAMELCLASS }} == null)
 			{
 				return NotFound();
 			}
 
-			return Ok({{ BASECLASS | camel }});
+			return Ok({{ CAMELCLASS }});
 		}
 
-		// POST: api/{{ BASECLASS | camel }}
+		// POST: {{ APIPREFIX }}
 		[HttpPost, Route("")]
-		public IHttpActionResult Post([FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
+		public IHttpActionResult Post([FromBody]{{ BASECLASS }} {{ CAMELCLASS }})
 		{
 			try
 			{
-				_service.Insert({{ BASECLASS | camel }});
+				_service.Insert({{ CAMELCLASS }});
 
 				return Ok();
 			}
@@ -79,9 +79,9 @@ namespace {{ PROJECT }}.ApiControllers
 			}
 		}
 
-		// PUT: api/{{ BASECLASS | camel }}/5
+		// PUT: {{ APIPREFIX }}/5
 		[HttpPut, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
-		public IHttpActionResult Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ BASECLASS | camel }})
+		public IHttpActionResult Put({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} {{ CAMELCLASS }})
 		{
 			{{ BASECLASS }} model = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
 
@@ -90,7 +90,7 @@ namespace {{ PROJECT }}.ApiControllers
 				return NotFound();
 			}
 			{% for column in table.columns %}{% if column.is_primary_key == false %}
-			model.{{ column.name | pascal | remove:BASECLASS }} = {{ BASECLASS | camel }}.{{ column.name | pascal | remove:BASECLASS }};{% endif %}{% endfor -%}
+			model.{{ column.name | pascal | remove:BASECLASS }} = {{ CAMELCLASS }}.{{ column.name | pascal | remove:BASECLASS }};{% endif %}{% endfor -%}
 
 			try
 			{
@@ -104,7 +104,7 @@ namespace {{ PROJECT }}.ApiControllers
 			}
 		}
 
-		// DELETE: api/{{ BASECLASS | camel }}/5
+		// DELETE: {{ APIPREFIX }}/5
 		[HttpDelete, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
 		public IHttpActionResult Delete({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{

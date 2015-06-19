@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture SERVICE %}{{ BASECLASS }}Service{% endcapture -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture VALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
@@ -18,10 +18,10 @@ namespace {{ PROJECT }}.Services
 	/// <summary>
 	/// Service Interface for {{ BASECLASS }}
 	/// </summary>
-	public interface I{{ SERVICE }} 
+	public interface {{ ISERVICE }}
 	{
 		/// <summary>
-		/// Gets a list of {{ BASECLASS | plural }}
+		/// Gets a list of {{ BASECLASSES }}
 		/// </summary>
 		/// <returns></returns>
 		IList<{{ BASECLASS }}> GetList();
@@ -34,42 +34,42 @@ namespace {{ PROJECT }}.Services
 		///// <summary>
 		///// Saves a {{ BASECLASS }}
 		///// </summary>
-		//void Save({{ BASECLASS }} {{ BASECLASS | camel }});
+		//void Save({{ BASECLASS }} {{ CAMELCLASS }});
 		
 		///// <summary>
 		///// Saves a list of {{ BASECLASS }}
 		///// </summary>
-		//void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		//void Save(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 		
 		/// <summary>
 		/// Inserts a {{ BASECLASS }}
 		/// </summary>
-		void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Insert({{ BASECLASS }} {{ CAMELCLASS }});
 
 		/// <summary>
 		/// Inserts a list of {{ BASECLASS }}
 		/// </summary>
-		void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		void Insert(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 		
 		/// <summary>
 		/// Updates a {{ BASECLASS }}
 		/// </summary>
-		void Update({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Update({{ BASECLASS }} {{ CAMELCLASS }});
 
 		/// <summary>
 		/// Updates a list of {{ BASECLASS }}
 		/// </summary>
-		void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		void Update(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 		
 		/// <summary>
 		/// Deletes a {{ BASECLASS }}
 		/// </summary>
-		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Delete({{ BASECLASS }} {{ CAMELCLASS }});
 
 		/// <summary>
 		/// Deletes a list of {{ BASECLASS }}
 		/// </summary>
-		void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | camel | plural }});
+		void Delete(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 	}
 	
 	#endregion
@@ -77,12 +77,12 @@ namespace {{ PROJECT }}.Services
 	/// <summary>
 	/// Service Implementation for {{ BASECLASS }}
 	/// </summary>
-	public class {{ SERVICE }} : I{{ SERVICE }} 
+	public class {{ SERVICE }} : {{ ISERVICE }}
 	{
 		#region Members
 
-		private {{ REPO }} _repository;
-		private {{ VALIDATOR }} _validator;
+		private {{ IREPOSITORY }} _repository;
+		private {{ IVALIDATOR }} _validator;
 
 		#endregion
 
@@ -91,7 +91,7 @@ namespace {{ PROJECT }}.Services
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
-		public {{ SERVICE }}({{ REPO }} repository, {{ VALIDATOR }} validator)
+		public {{ SERVICE }}({{ IREPOSITORY }} repository, {{ IVALIDATOR }} validator)
 		{
 			_repository = repository;
 			_validator = validator;
@@ -102,7 +102,7 @@ namespace {{ PROJECT }}.Services
 		#region Methods
 
 		/// <summary>
-		/// Gets a list of {{ BASECLASS | plural }}
+		/// Gets a list of {{ BASECLASSES }}
 		/// </summary>
 		/// <returns></returns>
 		public IList<{{ BASECLASS }}> GetList()
@@ -115,96 +115,96 @@ namespace {{ PROJECT }}.Services
 		/// </summary>
 		public {{ BASECLASS }} Get({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %})
 		{
-			{{ BASECLASS }} {{ BASECLASS | camel }} = _repository.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %});
+			{{ BASECLASS }} {{ CAMELCLASS }} = _repository.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %});
 			
-			return {{ BASECLASS | camel }};
+			return {{ CAMELCLASS }};
 		}
 		
 		/// <summary>
 		/// Saves a {{ BASECLASS }}
 		/// </summary>
 		/// <returns></returns>
-		public void Save({{ BASECLASS }} {{ BASECLASS | camel }})
+		public void Save({{ BASECLASS }} {{ CAMELCLASS }})
 		{
-			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			_validator.ValidateAndThrow({{ CAMELCLASS }});
 
-			_repository.Save({{ BASECLASS | camel }});
+			_repository.Save({{ CAMELCLASS }});
 		}
 		
 		/// <summary>
 		/// Saves a list of {{ BASECLASS | | plural }}
 		/// </summary>
 		/// <returns></returns>
-		public void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }})
+		public void Save(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }})
 		{
-			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			foreach ({{ BASECLASS }} {{ CAMELCLASS }} in {{ CAMELCLASSES }})
 			{
-				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+				_validator.ValidateAndThrow({{ CAMELCLASS }});
 			}
 
-			_repository.Save({{ BASECLASS | plural | camel }});
+			_repository.Save({{ CAMELCLASSES }});
 		}
 		
 		/// <summary>
 		/// Inserts a {{ BASECLASS }}
 		/// </summary>
-		public void Insert({{ BASECLASS }} {{ BASECLASS | camel }})
+		public void Insert({{ BASECLASS }} {{ CAMELCLASS }})
 		{
-			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			_validator.ValidateAndThrow({{ CAMELCLASS }});
 
-			_repository.Insert({{ BASECLASS | camel }});
+			_repository.Insert({{ CAMELCLASS }});
 		}
 		
 		/// <summary>
 		/// Inserts a list of {{ BASECLASS }}
 		/// </summary>
-		public void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		public void Insert(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }})
 		{
-			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			foreach ({{ BASECLASS }} {{ CAMELCLASS }} in {{ CAMELCLASSES }})
 			{
-				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+				_validator.ValidateAndThrow({{ CAMELCLASS }});
 			}
 
-			_repository.Insert({{ BASECLASS | plural | camel }});
+			_repository.Insert({{ CAMELCLASSES }});
 		}
 		
 		/// <summary>
 		/// Updates a {{ BASECLASS }}
 		/// </summary>
-		public void Update({{ BASECLASS }} {{ BASECLASS | camel }})
+		public void Update({{ BASECLASS }} {{ CAMELCLASS }})
 		{
-			_validator.ValidateAndThrow({{ BASECLASS | camel }});
+			_validator.ValidateAndThrow({{ CAMELCLASS }});
 
-			_repository.Update({{ BASECLASS | camel }});
+			_repository.Update({{ CAMELCLASS }});
 		}
 		
 		/// <summary>
 		/// Updates a list of {{ BASECLASS }}
 		/// </summary>
-		public void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		public void Update(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }})
 		{
-			foreach ({{ BASECLASS }} {{ BASECLASS | camel }} in {{ BASECLASS | plural | camel }})
+			foreach ({{ BASECLASS }} {{ CAMELCLASS }} in {{ CAMELCLASSES }})
 			{
-				_validator.ValidateAndThrow({{ BASECLASS | camel }});
+				_validator.ValidateAndThrow({{ CAMELCLASS }});
 			}
 
-			_repository.Update({{ BASECLASS | plural | camel }});
+			_repository.Update({{ CAMELCLASSES }});
 		}
 		
 		/// <summary>
 		/// Deletes a {{ BASECLASS }}
 		/// </summary>
-		public void Delete({{ BASECLASS }} {{ BASECLASS | camel }})
+		public void Delete({{ BASECLASS }} {{ CAMELCLASS }})
 		{
-			_repository.Delete({{ BASECLASS | camel }});
+			_repository.Delete({{ CAMELCLASS }});
 		}
 		
 		/// <summary>
 		/// Deletes a list of {{ BASECLASS }}
 		/// </summary>
-		public void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | | plural | camel }})
+		public void Delete(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }})
 		{
-			_repository.Delete({{ BASECLASS | plural | camel }});
+			_repository.Delete({{ CAMELCLASSES }});
 		}
 
 		#endregion

@@ -1,6 +1,6 @@
-{% capture BASECLASS %}{{ table.class_name }}Entity{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASS }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\Generated\{{ BASECLASSENTITY }}.cs{% endcapture -%}
 using System;
 using Insight.Database;
 
@@ -10,13 +10,13 @@ namespace {{ PROJECT }}.Models.Entities
 	/// Base Entity class that represents {{ table.name }} - Intended to be extended
 	///	for business rule implementation
 	///	</summary>
-	public abstract class {{ BASECLASS }}
+	public abstract class {{ BASECLASSENTITY }}
 	{
 		#region Constructors
 
-		protected {{ BASECLASS }}() {}
+		protected {{ BASECLASSENTITY }}() {}
 
-		protected {{ BASECLASS }}({% for column in table.columns %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		protected {{ BASECLASSENTITY }}({% for column in table.columns %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
 		{ {% for column in table.columns %}
 			_{{ column.parameter_name }} = {{ column.parameter_name }};{% endfor -%}
 

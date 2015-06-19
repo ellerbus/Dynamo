@@ -1,8 +1,7 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS | plural }}.html{% endcapture -%}
-<h4>{{ BASECLASS | plural }}</h4>
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ CAMELCLASSES }}.html{% endcapture -%}
+<h4>{{ BASECLASSES }}</h4>
 <p ng-show="!vm.hasData()">
 	<img src="/Content/Images/loading.gif" /> Gathering the requested list of {{ BASECLASS | plural | label }}...
 </p>
@@ -23,7 +22,7 @@
 			<th><a href="#/{{ CAMELCLASS }}/create">Add</a></th>
 		</tr>
 	</thead>
-	<tr ng-repeat="{{ CAMELCLASS }} in vm.{{ CAMELCLASS | plural }}">{% for column in table.columns %}{% if column.is_primary_key == false %}
+	<tr ng-repeat="{{ CAMELCLASS }} in vm.{{ CAMELCLASSES }}">{% for column in table.columns %}{% if column.is_primary_key == false %}
 		<td ng-bind="{{ CAMELCLASS }}.{{ column.parameter_name }}"></td>{% endif %}{% endfor %}
 		<td><a href="#/{{ CAMELCLASS }}/update/{% for column in table.primary_keys %}{{ "{{ " }}{{ CAMELCLASS }}.{{ column.parameter_name }} }}{% if forloop.last == false %}/{% endif %}{% endfor %}">Edit</a></td>
 		<td><a href="#/{{ CAMELCLASS }}/delete/{% for column in table.primary_keys %}{{ "{{ " }}{{ CAMELCLASS }}.{{ column.parameter_name }} }}{% if forloop.last == false %}/{% endif %}{% endfor %}">Delete</a></td>

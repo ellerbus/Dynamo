@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROC %}{{ BASECLASS }}DeleteOne{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}

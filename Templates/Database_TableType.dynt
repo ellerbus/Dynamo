@@ -1,5 +1,5 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
-{% capture TYPE %}{{ BASECLASS }}TableType{% endcapture -%}
+{% include 'NamingConventions' -%}
+{% capture TYPE %}{{ TABLETYPE }}{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ TYPE }}.sql{% endcapture -%}
 

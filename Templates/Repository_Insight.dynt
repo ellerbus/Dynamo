@@ -1,7 +1,7 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture REPO %}I{{ BASECLASS }}Repository{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\Repositories\{{ REPO }}.cs{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Repositories\{{ IREPOSITORY }}.cs{% endcapture -%}
 using System;
 using System.Collections.Generic;
 using Insight.Database;
@@ -12,7 +12,7 @@ namespace {{ PROJECT }}.Repositories
 	///	<summary>
 	/// Repository Interface for {{ BASELCASS }}
 	///	</summary>
-	public interface {{ REPO }}
+	public interface {{ IREPOSITORY }}
 	{
 		/////	<summary>
 		/////	Dynamic SQL Sample
@@ -21,7 +21,7 @@ namespace {{ PROJECT }}.Repositories
 		//IList<{{ BASECLASS }}> GetList(DateTime createdAfter);
 
 		///	<summary>
-		///	Gets many {{ BASECLASS | plural }} by calling the
+		///	Gets many {{ BASECLASSES }} by calling the
 		///	stored procedure {{ BASECLASS }}SelectMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}SelectMany")]
@@ -39,55 +39,55 @@ namespace {{ PROJECT }}.Repositories
 		///	stored procedure {{ BASECLASS }}InsertOne
 		///	</summary>
 		[Sql("{{ BASECLASS }}InsertOne")]
-		void Insert({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Insert({{ BASECLASS }} {{ CAMELCLASS }});
 
 		///	<summary>
-		///	Inserts many {{ BASECLASS | plural }} calling the
+		///	Inserts many {{ BASECLASSES }} calling the
 		///	stored procedure {{ BASECLASS }}InsertMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}InsertMany")]
-		void Insert(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
+		void Insert(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 
 		///	<summary>
 		///	Updates a single {{ BASECLASS }} calling the
 		///	stored procedure {{ BASECLASS }}UpdateOne
 		///	</summary>
 		[Sql("{{ BASECLASS }}UpdateOne")]
-		void Update({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Update({{ BASECLASS }} {{ CAMELCLASS }});
 
 		///	<summary>
-		///	Updates many {{ BASECLASS | plural }} calling the
+		///	Updates many {{ BASECLASSES }} calling the
 		///	stored procedure {{ BASECLASS }}UpdateMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}UpdateMany")]
-		void Update(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
+		void Update(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 
 		///	<summary>
 		///	Deletes a single {{ BASECLASS }} calling the
 		///	stored procedure {{ BASECLASS }}DeleteOne
 		///	</summary>
 		[Sql("{{ BASECLASS }}DeleteOne")]
-		void Delete({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Delete({{ BASECLASS }} {{ CAMELCLASS }});
 
 		///	<summary>
-		///	Deletes many {{ BASECLASS | plural }} calling the
+		///	Deletes many {{ BASECLASSES }} calling the
 		///	stored procedure {{ BASECLASS }}DeleteMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}DeleteMany")]
-		void Delete(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
+		void Delete(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 
 		///	<summary>
 		///	Saves a single {{ BASECLASS }} calling the
 		///	stored procedure {{ BASECLASS }}UpsertOne
 		///	</summary>
 		[Sql("{{ BASECLASS }}UpsertOne")]
-		void Save({{ BASECLASS }} {{ BASECLASS | camel }});
+		void Save({{ BASECLASS }} {{ CAMELCLASS }});
 
 		///	<summary>
-		///	Saves many {{ BASECLASS | plural }} calling the
+		///	Saves many {{ BASECLASSES }} calling the
 		///	stored procedure {{ BASECLASS }}UpsertMany
 		///	</summary>
 		[Sql("{{ BASECLASS }}UpsertMany")]
-		void Save(IEnumerable<{{ BASECLASS }}> {{ BASECLASS | plural | camel }});
+		void Save(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
 	}
 }

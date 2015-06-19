@@ -1,26 +1,25 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
-{% capture PATH %}/App/{{ BASECLASS | plural }}{% endcapture %}
+{% include 'NamingConventions' -%}
+{% capture PATH %}/App/{{ BASECLASSES }}{% endcapture %}
 {% capture CONFIG %}{{ BASECLASS }}Config{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.route.js{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ CAMELCLASS }}.route.js{% endcapture -%}
 
 (function() {
 	'use strict';
 	
-	//	initialize the application for {{ CAMELCLASS | plural }}
-	angular.module('app.{{ CAMELCLASS | plural }}', []);
+	//	initialize the application for {{ CAMELCLASSES }}
+	angular.module('app.{{ CAMELCLASSES }}', []);
 	
-	//	setup the application routing for {{ CAMELCLASS | plural }}
-	angular.module('app.{{ CAMELCLASS | plural }}').config({{ CONFIG }});
+	//	setup the application routing for {{ CAMELCLASSES }}
+	angular.module('app.{{ CAMELCLASSES }}').config({{ CONFIG }});
 
 	{{ CONFIG }}.$inject = ['$routeProvider'];
 	
 	function {{ CONFIG }}($routeProvider)
 	{
 		$routeProvider
-			.when('/{{ CAMELCLASS | plural }}', {
-				templateUrl: '{{PATH}}/{{ CAMELCLASS | plural }}.html',
+			.when('/{{ CAMELCLASSES }}', {
+				templateUrl: '{{PATH}}/{{ CAMELCLASSES }}.html',
 				controller: '{{ BASECLASS }}ListController',
 				controllerAs: 'vm'
 			})

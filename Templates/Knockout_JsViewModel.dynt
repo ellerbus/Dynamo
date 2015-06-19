@@ -1,7 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
-{% capture CAMELCLASS %}{{ BASECLASS | camel }}{% endcapture -%}
-{% capture CAMELCLASSES %}{{ BASECLASS | plural | camel }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}.js{% endcapture -%}
 /*
@@ -16,7 +13,7 @@ function {{ BASECLASS }}ListViewModel(data)
 {
 	var self = this;
 
-	self.url = 'api/{{ BASECLASS | plural }}';
+	self.url = '{{ APIPREVIX }}';
 
 	self.{{ CAMELCLASSES }} = ko.utils.arrayMap(data.{{ CAMELCLASSES }}, function (x) { ko.track(x); return x; });
 

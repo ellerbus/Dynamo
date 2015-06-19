@@ -1,5 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture BASECLASSES %}{{ BASECLASS | plural }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\ViewModels\{{ BASECLASSES }}ViewModel.cs{% endcapture -%}
 using System.Collections.Generic;
@@ -11,9 +10,9 @@ namespace {{ PROJECT }}.ViewModels
 {
     public class {{ BASECLASSES }}ViewModel
     {
-        public {{ BASECLASSES }}ViewModel(IEnumerable<{{ BASECLASS }}> {{ BASECLASSES | camel }})
+        public {{ BASECLASSES }}ViewModel(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASS }})
         {
-            {{ BASECLASSES }} = {{ BASECLASSES | camel }}.ToList();
+            {{ BASECLASSES }} = {{ CAMELCLASS }}.ToList();
         }
 
         public string ToJson()

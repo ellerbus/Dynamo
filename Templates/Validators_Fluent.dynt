@@ -1,5 +1,4 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture VALIDATOR %}{{ BASECLASS }}Validator{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Validators\{{ VALIDATOR }}.cs{% endcapture -%}
 using System;

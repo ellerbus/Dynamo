@@ -1,4 +1,4 @@
-{% capture BASECLASS %}{{ table.name | pascal }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture PROC %}{{ BASECLASS }}DeleteMany{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Database{% endcapture -%}
 {% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
@@ -7,7 +7,7 @@ if object_id('dbo.{{ PROC }}', 'P') is not null drop procedure dbo.{{ PROC }}
 go
 
 create procedure dbo.{{ PROC }}
-	@{{ 'items' | r_pad:30 }} dbo.{{ BASECLASS }}TableType readonly
+	@{{ 'items' | r_pad:30 }} dbo.{{ TABLETYPE }} readonly
 as
 
 delete	t

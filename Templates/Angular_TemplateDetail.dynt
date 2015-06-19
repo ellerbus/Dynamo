@@ -1,8 +1,7 @@
-{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
-{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% include 'NamingConventions' -%}
 {% capture FORM %}{{ CAMELCLASS }}Form{% endcapture -%}
 {% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
-{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASS | plural }}\{{ CAMELCLASS }}.html{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ CAMELCLASS }}.html{% endcapture -%}
 
 <form name="{{ FORM }}" ng-submit="vm.save(vm.{{ CAMELCLASS }})" novalidate>
 	<p ng-show="!vm.hasData()">
@@ -52,7 +51,7 @@
 				<button type="submit" class="btn btn-primary" ng-show="vm.action == 'create'">Create</button>
 				<button type="submit" class="btn btn-primary" ng-show="vm.action == 'update'">Update</button>
 				<button type="submit" class="btn btn-danger" ng-show="vm.action == 'delete'">Delete</button>
-				<a href="#/{{ CAMELCLASS | plural }}" class="btn btn-default">Cancel</a>
+				<a href="#/{{ CAMELCLASSES }}" class="btn btn-default">Cancel</a>
 			</div>
 		</div>
 
