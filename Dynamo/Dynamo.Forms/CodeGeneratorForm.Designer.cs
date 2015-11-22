@@ -55,6 +55,7 @@
             this.generateButton = new System.Windows.Forms.Button();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tableTabPage = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tablesDataGridView = new System.Windows.Forms.DataGridView();
             this.displayDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.templatesDataGridView = new System.Windows.Forms.DataGridView();
@@ -79,21 +80,21 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.mainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.generatorStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.resultsTextBox = new System.Windows.Forms.TextBox();
             this.mainMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).BeginInit();
             this.mainTabControl.SuspendLayout();
             this.tableTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).BeginInit();
             this.linesOfCodeTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).BeginInit();
             this.mainStatusStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -188,14 +189,14 @@
             this.generateCodeFilesToolStripMenuItem,
             this.refreshToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
             // generateCodeFilesToolStripMenuItem
             // 
             this.generateCodeFilesToolStripMenuItem.Name = "generateCodeFilesToolStripMenuItem";
             this.generateCodeFilesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.generateCodeFilesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.generateCodeFilesToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.generateCodeFilesToolStripMenuItem.Text = "&Generate Code Files...";
             this.generateCodeFilesToolStripMenuItem.Click += new System.EventHandler(this.generateCodeFilesToolStripMenuItem_Click);
             // 
@@ -203,7 +204,7 @@
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
             this.refreshToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh Tables / Templates";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
@@ -283,7 +284,7 @@
             this.mainTabControl.Location = new System.Drawing.Point(13, 186);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(759, 237);
+            this.mainTabControl.Size = new System.Drawing.Size(759, 178);
             this.mainTabControl.TabIndex = 8;
             // 
             // tableTabPage
@@ -292,10 +293,27 @@
             this.tableTabPage.Location = new System.Drawing.Point(4, 22);
             this.tableTabPage.Name = "tableTabPage";
             this.tableTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.tableTabPage.Size = new System.Drawing.Size(751, 211);
+            this.tableTabPage.Size = new System.Drawing.Size(751, 152);
             this.tableTabPage.TabIndex = 0;
             this.tableTabPage.Text = "Generator";
             this.tableTabPage.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tablesDataGridView);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.templatesDataGridView);
+            this.splitContainer1.Size = new System.Drawing.Size(745, 146);
+            this.splitContainer1.SplitterDistance = 392;
+            this.splitContainer1.TabIndex = 1;
             // 
             // tablesDataGridView
             // 
@@ -312,7 +330,7 @@
             this.tablesDataGridView.Name = "tablesDataGridView";
             this.tablesDataGridView.ReadOnly = true;
             this.tablesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tablesDataGridView.Size = new System.Drawing.Size(392, 205);
+            this.tablesDataGridView.Size = new System.Drawing.Size(392, 146);
             this.tablesDataGridView.TabIndex = 0;
             // 
             // displayDataGridViewTextBoxColumn1
@@ -340,7 +358,7 @@
             this.templatesDataGridView.Name = "templatesDataGridView";
             this.templatesDataGridView.ReadOnly = true;
             this.templatesDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.templatesDataGridView.Size = new System.Drawing.Size(349, 205);
+            this.templatesDataGridView.Size = new System.Drawing.Size(349, 146);
             this.templatesDataGridView.TabIndex = 3;
             // 
             // displayDataGridViewTextBoxColumn
@@ -547,28 +565,24 @@
             this.generatorStatusLabel.Text = "...";
             this.generatorStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // splitContainer1
+            // resultsTextBox
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.tablesDataGridView);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.templatesDataGridView);
-            this.splitContainer1.Size = new System.Drawing.Size(745, 205);
-            this.splitContainer1.SplitterDistance = 392;
-            this.splitContainer1.TabIndex = 1;
+            this.resultsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.resultsTextBox.Location = new System.Drawing.Point(17, 370);
+            this.resultsTextBox.Multiline = true;
+            this.resultsTextBox.Name = "resultsTextBox";
+            this.resultsTextBox.ReadOnly = true;
+            this.resultsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.resultsTextBox.Size = new System.Drawing.Size(748, 67);
+            this.resultsTextBox.TabIndex = 17;
             // 
             // CodeGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 462);
+            this.Controls.Add(this.resultsTextBox);
             this.Controls.Add(this.mainStatusStrip);
             this.Controls.Add(this.connectionStringButton);
             this.Controls.Add(this.label4);
@@ -594,6 +608,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.viewModelBindingSource)).EndInit();
             this.mainTabControl.ResumeLayout(false);
             this.tableTabPage.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablesDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.templatesDataGridView)).EndInit();
             this.linesOfCodeTabPage.ResumeLayout(false);
@@ -601,10 +619,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.linesOfCodeBindingSource)).EndInit();
             this.mainStatusStrip.ResumeLayout(false);
             this.mainStatusStrip.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -658,5 +672,6 @@
         private System.Windows.Forms.ToolStripStatusLabel generatorStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TextBox resultsTextBox;
     }
 }

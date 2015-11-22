@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Augment;
 using DatabaseSchemaReader.DataSchema;
@@ -249,10 +250,14 @@ namespace Dynamo.Forms
                 .ToList()
                 ;
 
+            StringBuilder sb = new StringBuilder();
+
             if (tables.Count > 0)
             {
-                GeneratorViewModel.Generate(tables, files);
+                GeneratorViewModel.Generate(tables, files, sb);
             }
+
+            resultsTextBox.Text = sb.ToString();
 
             GeneratorViewModel.Current = 0;
 

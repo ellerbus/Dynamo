@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 using Augment;
 using DatabaseSchemaReader;
@@ -179,7 +180,7 @@ namespace Dynamo.Core
         /// 
         /// </summary>
         /// <param name="tables"></param>
-        public void Generate(IList<GeneratorTable> tables, IList<string> files)
+        public void Generate(IList<GeneratorTable> tables, IList<string> files, StringBuilder sb)
         {
             Generator g = new Generator();
 
@@ -210,6 +211,8 @@ namespace Dynamo.Core
                     }
 
                     File.WriteAllText(outPath, contents);
+
+                    sb.AppendLine().Append(outPath);
                 }
             }
 
