@@ -1,0 +1,15 @@
+{% include 'NamingConventions' -%}
+{% capture PROC %}{{ BASECLASS }}DeleteMany{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.DatabaseSchema{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
+
+create procedure mfc.{{ PROC }}
+	@{{ 'items' | r_pad:30 }} dbo.{{ BASECLASS }}TableType readonly
+as
+
+delete	t
+from	dbo.{{ table.name }} t inner join @items x
+			on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{%if forloop.last == false %}
+			and	{% endif %}{% endfor %}
+
+go

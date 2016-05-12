@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GeneratorProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SolutionFile>ShortFuze.sln</SolutionFile>
+  <TemplateFolder>Templates</TemplateFolder>
+  <DataProvider>System.Data.SqlClient</DataProvider>
+  <ConnectionString>Server=(local); Database=ShortFuze; Integrated Security=True;</ConnectionString>
+</GeneratorProject>

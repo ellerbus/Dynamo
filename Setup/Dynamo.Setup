@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName     "Dynamo"
-#define MyAppVersion  "1.9"
+#define MyAppVersion  "1.11"
 #define MyAppURL      "https://ellerbus.github.io/Dynamo/"
 #define MyAppExeName  "Dynamo.Forms.exe"
 #define MySrcPath     "..\Dynamo\Dynamo.Forms\bin\Release"
@@ -37,8 +37,9 @@ Source: "{#MySrcPath}\Augment.dll";               DestDir: "{userpf}"; Flags: ig
 Source: "{#MySrcPath}\DatabaseSchemaReader.dll";  DestDir: "{userpf}"; Flags: ignoreversion
 Source: "{#MySrcPath}\DotLiquid.dll";             DestDir: "{userpf}"; Flags: ignoreversion
 Source: "{#MySrcPath}\Dynamo.Core.dll";           DestDir: "{userpf}"; Flags: ignoreversion
-Source: "{#MySrcPath}\Dynamo.Forms.exe.config";   DestDir: "{userpf}"; Flags: ignoreversion
+Source: "{#MySrcPath}\Dynamo.Forms.exe.config";   DestDir: "{userpf}"; Flags: ignoreversion  
 Source: "{#MySrcPath}\EnsureThat.dll";            DestDir: "{userpf}"; Flags: ignoreversion
+Source: "{#MySrcPath}\ShortFuze.zip";             DestDir: "{userpf}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

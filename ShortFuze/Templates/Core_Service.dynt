@@ -1,0 +1,218 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Services\{{ SERVICECLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Augment;
+using Augment.Caching;
+using EnsureThat;
+using FluentValidation;
+using {{ PROJECT }}.Repositories;
+using {{ PROJECT }}.Models;
+using {{ PROJECT }}.Validators;
+using log4net;
+
+namespace {{ PROJECT }}.Services
+{
+    #region Service interface
+    
+    /// <summary>
+    /// Service Interface for {{ BASECLASS }}
+    /// </summary>
+    public interface I{{ SERVICECLASS }} 
+    {
+        /// <summary>
+        /// Gets a list of {{ BASECLASS | plural }}
+        /// </summary>
+        /// <returns></returns>
+        {{ COLLECTIONCLASS }} Get{{ COLLECTIONCLASS }}();
+
+        /// <summary>
+        /// Gets a singe {{ BASECLASS }} based on the given primary key
+        /// </summary>
+        {{ BASECLASS }} Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, SecurityRequest request);
+        
+        /// <summary>
+        /// Saves a {{ BASECLASS }}
+        /// </summary>
+        {{ BASECLASS }} Save{{ BASECLASS }}({{ BASECLASS }} {{ CAMELCLASS }});
+        
+        /// <summary>
+        /// Saves a list of {{ BASECLASS }}
+        /// </summary>
+        void VerifyAndValidate{{ BASECLASS }}({{ BASECLASS }} {{ CAMELCLASS }});
+    }
+    
+    #endregion
+
+    /// <summary>
+    /// Service Implementation for {{ BASECLASS }}
+    /// </summary>
+    public class {{ SERVICECLASS }} : I{{ SERVICECLASS }} 
+    {
+        #region Members
+
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
+        private static readonly object _lock = new object();
+
+        private {{ REPOCLASS }} _repository;
+        private {{ IVALIDATOR }} _validator;
+        private ISecurityActor _actor;
+        private ICacheManager _cache;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        public {{ SERVICECLASS }}({{ REPOCLASS }} repository, {{ IVALIDATOR }} validator, ISecurityActor actor, ICacheManager cache)
+        {
+            _repository = repository;
+            _validator = validator;
+            _actor = actor;
+            _cache = cache;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Gets a list of {{ BASECLASS | plural }}
+        /// </summary>
+        /// <returns></returns>
+        public {{ COLLECTIONCLASS }} Get{{ COLLECTIONCLASS }}()
+        {
+            log.Debug("Getting {{ BASECLASS }} Collection");
+
+            lock (_lock)
+            {
+                return _cache.Cache(() => Build{{ COLLECTIONCLASS }}())
+                    .DurationOf(20.Minutes())
+                    .CachedObject;
+            }
+        }
+        
+        private {{ COLLECTIONCLASS }} Build{{ COLLECTIONCLASS }}()
+        {
+            log.Debug("Getting {{ BASECLASS }} List");
+            
+            IList<{{ BASECLASS }}> list = _repository.Get{{ BASECLASSES }}();
+            
+            return new {{ COLLECTIONCLASS }}(list);
+        }
+
+        /// <summary>
+        /// Gets a singe {{ BASECLASS }} based on the given primary key
+        /// </summary>
+        public {{ BASECLASS }} Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{% if forloop.last == false %}, {% endif %}{% endfor %}, SecurityRequest request)
+        {
+            string pk = {% for column in table.primary_keys %}{{ column.parameter_name }}{% if forloop.last == false %} + "," {% endif %} + {% endfor %};
+
+            log.DebugFormat("Getting {{ BASECLASS }} pk=[{0}]", pk);
+            
+            {{ BASECLASS }} item = null;
+            
+            Get{{ COLLECTIONCLASS }}().TryGetByPrimaryKey(pk, out item);
+            
+            if (request == SecurityRequest.View || request == SecurityRequest.Update)
+            {
+                if (item == null)
+                {
+                    throw new KeyNotFoundException("{{ BASECLASS }} pk=[{0}] Not Found".FormatArgs(pk));
+                }
+            
+                _actor.VerifyCanView{{ BASECLASS }}(item);
+            }
+            
+            if (request == SecurityRequest.Update)
+            {
+                _actor.VerifyCanUpdate{{ BASECLASS }}(item);
+            }
+            
+            return item;
+        }
+ 
+        /// <summary>
+        /// Saves a {{ BASECLASS }}
+        /// </summary>
+        /// <returns></returns>
+        public {{ BASECLASS }} Save{{ BASECLASS }}({{ BASECLASS }} temp)
+        {
+            lock(_lock)
+            {
+                VerifyAndValidate{{ BASECLASS }}(temp);
+ 
+                {{ BASECLASS }} {{ CAMELCLASS }} = OverlayCache(temp);
+ 
+                if ({{ CAMELCLASS }}.IsModified)
+                {
+                    _actor.EnsureAudit({{ CAMELCLASS }});
+        
+                    log.Debug("Saving " + {{ CAMELCLASS }}.ToString());
+ 
+                    _repository.Save{{ BASECLASS }}({{ CAMELCLASS }});
+            
+                    {{ CAMELCLASS }}.IsModified = false;
+        
+                    {{ COLLECTIONCLASS }} {{ CAMELCLASSES }} = Get{{ COLLECTIONCLASS }}();
+            
+                    if (!{{ CAMELCLASSES }}.ContainsPrimaryKey({{ CAMELCLASS }}.Id))
+                    {
+                        {{ CAMELCLASSES }}.Add({{ CAMELCLASS }});
+                    }
+                }
+ 
+                return {{ CAMELCLASS }};
+            }
+        }
+ 
+        /// <summary>
+        /// VerifyAndValidate a {{ BASECLASS }}
+        /// </summary>
+        /// <returns></returns>
+        public void VerifyAndValidate{{ BASECLASS }}({{ BASECLASS }} item)
+        {
+            Ensure.That(item, "{{ BASECLASS }}").IsNotNull();
+ 
+            log.Debug("Verifying Security " + item.ToString());
+    
+            _actor.VerifyCanUpdate{{ BASECLASS }}(item);
+    
+            log.Debug("Validating " + item.ToString());
+ 
+            _validator.ValidateAndThrow(item);
+        }
+ 
+        /// <summary>
+        /// OverlayCache for {{ BASECLASS }}
+        /// </summary>
+        /// <returns></returns>
+        private {{ BASECLASS }} OverlayCache({{ BASECLASS }} temp)
+        {                      
+            {{ COLLECTIONCLASS }} {{ CAMELCLASSES }} = Get{{ COLLECTIONCLASS }}());
+    
+            {{ BASECLASS }} item = null;
+    
+            if ({{ CAMELCLASSES }}.TryGetByPrimaryKey(temp.Id, out item))
+            {
+                log.Debug("Overlaying " + temp.ToString());
+                {% for column in table.columns %}{% if column.is_primary_key == false %}
+                item.{{ column.property_name }} = temp.{{ column.property_name }};{% endif %}{% endfor -%}
+ 
+            }
+            else
+            {
+                item = temp;
+            }
+    
+            return item;
+        }
+ 
+        #endregion
+    }
+}

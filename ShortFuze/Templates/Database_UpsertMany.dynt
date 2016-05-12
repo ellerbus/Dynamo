@@ -1,0 +1,28 @@
+{% include 'NamingConventions' -%}
+{% capture PROC %}{{ BASECLASS }}UpsertMany{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.DatabaseSchema{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
+
+create procedure mfc.{{ PROC }}
+	@{{ 'items' | r_pad:30 }} dbo.{{ BASECLASS }}TableType readonly
+as
+
+update	t
+set		{% for column in table.columns %}{% if column.is_primary_key == false %}t.{{ column.name | r_pad:27 }} = x.{{ column.name }}{%if forloop.last == false %},
+		{% endif %}{% endif %}{% endfor %}
+from	dbo.{{ table.name }} t inner join @items x
+			on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{%if forloop.last == false %}
+			and	{% endif %}{% endfor %}
+
+insert into dbo.{{ table.name }}
+	(
+		{% for column in table.columns %}{% if column.is_identity == false %}{{ column.name }}{%if forloop.last == false %},
+		{% endif %}{% endif %}{% endfor %}
+	)
+	select	{% for column in table.columns %}{% if column.is_identity == false %}x.{{ column.name }}{%if forloop.last == false %},
+			{% endif %}{% endif %}{% endfor %}
+	from	@items x left join dbo.{{ table.name }} t
+				on	{% for column in table.primary_keys %}x.{{ column.name | r_pad:19 }} = t.{{ column.name }}{%if forloop.last == false %}
+				and	{% endif %}{% endfor %}
+	where	{% for column in table.primary_keys %}{%if forloop.first == true %}t.{{ column.name | r_pad:23 }} is null{% endif %}{% endfor %}
+go

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dynamo.Core</RootNamespace>
     <AssemblyName>Dynamo.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,23 +33,25 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Augment, Version=1.0.5526.35655, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Augment.1.0.5526.35655\lib\net45\Augment.dll</HintPath>
+    <Reference Include="Augment, Version=1.5.5819.19079, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Augment.1.5.5819.19079\lib\net45\Augment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="DatabaseSchemaReader, Version=1.4.0.32, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DatabaseSchemaReader.1.4.0.32\lib\net40\DatabaseSchemaReader.dll</HintPath>
+    <Reference Include="DatabaseSchemaReader, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DatabaseSchemaReader.1.5.0.5\lib\net45\DatabaseSchemaReader.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DotLiquid">
       <HintPath>..\packages\DotLiquid.1.8.0\lib\NET45\DotLiquid.dll</HintPath>
     </Reference>
-    <Reference Include="EnsureThat, Version=2.0.0.39118, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ensure.That.2.0.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\EnsureThat.dll\EnsureThat.dll</HintPath>
+    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,6 +77,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ShortFuze.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

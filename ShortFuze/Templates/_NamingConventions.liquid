@@ -1,0 +1,12 @@
+{% capture BASECLASS %}{{ table.class_name }}{% endcapture -%}
+{% capture BASECLASSES %}{{ table.class_name | plural }}{% endcapture -%}
+{% capture CAMELCLASS %}{{ table.class_name | camel }}{% endcapture -%}
+{% capture CAMELCLASSES %}{{ table.class_name | camel | plural }}{% endcapture -%}
+{% capture COLLECTIONCLASS %}{{ BASECLASS }}Collection{% endcapture -%}
+{% capture SERVICECLASS %}{{ BASECLASS }}Service{% endcapture -%}
+{% capture REPOCLASS %}I{{ BASECLASS }}Repository{% endcapture -%}
+{% capture BUILDERCLASS %}{{ BASECLASS }}Builder{% endcapture -%}
+{% capture IVALIDATOR %}IValidator<{{ BASECLASS }}>{% endcapture -%}
+{% capture VALIDATORCLASS %}{{ BASECLASS }}Validator{% endcapture -%}
+{% capture CONTROLLERCLASS %}{{ BASECLASSES }}Controller{% endcapture -%}
+{% capture APIPREFIX %}api/{{ CAMELCLASSES }}{% endcapture -%}

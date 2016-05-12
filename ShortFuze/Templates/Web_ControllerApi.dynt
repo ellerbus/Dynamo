@@ -1,0 +1,120 @@
+{% include 'NamingConventions' -%}
+{% capture CORELIB %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\ApiControllers\{{ CONTROLLERCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Description;
+using FluentValidation;
+using FluentValidation.Results;
+using Augment;
+using Newtonsoft.Json;
+using {{ CORELIB }};
+using {{ CORELIB }}.Models;
+using {{ CORELIB }}.Services;
+using {{ CORELIB }}.Validators;
+
+namespace {{ PROJECT }}.ApiControllers
+{
+	///	<summary>
+	/// Represents a basic controller for {{ BASECLASS }}
+	///	</summary>
+	[RoutePrefix("{{ APIPREFIX }}"), GenericExceptionFilter]
+	public class {{ CONTROLLERCLASS }} : BaseApiController
+	{
+		#region Members
+	
+		private I{{ BASECLASS }}Service _service;
+		
+		#endregion
+		
+		#region Contructors
+
+		public {{ CONTROLLERCLASS }}(I{{ BASECLASS }}Service service)
+		{
+			_service = service;
+		}
+		
+		#endregion
+		
+		#region Get Actions
+		
+		// GET: {{ APIPREFIX }}
+		[HttpGet, Route("")]
+		public IHttpActionResult Get{{ BASECLASSES }}()
+		{
+			return Json(_service.Get{{ BASECLASSES }}(), DefaultJsonSettings);
+		}
+
+		// GET: {{ APIPREFIX }}/{% for column in table.primary_keys %}:{{ column.parameter_name }}{%if forloop.last == false %}/{% endif %}{% endfor %}
+		[HttpGet, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}"), ResponseType(typeof({{ BASECLASS }}))]
+		public IHttpActionResult Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		{
+			{{ BASECLASS }} {{ CAMELCLASS }} = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+			
+			if ({{ CAMELCLASS }} == null)
+			{
+				return NotFound("{{ BASECLASS }}");
+			}
+
+			return Json({{ CAMELCLASS }}, DefaultJsonSettings);
+		}
+		
+		#endregion
+		
+		#region Save Actions
+		
+		// POST: {{ APIPREFIX }}
+		[HttpPost, Route("")]
+		public IHttpActionResult Post{{ BASECLASS }}([FromBody]{{ BASECLASS }} post)
+		{
+			_service.Save(post);
+
+			return Json(post, DefaultJsonSettings);
+		}
+
+		// PUT: {{ APIPREFIX }}/{% for column in table.primary_keys %}:{{ column.parameter_name }}{%if forloop.last == false %}/{% endif %}{% endfor %}
+		[HttpPut, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
+		public IHttpActionResult Put{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, [FromBody]{{ BASECLASS }} put)
+		{
+			{{ BASECLASS }} item = _service.Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+
+			_service.Save(item);
+
+			return Json(item, DefaultJsonSettings);
+		}
+
+		// DELETE: {{ APIPREFIX }}/{% for column in table.primary_keys %}:{{ column.parameter_name }}{%if forloop.last == false %}/{% endif %}{% endfor %}
+		[HttpDelete, Route("{% for column in table.primary_keys %}{{ "{" }}{{ column.parameter_name }}}{%if forloop.last == false %}/{% endif %}{% endfor %}")]
+		public IHttpActionResult Delete{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})
+		{
+			{{ BASECLASS }} item = _service.Get({% for column in table.primary_keys %}{{ column.parameter_name }}{%if forloop.last == false %}, {% endif %}{% endfor %});
+
+			item.Status = StatusTypes.Deleted;
+			
+			_service.Save(item);
+
+			return Json(item, DefaultJsonSettings);
+		}
+		
+		#endregion
+
+		#region Helpers
+
+		public static JsonSerializerSettings DefaultJsonSettings { get; private set; }
+
+		static {{ BASECLASSES }}Controller()
+		{
+			DefaultJsonSettings = JsonPayloadManager
+				.BasicPayload<{{ BASECLASS }}>()
+				.ToJsonSerializerSettings()
+				;
+		}
+
+		#endregion
+	}
+}

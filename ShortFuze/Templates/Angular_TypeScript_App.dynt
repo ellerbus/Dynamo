@@ -1,0 +1,19 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\app.ts{% endcapture -%}
+define(
+    [
+        'angular',
+        './{{ BASECLASS }}Repository',
+        './{{ BASECLASS }}ListController',
+        './{{ BASECLASS }}DetailController',
+        './{{ BASECLASS }}'
+    ],
+    (angular, {{ BASECLASS }}Repository, {{ BASECLASS }}ListController, {{ BASECLASS }}DetailController) =>
+    {
+        angular
+            .module('app.{{ CAMELCLASSES }}', [])
+            .factory('{{ BASECLASS }}Repository', {{ BASECLASS }}Repository)
+            .controller('{{ BASECLASS }}ListController', {{ BASECLASS }}ListController)
+            .controller('{{ BASECLASS }}DetailController', {{ BASECLASS }}DetailController);
+    });

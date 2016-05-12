@@ -1,0 +1,48 @@
+{% include 'NamingConventions' -%}
+{% capture TESTCLASS %}{{ BASECLASS }}ValidatorTests{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Validators\{{ TESTCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentValidation.TestHelper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using {{ SOLUTION }}.Core.Models;
+using {{ SOLUTION }}.Core.Validators;
+
+namespace {{ PROJECT }}.Core.Validators
+{
+    [TestClass]
+    public class {{ TESTCLASS }}
+    {
+        #region Members
+
+        private {{ VALIDATORCLASS }} SubjectUnderTest = new {{ VALIDATORCLASS }}();
+
+        #endregion
+        
+        #region Validation Rule Tests
+        {% for column in table.columns %}
+        [TestMethod]
+        public void {{ VALIDATORCLASS }}_RuleFor_{{ column.property_name }}()
+        {
+            var item = new {{ BASECLASS }}();
+
+            item.{{ column.property_name }} = default({{ column.clr_type }});
+            SubjectUnderTest.ShouldNotHaveValidationErrorFor(v => v.{{ column.property_name }}, item);
+            {% if column.clr_type == 'string' %}
+            item.{{ column.property_name }} = "";
+            SubjectUnderTest.ShouldHaveValidationErrorFor(v => v.{{ column.property_name }}, item);
+            
+            item.{{ column.property_name }} = new string('0', {{ column.length }});
+            SubjectUnderTest.ShouldNotHaveValidationErrorFor(v => v.{{ column.property_name }}, item);
+            
+            item.{{ column.property_name }} = new string('0', {{ column.length }} + 1);
+            SubjectUnderTest.ShouldHaveValidationErrorFor(v => v.{{ column.property_name }}, item);
+            {% endif %}
+        }
+        
+        {% endfor %}
+        #endregion
+    }
+}

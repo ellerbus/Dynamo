@@ -1,0 +1,161 @@
+{% include 'NamingConventions' -%}
+{% capture TESTCLASS %}{{ CONTROLLERCLASS }}Tests{% endcapture -%}
+{% capture CORELIB %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Web\ApiControllers\{{ TESTCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMoq;
+using FizzWare.NBuilder;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
+using {{ CORELIB }};
+using {{ CORELIB }}.Models;
+using {{ CORELIB }}.Services;
+using {{ SOLUTION }}.Web.ApiControllers;
+
+namespace {{ PROJECT }}.Web.ApiControllers
+{
+    [TestClass]
+    public class {{ TESTCLASS }} : BaseControllerTests<{{ CONTROLLERCLASS }}, I{{ BASECLASS }}Service, {{ BASECLASS }}>
+    {
+        #region Helpers/Test Initializers
+
+        private {{ BUILDERCLASS }} {{ BUILDERCLASS }} { get; set; }
+
+        [TestInitialize]
+        public override void TestInitialize()
+        {
+            base.TestInitialize();
+
+            {{ BUILDERCLASS }} = new {{ BUILDERCLASS }}();
+        }
+
+        #endregion
+
+        #region Tests - Get Many/List
+
+        [TestMethod]
+        public void {{ CONTROLLERCLASS }}_Get{{ BASECLASSES }}_Should_SendOk()
+        {
+            //		arrange
+            var {{ CAMELCLASSES }} = {{ BUILDERCLASS }}.CreateList();
+
+            MockService.Setup(x => x.GetList()).Returns({{ CAMELCLASSES }});
+
+            //		act
+            var msg = SubjectUnderTest.Get{{ BASECLASSES }}().ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+            
+            JsonTestExtensions.AssertJArrayEquality({{ CAMELCLASSES }}, msg, {{ CONTROLLERCLASS }}.DefaultJsonSettings);
+    
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
+        #region Tests - Get One
+
+        [TestMethod]
+        public void {{ CONTROLLERCLASS }}_Get{{ BASECLASS }}_Should_SendOk()
+        {
+            //		arrange
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+
+            MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ CAMELCLASS }});
+
+            //		act
+            var msg = SubjectUnderTest.Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+            
+            JsonTestExtensions.AssertJObjectEquality({{ CAMELCLASS }}, msg, {{ CONTROLLERCLASS }}.DefaultJsonSettings);
+    
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
+        #region Tests - Post One
+
+        [TestMethod]
+        public void {{ CONTROLLERCLASS }}_Post{{ BASECLASS }}_Should_SendOk()
+        {
+            //		arrange
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+    
+            MockService.Setup(x => x.Save({{ CAMELCLASS }}));
+
+            //		act
+            var msg = SubjectUnderTest.Post{{ BASECLASS }}({{ CAMELCLASS }}).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+    
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
+        #region Tests - Put One
+
+        [TestMethod]
+        public void {{ CONTROLLERCLASS }}_Put{{ BASECLASS }}_Should_SendOk()
+        {
+            //		arrange
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+    
+            MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ CAMELCLASS }});
+    
+            MockService.Setup(x => x.Save({{ CAMELCLASS }}));
+
+            //		act
+            var msg = SubjectUnderTest.Put{{ BASECLASS }}({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, {{ CAMELCLASS }}).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+    
+            MockService.VerifyAll();
+        }
+
+        #endregion
+
+        #region Tests - Delete One
+
+        [TestMethod]
+        public void {{ CONTROLLERCLASS }}_Delete{{ BASECLASS }}_Should_SendOk()
+        {
+            //		arrange
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+
+            MockService.Setup(x => x.Get({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ CAMELCLASS }});
+
+            MockService.Setup(x => x.Save({{ CAMELCLASS }}));
+
+            //		act
+            var msg = SubjectUnderTest.Delete{{ BASECLASS }}({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}).ToMessage();
+
+            //		assert
+            Assert.IsTrue(msg.IsSuccessStatusCode);
+
+            var item = msg.DeserializeContent<{{ BASECLASS }}>();
+
+            Assert.AreEqual(StatusTypes.Deleted, item.Status);
+
+            MockService.VerifyAll();
+        }
+
+        #endregion
+    }
+}

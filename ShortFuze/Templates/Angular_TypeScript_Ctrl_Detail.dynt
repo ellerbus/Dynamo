@@ -1,0 +1,88 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ BASECLASS }}DetailController.ts{% endcapture -%}
+
+import I{{ BASECLASS }}Repository = core.repositories.I{{ BASECLASS }}Repository;
+import I{{ BASECLASS }}PrimaryKey = core.models.I{{ BASECLASS }}PrimaryKey;
+import I{{ BASECLASS }} = core.models.I{{ BASECLASS }};
+
+import {{ BASECLASS }} = require("../Core/Models/{{ BASECLASS }}");
+
+interface I{{ BASECLASS }}DetailRouteParams extends ng.route.IRouteProvider, I{{ BASECLASS }}PrimaryKey
+{
+    action: string;
+}
+
+//
+//	Details Controller
+//  ie. /{{ CAMELCLASSES }}/action[create,update,delete]/{% for column in table.primary_keys %}:{{ column.parameter_name }}{% if forloop.last == false %}/{% endif %}{% endfor %}
+//
+class {{ BASECLASS }}DetailController
+{
+    static $inject = ['$routeParams', '$location', '{{ BASECLASS }}Repository'];
+
+    action: string;
+    {{ CAMELCLASS }}: I{{ BASECLASS }};
+
+    constructor(private $routeParams: I{{ BASECLASS }}DetailRouteParams, private $location: ng.ILocationService, private {{ BASECLASS }}Repository: I{{ BASECLASS }}Repository)
+    {
+        this.action = $routeParams.action || 'unknown-action';
+
+        this.{{ CAMELCLASS }} = null;
+
+        if (this.action == 'create')
+        {
+            this.{{ CAMELCLASS }} = new {{ BASECLASS }}();
+        }
+        else
+        {
+            var pk = this.getPrimaryKey();
+
+            {{ BASECLASS }}Repository
+                .get(pk)
+                .$promise
+                .then((data) => this.{{ CAMELCLASS }} = data);
+        }
+    }
+ 
+    getPrimaryKey(): I{{ BASECLASS }}PrimaryKey
+    {
+        var pk: I{{ BASECLASS }}PrimaryKey = { id: this.$routeParams.id };
+
+        return pk;
+    }
+ 
+    save(): ng.IPromise<any>
+    {
+        var onSaveSuccess = (data) => this.$location.path('/{{ CAMELCLASSES }}');
+
+        if (this.action == 'create')
+        {
+            return this.{{ BASECLASS }}Repository
+                .add(this.{{ CAMELCLASS }})
+                .$promise
+                .then(onSaveSuccess);
+        }
+        else
+        {
+            var pk = this.getPrimaryKey();
+
+            if (this.action == 'update')
+            {
+                return this.{{ BASECLASS }}Repository
+                    .update(pk, this.{{ CAMELCLASS }})
+                    .$promise
+                    .then(onSaveSuccess);
+            }
+            else if (this.action == 'delete')
+            {
+                return this.{{ BASECLASS }}Repository
+                    .delete(pk)
+                    .$promise
+                    .then(onSaveSuccess);
+            }
+        }
+    }
+}
+
+export = {{ BASECLASS }}DetailController;

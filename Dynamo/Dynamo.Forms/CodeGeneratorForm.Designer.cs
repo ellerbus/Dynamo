@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeGeneratorForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +47,7 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateCodeFilesToolStripMenuItem = new Dynamo.Forms.BindableToolStripMenuItem();
             this.refreshToolStripMenuItem = new Dynamo.Forms.BindableToolStripMenuItem();
+            this.shortFuzeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.solutionLinkLabel = new System.Windows.Forms.LinkLabel();
             this.viewModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
@@ -187,7 +188,8 @@
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.generateCodeFilesToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.refreshToolStripMenuItem,
+            this.shortFuzeToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -207,6 +209,13 @@
             this.refreshToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.refreshToolStripMenuItem.Text = "&Refresh Tables / Templates";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // shortFuzeToolStripMenuItem
+            // 
+            this.shortFuzeToolStripMenuItem.Name = "shortFuzeToolStripMenuItem";
+            this.shortFuzeToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.shortFuzeToolStripMenuItem.Text = "Short Fuze...";
+            this.shortFuzeToolStripMenuItem.Click += new System.EventHandler(this.shortFuzeToolStripMenuItem_Click);
             // 
             // solutionLinkLabel
             // 
@@ -391,7 +400,7 @@
             this.linesOfCodeTabPage.Controls.Add(this.dataGridView1);
             this.linesOfCodeTabPage.Location = new System.Drawing.Point(4, 22);
             this.linesOfCodeTabPage.Name = "linesOfCodeTabPage";
-            this.linesOfCodeTabPage.Size = new System.Drawing.Size(751, 211);
+            this.linesOfCodeTabPage.Size = new System.Drawing.Size(751, 152);
             this.linesOfCodeTabPage.TabIndex = 2;
             this.linesOfCodeTabPage.Text = "Lines of Code";
             this.linesOfCodeTabPage.UseVisualStyleBackColor = true;
@@ -441,9 +450,9 @@
             // commentsDataGridViewTextBoxColumn
             // 
             this.commentsDataGridViewTextBoxColumn.DataPropertyName = "Comments";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle5.Format = "N0";
-            this.commentsDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle1.Format = "N0";
+            this.commentsDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.commentsDataGridViewTextBoxColumn.HeaderText = "Comments";
             this.commentsDataGridViewTextBoxColumn.Name = "commentsDataGridViewTextBoxColumn";
             this.commentsDataGridViewTextBoxColumn.ReadOnly = true;
@@ -451,9 +460,9 @@
             // blankDataGridViewTextBoxColumn
             // 
             this.blankDataGridViewTextBoxColumn.DataPropertyName = "Blank";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.Format = "N0";
-            this.blankDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.Format = "N0";
+            this.blankDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.blankDataGridViewTextBoxColumn.HeaderText = "Blank";
             this.blankDataGridViewTextBoxColumn.Name = "blankDataGridViewTextBoxColumn";
             this.blankDataGridViewTextBoxColumn.ReadOnly = true;
@@ -461,9 +470,9 @@
             // codeDataGridViewTextBoxColumn
             // 
             this.codeDataGridViewTextBoxColumn.DataPropertyName = "Code";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle7.Format = "N0";
-            this.codeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "N0";
+            this.codeDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.codeDataGridViewTextBoxColumn.HeaderText = "Code";
             this.codeDataGridViewTextBoxColumn.Name = "codeDataGridViewTextBoxColumn";
             this.codeDataGridViewTextBoxColumn.ReadOnly = true;
@@ -471,9 +480,9 @@
             // totalDataGridViewTextBoxColumn
             // 
             this.totalDataGridViewTextBoxColumn.DataPropertyName = "Total";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.Format = "N0";
-            this.totalDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N0";
+            this.totalDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.totalDataGridViewTextBoxColumn.HeaderText = "Total";
             this.totalDataGridViewTextBoxColumn.Name = "totalDataGridViewTextBoxColumn";
             this.totalDataGridViewTextBoxColumn.ReadOnly = true;
@@ -673,5 +682,6 @@
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TextBox resultsTextBox;
+        private System.Windows.Forms.ToolStripMenuItem shortFuzeToolStripMenuItem;
     }
 }

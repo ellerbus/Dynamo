@@ -1,0 +1,1 @@
+{% case column.clr_type %}{% when 'int' or 'double' %}9{% when 'string' %}"aa"{% when 'DateTime' %}DateTime.Now{% else %}default({{ column.clr_type }}){% endcase %}

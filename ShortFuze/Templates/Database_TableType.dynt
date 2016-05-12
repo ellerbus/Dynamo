@@ -1,0 +1,11 @@
+{% include 'NamingConventions' -%}
+{% capture TYPE %}{{ BASECLASS }}TableType{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.DatabaseSchema{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\_{{ TYPE }}.sql{% endcapture -%}
+
+create type dbo.{{ TYPE }} as table
+({% for column in table.columns %}
+	{{ column.name | r_pad:30 }} {{ column.sql_type }}{%if column.sql_type contains 'char' %}({{ column.length }}){% endif %}{%if forloop.last == false %},{% endif %}{% endfor %}
+)
+
+go

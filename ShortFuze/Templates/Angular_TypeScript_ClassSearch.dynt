@@ -1,0 +1,14 @@
+{% include 'NamingConventions' -%}
+{% capture SEARCH %}{{ BASECLASS }}Search{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\Core\Models\{{ SEARCH }}.ts{% endcapture -%}
+
+class {{ SEARCH }} implements core.models.I{{ SEARCH }}
+{ 
+    {% for column in table.columns %}{{ column.parameter_name }}: {% include 'TypeScriptTypes' %};
+    {% endfor %}
+    page: number;
+    pageSize: number;
+}
+
+export = {{ SEARCH }};

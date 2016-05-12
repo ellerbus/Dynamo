@@ -1,0 +1,11 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\Core\Models\{{ BASECLASS }}.ts{% endcapture -%}
+
+class {{ BASECLASS }} implements core.models.I{{ BASECLASS }}
+{ 
+	{% for column in table.columns %}{{ column.parameter_name }}: {% include 'TypeScriptTypes' %};
+	{% endfor %}
+}
+
+export = {{ BASECLASS }};

@@ -1,0 +1,1 @@
+{% case column.clr_type %}{% when 'int' or 'double' or 'int?' or 'double?' %}number{% when 'string' %}string{% when 'DateTime' or 'DateTime?' %}Date{% when 'bool' or 'bool?' %}boolean{% else %}any{% endcase %}

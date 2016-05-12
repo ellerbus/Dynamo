@@ -1,0 +1,109 @@
+{% include 'NamingConventions' -%}
+{% capture TESTCLASS %}{{ BASECLASS }}ServiceTests{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Services\{{ TESTCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AutoMoq;
+using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
+using Moq;
+using {{ SOLUTION }}.Core;
+using {{ SOLUTION }}.Core.Models;
+using {{ SOLUTION }}.Core.Repositories;
+using {{ SOLUTION }}.Core.Services;
+using {{ SOLUTION }}.Tests.Builders;
+
+namespace {{ PROJECT }}.Core.Services
+{
+    [TestClass]
+    public class {{ TESTCLASS }} : BaseServiceTests<{{ BASECLASS }}, {{ REPOCLASS }}, {{ SERVICECLASS }}>
+    {
+        #region Helpers/Test Initializers
+
+        {{ BUILDERCLASS }} {{ BUILDERCLASS }};
+
+        [TestInitialize]
+        public override void TestInitialize()
+        {
+            base.TestInitialize();
+
+            {{ BUILDERCLASS }} = new {{ BUILDERCLASS }}();
+        }
+
+        #endregion
+
+        #region Tests - Get
+        
+        [TestMethod]
+        public void {{ SERVICECLASS }}_Get{{ COLLECTIONCLASS }}_Should_Succeed()
+        {
+            //	arrange
+            var {{ CAMELCLASSES }} = {{ BUILDERCLASS }}.CreateCollection(); 
+        
+            MockRepo.Setup(x => x.Get{{ BASECLASSES }}()).Returns({{ CAMELCLASSES }});
+
+            //	act
+            var items = SubjectUnderTest.Get{{ COLLECTIONCLASS }}();
+
+            //	assert
+
+            MockRepo.VerifyAll();
+        }
+
+        [TestMethod]
+        public void {{ SERVICECLASS }}_Get{{ BASECLASS }}_Should_Succeed()
+        {
+            //	arrange
+            var request = SecurityRequest.None;
+
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+            
+            MockRepo.Setup(x => x.Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %})).Returns({{ CAMELCLASS }});
+
+            //	act
+            var actual = SubjectUnderTest.Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ CAMELCLASS }}.{{ column.property_name }}{%if forloop.last == false %}, {% endif %}{% endfor %}, request);
+
+            //	assert
+            actual.Should().NotBeNull();
+
+            actual.Should().BeSameAs({{ CAMELCLASS }});
+
+            MockRepo.VerifyAll();
+        }
+        
+        #endregion
+        
+        #region Tests - Save
+
+        [TestMethod]
+        public void {{ SERVICECLASS }}_Save{{ BASECLASS }}_Should_Succeed()
+        {
+            //	arrange
+            var {{ CAMELCLASS }} = {{ BUILDERCLASS }}.CreateNew();
+            
+            MockRepo.Setup(x => x.Save{{ BASECLASS }}({{ CAMELCLASS }}));
+            
+            MockActor.Setup(x => x.EnsureAudit({{ CAMELCLASS }}));
+            
+            MockActor.Setup(x => x.VerifyCanUpdate{{ BASECLASS }}({{ CAMELCLASS }}));
+
+            MockValidator.Setup(x => x.Validate({{ CAMELCLASS }})).Returns(AnyValidation.Success);
+
+            //	act
+            SubjectUnderTest.Save{{ BASECLASS }}({{ CAMELCLASS }});
+
+            //	assert
+
+            MockActor.VerifyAll();
+            MockRepo.VerifyAll();
+            MockValidator.VerifyAll();
+        }
+        
+        #endregion
+    }
+}

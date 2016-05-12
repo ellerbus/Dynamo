@@ -1,0 +1,60 @@
+{% include 'NamingConventions' -%}
+{% capture TESTCLASS %}{{ BASECLASS }}ModelTests{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Core\Models\{{ TESTCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
+using {{ SOLUTION }}.Core.Models;
+
+namespace {{ PROJECT }}.Core.Models
+{
+    [TestClass]
+    public class {{ TESTCLASS }} : BaseModelTests<{{ BASECLASS }}>
+    {
+        #region Constructor Tests
+
+        [TestMethod]
+        public void {{ BASECLASS }}_EmptyConstructor_Should_FlagModified()
+        {
+            var actual = new {{ BASECLASS }}()
+            {
+                {% for column in table.columns %}{{ column.property_name }} = {% include 'CSharpTypeValues' %}{%if forloop.last == false %},
+                {% endif %}{% endfor %}
+            };
+
+            actual.IsModified.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void {{ BASECLASS }}_FullConstructor_Should_FlagNotModified()
+        {
+            var actual = new {{ BASECLASS }}({% for column in table.columns %}
+                {{ column.property_name }}: {% include 'CSharpTypeValues' %}{%if forloop.last == false %},{% endif %}{% endfor %}
+                );
+
+            actual.IsModified.Should().BeFalse();
+        }
+
+        
+        #endregion
+
+        #region Property Tests
+        {% for column in table.columns %}
+        //[TestMethod]
+        //public void {{ BASECLASS }}_{{ column.property_name }}_Should_DoSomething()
+        //{ {% capture VALUE %}{% include 'CSharpTypeValues' %}{% endcapture %}
+        //  var expected = {{ VALUE }};
+        //
+        //	var actual = new {{ BASECLASS }}() { {{ column.property_name }} = {{ VALUE }} };
+        //
+        //	actual.{{ column.property_name }}.Should().Be(expected);
+        //}
+
+        {% endfor -%}
+
+        #endregion
+    }
+}

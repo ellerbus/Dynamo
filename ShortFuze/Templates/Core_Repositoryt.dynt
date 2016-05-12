@@ -1,0 +1,50 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Repositories\{{ REPOCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.Generic;
+using Insight.Database;
+using {{ PROJECT }}.Models;
+
+namespace {{ PROJECT }}.Repositories
+{
+	///	<summary>
+	/// Repository Interface for {{ BASELCASS }}
+	///	</summary>
+	public interface {{ REPOCLASS }}
+	{
+		/////	<summary>
+		/////	Dynamic SQL Sample
+		/////	</summary>
+		//[Sql("select * from {{ table.name }} where createdAt > @createdAfter")]
+		//IList<{{ BASECLASS }}> Get{{ BASECLASSES }}(DateTime createdAfter);
+
+		///	<summary>
+		///	Gets many {{ BASECLASSES }} by calling the
+		///	stored procedure {{ BASECLASS }}SelectMany
+		///	</summary>
+		[Sql("{{ BASECLASS }}SelectMany")]
+		IList<{{ BASECLASS }}> Get{{ BASECLASSES }}();
+	
+		///	<summary>
+		///	Gets a single {{ BASECLASS }} by primary key calling the
+		///	stored procedure {{ BASECLASS }}SelectOne
+		///	</summary>
+		[Sql("{{ BASECLASS }}SelectOne")]
+		{{ BASECLASS }} Get{{ BASECLASS }}({% for column in table.primary_keys %}{{ column.clr_type }} {{ column.name }}{% if forloop.last == false %}, {% endif %}{% endfor %});
+
+		///	<summary>
+		///	Saves a single {{ BASECLASS }} calling the
+		///	stored procedure {{ BASECLASS }}UpsertOne
+		///	</summary>
+		[Sql("{{ BASECLASS }}UpsertOne")]
+		void Save{{ BASECLASS }}({{ BASECLASS }} {{ CAMELCLASS }});
+
+		///	<summary>
+		///	Saves many {{ BASECLASSES }} calling the
+		///	stored procedure {{ BASECLASS }}UpsertMany
+		///	</summary>
+		//[Sql("{{ BASECLASS }}UpsertMany")]
+		//void Save{{ BASECLASSES }}(IEnumerable<{{ BASECLASS }}> {{ CAMELCLASSES }});
+	}
+}

@@ -1,0 +1,95 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\{{ BASECLASS }}.cs{% endcapture -%}
+using System;
+using System.Diagnostics;
+using Augment;
+using Insight.Database;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace {{ PROJECT }}.Models
+{
+    ///	<summary>
+    ///
+    ///	</summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    public partial class {{ BASECLASS }} : Entities.{{ BASECLASS }}Entity
+    {
+        #region Constructors
+
+        public {{ BASECLASS }}() : base() {}
+        
+        #endregion
+
+        #region ToString/DebuggerDisplay
+
+        public override string ToString()
+        {
+            return DebuggerDisplay;
+        }
+
+        ///	<summary>
+        ///	DebuggerDisplay for this object
+        ///	</summary>
+        private string DebuggerDisplay
+        {
+            get
+            {
+                string pk = "[" + {% for column in table.primary_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{% if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
+                
+                string uq = "[" + {% for column in table.unique_keys %}{{ column.property_name }}{% if column.clr_type == 'DateTime' %}.ToString("yyyy-MM-dd"){% endif %}{% if forloop.last == false %} + "," {% endif %} + {% endfor %}"]";
+                
+                return "{0}, pk={1}, uq={2}".FormatArgs(GetType().Name, pk, uq);
+            }
+        }
+        
+        #endregion
+
+        #region Foreign Key Properties
+        {% for column in table.foreign_keys %}
+        /////	<summary>
+        /////	Gets / Sets the foreign key to '{{ column.name }}'
+        /////	</summary>
+        //public {{ column.property_name | remove:'Id' }} {{ column.property_name | remove:'Id' }}
+        //{
+        //	get
+        //	{
+        //		return _{{ column.parameter_name | remove:'Id' }};
+        //	}
+        //	internal set
+        //	{
+        //		_{{ column.parameter_name | remove:'Id' }} = value;
+        //
+        //		{{ column.property_name }} = value == null ? default({{ column.clr_type }}) : value.{{ column.property_name }};
+        //	}
+        //}
+        //private {{ column.property_name | remove:'Id' }} _{{ column.parameter_name | remove:'Id' }};
+        
+        {% endfor -%}
+        #endregion
+
+        #region Overridden Properties
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public StatusTypes Status
+        {
+            get { return StatusEnum.IsNullOrEmpty() ? StatusTypes.None : StatusEnum.ToEnum<StatusTypes>(); }
+            set { StatusEnum = value.ToString(); }
+        }
+
+        public override DateTime CreatedAt
+        {
+            get { return base.CreatedAt.EnsureUtc(); }
+            set { base.CreatedAt = value.EnsureUtc(); }
+        }
+
+        public override DateTime? ModifiedAt
+        {
+            get { return base.ModifiedAt.EnsureUtc(); }
+            set { base.ModifiedAt = value.EnsureUtc(); }
+        }
+        
+        #endregion
+    }
+}

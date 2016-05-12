@@ -293,6 +293,14 @@ namespace Dynamo.Forms
             }
         }
 
+        private void shortFuzeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (ShortFuzeForm sf = new ShortFuzeForm())
+            {
+                sf.ShowDialog(this);
+            }
+        }
+
         #endregion
 
         #region Methods

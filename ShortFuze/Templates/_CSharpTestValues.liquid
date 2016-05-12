@@ -1,0 +1,1 @@
+{% case column.clr_type %}{% when 'bool' %}false{% when 'int' or 'double' %}idx{% when 'string' %}"{{ column.property_name }}" + idx{% when 'DateTime' %}DateTime.Now.AddDays(idx){% else %}null{% endcase %}

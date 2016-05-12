@@ -1,0 +1,40 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\Core\Interfaces\{{ BASECLASS }}Interfaces.d.ts{% endcapture -%}
+
+declare module core
+{
+    module models
+    {
+        interface I{{ BASECLASS }}PrimaryKey
+        {
+            {% for column in table.primary_keys %}{{ column.parameter_name }}: {% include 'TypeScriptTypes' %};
+            {% endfor %}
+        }
+
+        interface I{{ BASECLASS }} extends I{{ BASECLASS }}PrimaryKey
+        {
+            {% for column in table.columns %}{% if column.is_primary_key == false %}{{ column.parameter_name }}: {% include 'TypeScriptTypes' %};{% endif %}
+            {% endfor %}
+        }
+
+        interface I{{ BASECLASS }}Search extends core.app.IPaged
+        {
+            {% for column in table.columns %}{% if column.is_primary_key == false %}{{ column.parameter_name }}: {% include 'TypeScriptTypes' %};{% endif %}
+            {% endfor %}
+        }
+    }
+    
+    module repositories
+    {
+        interface I{{ BASECLASS }}Resource extends ng.resource.IResource<core.models.I{{ BASECLASS }}>, core.models.I{{ BASECLASS }}
+        {
+        }
+
+        interface I{{ BASECLASS }}Repository extends ng.resource.IResourceClass<I{{ BASECLASS }}Resource>
+        {
+            add(item: core.models.I{{ BASECLASS }}): I{{ BASECLASS }}Resource;
+            update(pk: core.models.I{{ BASECLASS }}PrimaryKey, item: core.models.I{{ BASECLASS }}): I{{ BASECLASS }}Resource;
+        }
+    }
+}

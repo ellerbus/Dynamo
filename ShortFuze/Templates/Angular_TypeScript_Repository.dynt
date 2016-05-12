@@ -1,0 +1,34 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\Core\Repositories\{{ BASECLASS }}Repository.ts{% endcapture -%}
+
+import IResourceService = ng.resource.IResourceService;
+
+import I{{ BASECLASS }}Repository = core.repositories.I{{ BASECLASS }}Repository;
+ 
+class {{ BASECLASS }}Repository 
+{
+    static $inject = ['$resource'];
+
+    constructor($resource: IResourceService)
+    {
+        var url = '{{ APIPREFIX }}/';
+
+        var pk = ':id';
+
+        var defaults = { id: '@id' };
+
+        var actions =
+            {
+                'query': { method: 'GET', isArray: true },
+                'get': { method: 'GET' },
+                'add': { method: 'POST' },
+                'update': { method: 'PUT' },
+                'delete': { method: 'DELETE' }
+            };
+
+        return <I{{ BASECLASS }}Repository> $resource(url + pk, defaults, actions);
+    }
+}
+ 
+export = {{ BASECLASS }}Repository;

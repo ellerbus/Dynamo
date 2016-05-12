@@ -1,0 +1,15 @@
+{% include 'NamingConventions' -%}
+{% capture PROC %}{{ BASECLASS }}SelectSearch{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.DatabaseSchema{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
+
+create procedure mfc.{{ PROC }}{% for column in table.columns %}
+	@{{ column.name | r_pad:33 }} {{ column.sql_type }}{% if column.clr_type == 'string' %}({{ column.length }}){% endif %} = null{% if forloop.last == false %},{% endif %}{% endfor %}
+as
+
+select	*
+from	dbo.{{ table.name }}
+where   {% for column in table.columns %}{{ column.name | r_pad:30 }} = isnull(@{{ column.name }}, {{ column.name }}){%if forloop.last == false %}
+  and   {% endif %}{% endfor %}
+
+go

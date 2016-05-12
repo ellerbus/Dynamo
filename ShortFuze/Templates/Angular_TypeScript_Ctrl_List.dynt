@@ -1,0 +1,31 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\{{ BASECLASS }}ListController.ts{% endcapture -%}
+/// <reference path="../../Scripts/typings/angularjs/angular-resource.d.ts" />
+
+import IResourceArray = ng.resource.IResourceArray;
+
+import I{{ BASECLASS }}Repository = app.{{ CAMELCLASSES }}.I{{ BASECLASS }}Repository;
+import I{{ BASECLASS }}Resource = app.{{ CAMELCLASSES }}.I{{ BASECLASS }}Resource;
+
+//
+//	List Controller
+//  ie. /{{ CAMELCLASSES }}/
+//
+class {{ BASECLASS }}ListController
+{
+    static $inject = ['{{ BASECLASS }}Repository'];
+
+    {{ CAMELCLASSES }}: IResourceArray<I{{ BASECLASS }}Resource>; 
+
+    constructor({{ BASECLASS }}Repository: I{{ BASECLASS }}Repository)
+    {
+        this.{{ CAMELCLASSES }} = null;
+
+        {{ BASECLASS }}Repository.query({})
+            .$promise
+            .then((data) => this.{{ CAMELCLASSES }} = data);
+    }
+}
+
+export = {{ BASECLASS }}ListController;

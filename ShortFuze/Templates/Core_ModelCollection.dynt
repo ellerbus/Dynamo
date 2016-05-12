@@ -1,0 +1,40 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Models\{{ COLLECTIONCLASS }}.cs{% endcapture -%}
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using Augment;
+
+namespace {{ PROJECT }}.Models
+{
+	///	<summary>
+	///
+	///	</summary>
+	[DebuggerDisplay("{DebuggerDisplay,nq}")]
+	public class {{ COLLECTIONCLASS }} : Collection<{{ BASECLASS }}>
+	{	
+		#region ToString/DebuggerDisplay
+
+		///	<summary>
+		///	DebuggerDisplay for this object
+		///	</summary>
+		private string DebuggerDisplay
+		{
+			get { return "Count={0}".FormatArgs(Count); }
+		}
+		
+		#endregion
+
+		#region Foreign Key Properties
+		{% for column in table.foreign_keys %}
+		/////	<summary>
+		/////	Gets / Sets the foreign key to '{{ column.name }}'
+		/////	</summary>
+		//public {{ column.property_name | remove:'Id' }} {{ column.property_name | remove:'Id' }} { get; internal set; }
+		
+		{% endfor -%}
+		
+		#endregion
+	}
+}

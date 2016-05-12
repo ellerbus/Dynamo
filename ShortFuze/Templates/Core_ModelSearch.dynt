@@ -1,0 +1,54 @@
+{% include 'NamingConventions' -%}
+{% capture SEARCH %}{{ BASECLASS }}Search{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\SearchModels\{{ SEARCH }}.cs{% endcapture -%}
+using System;
+using System.Text;
+using Insight.Database;
+using Augment;
+
+namespace {{ PROJECT }}.SearchModels
+{
+	///	<summary>
+	/// Search class for {{ table.name }}
+	///	</summary>
+	public class {{ SEARCH }}
+	{
+		#region Methods
+
+		internal string ToLogString()
+		{
+			StringBuilder x = new StringBuilder(GetType().Name){% for column in table.columns %}
+				.Append("{{ column.property_name }}=[").Append({{ column.property_name }}).Append("]"){% endfor %}
+				;
+
+			return x.ToString();
+		}
+
+		#endregion
+
+		#region Primary Key Properties
+		{% for column in table.primary_keys %}
+		///	<summary>
+		///	Gets / Sets database column '{{ column.name }}' (primary key)
+		///	</summary>
+		[Column("{{ column.name }}")]
+		public {{ column.clr_type }} {{ column.property_name }} { get; set; }
+		
+		{% endfor -%}
+		
+		#endregion
+		
+		#region Properties
+		{% for column in table.columns %}{% if column.is_primary_key == false %}
+		///	<summary>
+		///	Gets / Sets database column '{{ column.name }}'
+		///	</summary>
+		[Column("{{ column.name }}")]
+		public {{ column.clr_type }} {{ column.property_name }} { get; set; }
+
+		{% endif %}{% endfor -%}
+
+		#endregion
+	}
+}

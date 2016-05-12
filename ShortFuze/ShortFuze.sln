@@ -1,0 +1,90 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{BE1E75C6-BA20-4C8D-8011-118B48A4D138}"
+	ProjectSection(SolutionItems) = preProject
+		ShortFuze.dynp = ShortFuze.dynp
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortFuze.Core", "ShortFuze.Core\ShortFuze.Core.csproj", "{A55328CD-A4BA-4D32-ACE7-C7F08A6E2C5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortFuze.Tests", "ShortFuze.Tests\ShortFuze.Tests.csproj", "{E5063D6F-2473-4E50-BF06-769C13E330F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortFuze.DatabaseSchema", "ShortFuze.DatabaseSchema\ShortFuze.DatabaseSchema.csproj", "{5AB6C95E-F0B8-4AC7-95B1-CBD8B0EA2A76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{3D74E6F4-F90F-4E96-AADE-71F90EDE5A0B}"
+	ProjectSection(SolutionItems) = preProject
+		Templates\_CSharpTestValues.liquid = Templates\_CSharpTestValues.liquid
+		Templates\_CSharpTypeValues.liquid = Templates\_CSharpTypeValues.liquid
+		Templates\_DatabaseParameters.liquid = Templates\_DatabaseParameters.liquid
+		Templates\_NamingConventions.liquid = Templates\_NamingConventions.liquid
+		Templates\_TypeScriptTypes.liquid = Templates\_TypeScriptTypes.liquid
+		Templates\Angular_Template_Detail.dynt = Templates\Angular_Template_Detail.dynt
+		Templates\Angular_Template_List.dynt = Templates\Angular_Template_List.dynt
+		Templates\Angular_TypeScript_App.dynt = Templates\Angular_TypeScript_App.dynt
+		Templates\Angular_TypeScript_Class.dynt = Templates\Angular_TypeScript_Class.dynt
+		Templates\Angular_TypeScript_ClassSearch.dynt = Templates\Angular_TypeScript_ClassSearch.dynt
+		Templates\Angular_TypeScript_Ctrl_Detail.dynt = Templates\Angular_TypeScript_Ctrl_Detail.dynt
+		Templates\Angular_TypeScript_Ctrl_List.dynt = Templates\Angular_TypeScript_Ctrl_List.dynt
+		Templates\Angular_TypeScript_Interfaces.dynt = Templates\Angular_TypeScript_Interfaces.dynt
+		Templates\Angular_TypeScript_Repository.dynt = Templates\Angular_TypeScript_Repository.dynt
+		Templates\Core_Model.Generated.ModifiedFlag.dynt = Templates\Core_Model.Generated.ModifiedFlag.dynt
+		Templates\Core_Model.ModifiedFlag.dynt = Templates\Core_Model.ModifiedFlag.dynt
+		Templates\Core_ModelCollection.dynt = Templates\Core_ModelCollection.dynt
+		Templates\Core_ModelSearch.dynt = Templates\Core_ModelSearch.dynt
+		Templates\Core_Repositoryt.dynt = Templates\Core_Repositoryt.dynt
+		Templates\Core_Service.dynt = Templates\Core_Service.dynt
+		Templates\Core_Validator.dynt = Templates\Core_Validator.dynt
+		Templates\Database_DeleteMany.dynt = Templates\Database_DeleteMany.dynt
+		Templates\Database_DeleteOne.dynt = Templates\Database_DeleteOne.dynt
+		Templates\Database_InsertMany.dynt = Templates\Database_InsertMany.dynt
+		Templates\Database_InsertOne.dynt = Templates\Database_InsertOne.dynt
+		Templates\Database_MergeMany.dynt = Templates\Database_MergeMany.dynt
+		Templates\Database_MergeOne.dynt = Templates\Database_MergeOne.dynt
+		Templates\Database_SelectMany.dynt = Templates\Database_SelectMany.dynt
+		Templates\Database_SelectOne.dynt = Templates\Database_SelectOne.dynt
+		Templates\Database_SelectSearch.dynt = Templates\Database_SelectSearch.dynt
+		Templates\Database_TableType.dynt = Templates\Database_TableType.dynt
+		Templates\Database_UpdateMany.dynt = Templates\Database_UpdateMany.dynt
+		Templates\Database_UpdateOne.dynt = Templates\Database_UpdateOne.dynt
+		Templates\Database_UpsertMany.dynt = Templates\Database_UpsertMany.dynt
+		Templates\Database_UpsertOne.dynt = Templates\Database_UpsertOne.dynt
+		Templates\Tests_Builder.dynt = Templates\Tests_Builder.dynt
+		Templates\Tests_ControllerApi.dynt = Templates\Tests_ControllerApi.dynt
+		Templates\Tests_FluentValidator.dynt = Templates\Tests_FluentValidator.dynt
+		Templates\Tests_Model.ModifiedFlag.dynt = Templates\Tests_Model.ModifiedFlag.dynt
+		Templates\Tests_Service.dynt = Templates\Tests_Service.dynt
+		Templates\Web_ControllerApi.dynt = Templates\Web_ControllerApi.dynt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortFuze.WebApp", "ShortFuze.WebApp\ShortFuze.WebApp.csproj", "{EE7C4D8B-FF83-44A2-B471-F443A6733DCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A55328CD-A4BA-4D32-ACE7-C7F08A6E2C5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55328CD-A4BA-4D32-ACE7-C7F08A6E2C5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55328CD-A4BA-4D32-ACE7-C7F08A6E2C5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55328CD-A4BA-4D32-ACE7-C7F08A6E2C5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5063D6F-2473-4E50-BF06-769C13E330F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5063D6F-2473-4E50-BF06-769C13E330F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5063D6F-2473-4E50-BF06-769C13E330F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5063D6F-2473-4E50-BF06-769C13E330F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AB6C95E-F0B8-4AC7-95B1-CBD8B0EA2A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AB6C95E-F0B8-4AC7-95B1-CBD8B0EA2A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AB6C95E-F0B8-4AC7-95B1-CBD8B0EA2A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AB6C95E-F0B8-4AC7-95B1-CBD8B0EA2A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE7C4D8B-FF83-44A2-B471-F443A6733DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7C4D8B-FF83-44A2-B471-F443A6733DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7C4D8B-FF83-44A2-B471-F443A6733DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7C4D8B-FF83-44A2-B471-F443A6733DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

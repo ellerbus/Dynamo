@@ -1,0 +1,42 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\Templates\{{ CAMELCLASS }}.detail.html{% endcapture -%}
+
+<p ng-show="vm.{{ CAMELCLASS }} == null" class="text-center">
+	<i class="fa fa-spinner fa-spin"></i> Gathering the requested {{ BASECLASS }} Data ...
+</p>
+
+<form name="vm.{{ CAMELCLASS }}Form" novalidate co-error-display co-form ng-hide="vm.{{ CAMELCLASS }} == null">
+
+	{% for column in table.primary_keys %}
+	<div class="form-group" ng-hide="vm.action == 'create'">
+		<label class="col-sm-4 control-label">
+			{{ column.property_name | label }}
+		</label>
+		<div class="col-sm-8 form-control-static" ng-bind="vm.{{ CAMELCLASS }}.{{ column.parameter_name }}"></div>
+	</div>{% endfor %}
+
+	{% for column in table.columns %}{% if column.is_primary_key == false %}
+
+	<div class="form-group">{% if column.clr_type == 'bool' %}
+		<div class="checkbox col-sm-offset-4 col-sm-8">
+			<label>
+				<input type="checkbox" name="{{ column.parameter_name }}" ng-model="vm.{{ CAMELCLASS }}.{{ column.parameter_name }}" ng-disabled="vm.action == 'delete'" /> {{ column.property_name | label }}
+			</label>
+		</div>{% else %}
+		<label class="col-sm-4 control-label">
+			{{ column.property_name | label }}
+		</label>
+		<div class="col-sm-8">
+			<input class="form-control" name="{{ column.parameter_name }}" placeholder="{{ column.property_name | label }}" ng-model="vm.{{ CAMELCLASS }}.{{ column.parameter_name }}" ng-disabled="vm.action == 'delete'" />
+		</div>{% endif %}
+	</div>{% endif %}{% endfor %}
+
+	<div class="form-group">
+		<div class="col-sm-offset-4 col-sm-8">
+			<button type="submit" class="btn" co-button="{{ "{{" }} vm.action }}" co-busy-click="vm.save()"></button>
+			<a href="#/{{ CAMELCLASS | plural }}" class="btn btn-default">Cancel</a>
+		</div>
+	</div>
+
+</form>

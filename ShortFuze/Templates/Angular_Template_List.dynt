@@ -1,0 +1,25 @@
+{% include 'NamingConventions' -%}
+{% capture PROJECT %}{{ SOLUTION }}.Web{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\App\{{ BASECLASSES }}\Templates\{{ CAMELCLASS }}.list.html{% endcapture -%}
+
+<p ng-show="vm.{{ CAMELCLASSES }} == null" class="text-center">
+	<i class="fa fa-spinner fa-spin"></i> Gathering the requested {{ BASECLASSES }} ...
+</p>
+
+<table co-table ng-hide="vm.{{ CAMELCLASSES }} == null">
+	<thead>
+		<tr>{% for column in table.columns %}{% if column.is_primary_key == false %}
+			<th>{{ column.property_name | label }}</th>{% endif %}{% endfor %}
+			<th class="icons">
+				<a co-icon="create" href="#/{{ CAMELCLASSES }}/create"></a>
+			</th>
+		</tr>
+	</thead>
+	<tr ng-repeat="{{ CAMELCLASS }} in vm.{{ CAMELCLASSES }}">{% for column in table.columns %}{% if column.is_primary_key == false %}
+		<td ng-bind="{{ CAMELCLASS }}.{{ column.parameter_name }}"></td>{% endif %}{% endfor %}
+		<td class="icons">
+			<a co-icon="update" href="#/{{ CAMELCLASSES }}/update/{% for column in table.primary_keys %}{{ "{{ " }}{{ CAMELCLASS }}.{{ column.parameter_name }} }}{% if forloop.last == false %}/{% endif %}{% endfor %}"></a>
+			<a co-icon="delete" href="#/{{ CAMELCLASSES }}/delete/{% for column in table.primary_keys %}{{ "{{ " }}{{ CAMELCLASS }}.{{ column.parameter_name }} }}{% if forloop.last == false %}/{% endif %}{% endfor %}"></a>
+		</td>
+	</tr>
+</table>

@@ -1,0 +1,51 @@
+{% include 'NamingConventions' -%}
+{% capture CORELIB %}{{ SOLUTION }}.Core{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.Tests{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Builders\{{ BUILDERCLASS }}.cs{% endcapture -%}
+using System;
+using {{ CORELIB }}.Models;
+
+namespace {{ PROJECT }}.Builders
+{
+    ///	<summary>
+    ///
+    ///	</summary>
+    public class {{ BUILDERCLASS }} : BaseBuilder<{{ BASECLASS }}>
+    {
+        #region Constructors
+
+        public {{ BUILDERCLASS }}()
+        {
+        }
+        
+        #endregion
+        
+        #region Methods
+
+        public override {{ BASECLASS }} CreateNew(int idx = 0)
+        {
+            var item = new {{ BASECLASS }}()
+            { {% for column in table.columns %}
+                {{ column.property_name }} = {% include 'CSharpTestValues' %}{%if forloop.last == false %}, {% endif %}{% endfor %}
+            };
+
+            return item;
+        }
+        
+        public override {{ BASECLASS }} CreateExisting(int idx = 0)
+        {
+            var item = CreateNew(idx);
+
+            item.ModifiedId = ModifiedId;
+            item.ModifiedAt = ModifiedAt;
+
+            return item;
+        }
+        
+        #endregion
+
+        #region Properties
+        
+        #endregion
+    }
+}

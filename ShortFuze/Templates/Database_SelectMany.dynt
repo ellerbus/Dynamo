@@ -1,0 +1,12 @@
+{% include 'NamingConventions' -%}
+{% capture PROC %}{{ BASECLASS }}SelectMany{% endcapture -%}
+{% capture PROJECT %}{{ SOLUTION }}.DatabaseSchema{% endcapture -%}
+{% capture FILENAME %}{{ PROJECT }}\Procedures\{{ BASECLASS }}\{{ PROC }}.sql{% endcapture -%}
+
+create procedure mfc.{{ PROC }}
+as
+
+select	*
+from	dbo.{{ table.name }}
+
+go
