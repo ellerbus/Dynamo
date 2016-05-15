@@ -12,9 +12,11 @@
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" />
   <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css" />
   <link href="//fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet" type="text/css" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/2.0.0/toaster.min.css" rel="stylesheet" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.min.css" rel="stylesheet" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css" rel="stylesheet">
 
-  <link href="Content/angular-growl.min.css" rel="stylesheet" />
-  <link href="Content/Site.min.css" rel="stylesheet" />
+  <!-- link href="Content/Site.min.css" rel="stylesheet" / -->
 
   <style type="text/css">
     [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -50,30 +52,32 @@
   <div class="splash" ng-cloak="">
     <h2><i class="fa fa-fw fa-spin fa-spinner"></i>Loading ...</h2>
   </div>
-  <co-navigation></co-navigation>
 
   <div class="container">
+    <navigation></navigation>
     <co-bread-crumbs></co-bread-crumbs>
-    <div growl></div>
     <ng-view></ng-view>
   </div>
 
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-route.min.js"></script>
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-resource.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-resource.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.tpls.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
-  <script type="text/javascript" src="Scripts/bootstrap-fileinput.min.js"></script>
-  <script type="text/javascript" src="Scripts/bootstrap-hover-dropdown.es5.min.js"></script>
-  <script type="text/javascript" src="Scripts/angular-growl.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.min.js"></script>
   <script type="text/javascript">
     var deps = [
-      'ngRoute', 'angular-growl'
+      'ngRoute', 'toastr', 'angular-loading-bar'
     ];
 
     angular.module('app', deps);
+
+    var configuration = <%= GetVersion() %>;
 
     $(function () { angular.bootstrap(document, ['app']); });
   </script>

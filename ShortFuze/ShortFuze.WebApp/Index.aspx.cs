@@ -23,17 +23,15 @@ namespace ShortFuze.WebApp
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append(GetVersion()).AppendLine();
-
             if (Request.IsLocal)
             {
-                DirectoryInfo root = new DirectoryInfo(Server.MapPath("~//App"));
+                DirectoryInfo root = new DirectoryInfo(Server.MapPath("~/App"));
 
                 foreach (string file in GetScripts(root))
                 {
                     string js = file.Replace(root.FullName, "").Replace('\\', '/');
 
-                    sb.AppendFormat("  <script type='text/javascript' src='App{0}'></script>").AppendLine();
+                    sb.AppendFormat("  <script type='text/javascript' src='App{0}'></script>", js).AppendLine();
                 }
             }
             else
@@ -46,9 +44,9 @@ namespace ShortFuze.WebApp
             return sb.ToString();
         }
 
-        private string GetVersion()
+        protected string GetVersion()
         {
-            Version v = GetType().Assembly.GetName().Version;
+            Version v = typeof(Global).Assembly.GetName().Version;
 
             string a = "{0}.{1}".FormatArgs(v.Major, v.Minor);
 

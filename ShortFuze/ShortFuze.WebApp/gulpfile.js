@@ -11,9 +11,9 @@ var templateCache = require('gulp-angular-templatecache');
 gulp.task('ng-templates', function () {
 
     var opts = {
-        templateHeader: 'define(['require', 'exports', 'angular'], function (require, exports, angular) {    angular.module('app.templates', []).run(['$templateCache', function ($templateCache) {',
-        templateBody: '$templateCache.put('App/<%= url %>', '<%= contents %>');',
-        templateFooter: '}]);});'
+        templateHeader: 'angular.module("app", []).run(["$templateCache", function ($templateCache) {',
+        templateBody: '$templateCache.put("App/<%= url %>", "<%= contents %>");',
+        templateFooter: '}]));'
     };
 
     return gulp.src('App/**/*.html')
@@ -21,8 +21,13 @@ gulp.task('ng-templates', function () {
         .pipe(gulp.dest('App'));
 });
 
-gulp.task('ng-requirejs', ['ng-templates'], function (cb) {
-    rjs.optimize(cfg, function (resp) { cb(); }, cb);
+gulp.task('ng-js', ['ng-templates'], function () {
+
+    return gulp.src(['App/**/*.js'])
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('Scripts/'));
+
 });
 
 

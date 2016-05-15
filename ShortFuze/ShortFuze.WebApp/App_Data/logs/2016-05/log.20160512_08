@@ -1,0 +1,5 @@
+2016-05-12 08:45:13,600 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-12 08:45:48,108 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-12 08:47:21,812 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-12 08:47:23,351 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-12 08:47:30,155 [DEBUG 1     InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]

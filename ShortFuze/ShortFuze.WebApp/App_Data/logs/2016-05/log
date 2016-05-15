@@ -1,0 +1,18 @@
+2016-05-15 16:05:40,932 [INFO  27    Global               (null)                        ] ------------------------------
+2016-05-15 16:05:42,274 [DEBUG 27    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:05:42,747 [DEBUG 27    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 16:07:38,646 [INFO  27    Global               (null)                        ] ------------------------------
+2016-05-15 16:07:39,812 [DEBUG 27    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:07:40,312 [DEBUG 27    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 16:14:00,839 [INFO  12    Global               (null)                        ] ------------------------------
+2016-05-15 16:14:02,062 [DEBUG 12    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:14:02,446 [DEBUG 12    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 16:16:01,152 [INFO  12    Global               (null)                        ] ------------------------------
+2016-05-15 16:16:02,401 [DEBUG 12    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:16:02,686 [DEBUG 12    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 16:20:26,662 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-15 16:20:27,994 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:20:28,255 [DEBUG 1     InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 16:44:30,089 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-15 16:44:32,993 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 16:44:33,567 [DEBUG 1     InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]

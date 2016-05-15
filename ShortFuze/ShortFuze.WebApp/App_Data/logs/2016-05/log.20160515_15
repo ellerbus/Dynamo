@@ -1,0 +1,11 @@
+2016-05-15 15:30:47,436 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-15 15:30:56,300 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 15:36:43,526 [INFO  12    Global               (null)                        ] ------------------------------
+2016-05-15 15:36:46,191 [DEBUG 12    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 15:36:47,460 [DEBUG 12    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 15:40:37,862 [INFO  12    Global               (null)                        ] ------------------------------
+2016-05-15 15:40:39,163 [DEBUG 12    InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 15:40:39,408 [DEBUG 12    InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
+2016-05-15 15:49:15,276 [INFO  1     Global               (null)                        ] ------------------------------
+2016-05-15 15:49:17,036 [DEBUG 1     InjectorConfig       (null)                        ] Accessing Database
+2016-05-15 15:49:17,386 [DEBUG 1     InjectorConfig       (null)                        ] Accessed Database=[SHORT_FUZE]
