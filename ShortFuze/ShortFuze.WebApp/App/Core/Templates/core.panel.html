@@ -1,8 +1,10 @@
-﻿
-<div class="panel panel-default">
+﻿<div class="panel" ng-class="panelType">
   <div class="panel-heading">
+    <span class="pull-right pointer fa fa-fw" ng-show="canToggle"
+          ng-class="{ 'fa-chevron-circle-up': !toggle, 'fa-chevron-circle-down': toggle }"
+          ng-click="toggle = !toggle"></span>
     <h3 class="panel-title" ng-bind="panelTitle"></h3>
   </div>
-  <div class="panel-body" ng-transclude>
+  <div class="panel-body" ng-transclude ng-hide="canToggle && !toggle">
   </div>
 </div>

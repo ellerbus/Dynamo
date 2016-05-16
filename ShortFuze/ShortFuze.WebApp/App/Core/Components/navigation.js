@@ -11,4 +11,3 @@ var core;
         angular.module('app').component('navigation', new navigation());
     })(app = core.app || (core.app = {}));
 })(core || (core = {}));
-//# sourceMappingURL=navigation.js.map

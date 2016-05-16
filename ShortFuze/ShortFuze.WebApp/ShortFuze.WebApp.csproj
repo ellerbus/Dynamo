@@ -131,8 +131,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\Core\Templates\core.form.html" />
+    <Content Include="App\Core\Templates\core.modal.html" />
     <Content Include="App\Core\Templates\core.navigation.html" />
     <Content Include="App\Core\Templates\core.pager.html" />
+    <Content Include="App\Core\Templates\core.pager.html" />
+    <Content Include="App\Core\Templates\core.panel.html" />
     <Content Include="App\Core\Templates\core.panel.html" />
     <Content Include="App\Core\Templates\core.waiting.html" />
     <Content Include="packages.config" />
@@ -185,8 +188,14 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="App\Core\Components\navigation.ts" />
-    <TypeScriptCompile Include="App\Core\Controllers\MainController.ts" />
-    <TypeScriptCompile Include="App\Core\Directives\coHoverDropdown.ts" />
+    <TypeScriptCompile Include="App\Core\Controllers\HeadController.ts" />
+    <TypeScriptCompile Include="App\Core\Directives\coBusyClick.ts" />
+    <TypeScriptCompile Include="App\Core\Filters\escape.ts" />
+    <TypeScriptCompile Include="App\Core\Filters\humanize.ts" />
+    <TypeScriptCompile Include="App\Core\Filters\mdy.ts" />
+    <TypeScriptCompile Include="App\Core\Filters\mdyhm.ts" />
+    <TypeScriptCompile Include="App\Core\Filters\yn.ts" />
+    <TypeScriptCompile Include="App\Core\Services\RepositoryService.ts" />
     <TypeScriptCompile Include="App\Templates.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-component-router.d.ts" />
@@ -196,7 +205,6 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment-node.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\moment\moment.d.ts" />

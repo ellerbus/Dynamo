@@ -1,6 +1,6 @@
 ﻿module core.app
 {
-    class MainController
+    class HeadController
     {
         page: any = { title: 'Short Fuze'};
 
@@ -11,5 +11,5 @@
         }
     }
 
-    angular.module('app').controller('MainController', MainController);
+    angular.module('app').controller('HeadController', HeadController);
 }
