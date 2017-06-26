@@ -38,7 +38,7 @@ Source: "{#MySrcPath}\DatabaseSchemaReader.dll";  DestDir: "{userpf}"; Flags: ig
 Source: "{#MySrcPath}\DotLiquid.dll";             DestDir: "{userpf}"; Flags: ignoreversion
 Source: "{#MySrcPath}\Dynamo.Core.dll";           DestDir: "{userpf}"; Flags: ignoreversion
 Source: "{#MySrcPath}\Dynamo.Forms.exe.config";   DestDir: "{userpf}"; Flags: ignoreversion  
-Source: "{#MySrcPath}\EnsureThat.dll";            DestDir: "{userpf}"; Flags: ignoreversion
+Source: "{#MySrcPath}\Ensure.That.dll";           DestDir: "{userpf}"; Flags: ignoreversion
 Source: "{#MySrcPath}\ShortFuze.zip";             DestDir: "{userpf}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
