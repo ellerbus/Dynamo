@@ -34,10 +34,6 @@ namespace Dynamo.Forms
 
             dataProviderComboBox.DataSource = providers;
 
-            linesOfCodeBindingSource.DataSource = new LinesOfCodeViewModel();
-
-            LinesOfCodeViewModel.ProgressChanged += LinesOfCodeViewModel_ProgressChanged;
-
             generateCodeFilesToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
 
             refreshToolStripMenuItem.DataBindings.Add("Enabled", viewModelBindingSource, "CanGenerate");
@@ -111,27 +107,7 @@ namespace Dynamo.Forms
 
                     solutionLinkLabel.DataBindings[0].ReadValue();
                     templateLinkLabel.DataBindings[0].ReadValue();
-
-                    LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.SolutionFolder;
                 }
-            }
-        }
-
-        private void LinesOfCodeViewModel_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            Application.DoEvents();
-
-            if (InvokeRequired)
-            {
-                Action<string> a = new Action<string>(x => linesOfCodeStatusLabel.Text = x);
-
-                Invoke(a, e.UserState as string);
-            }
-            else
-            {
-                linesOfCodeStatusLabel.Text = e.UserState as string;
-
-                Application.DoEvents();
             }
         }
 
@@ -332,15 +308,6 @@ namespace Dynamo.Forms
 
             Invoke(schema);
 
-            Action loc = new Action(() =>
-            {
-                LinesOfCodeViewModel.CurrentPath = GeneratorViewModel.SolutionFolder;
-
-                Application.DoEvents();
-            });
-
-            Invoke(loc);
-
             Application.DoEvents();
         }
 
@@ -428,11 +395,6 @@ namespace Dynamo.Forms
         private GeneratorViewModel GeneratorViewModel
         {
             get { return viewModelBindingSource.DataSource as GeneratorViewModel; }
-        }
-
-        private LinesOfCodeViewModel LinesOfCodeViewModel
-        {
-            get { return linesOfCodeBindingSource.DataSource as LinesOfCodeViewModel; }
         }
 
         #endregion

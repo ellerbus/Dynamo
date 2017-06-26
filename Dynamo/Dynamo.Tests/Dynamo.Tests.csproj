@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dynamo.Tests</RootNamespace>
     <AssemblyName>Dynamo.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -36,17 +36,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Augment, Version=1.5.5819.19079, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Augment.1.5.5819.19079\lib\net45\Augment.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Augment, Version=2.1.6283.21689, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Augment.2.1.0\lib\net461\Augment.dll</HintPath>
     </Reference>
-    <Reference Include="DatabaseSchemaReader, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DatabaseSchemaReader.1.5.0.5\lib\net45\DatabaseSchemaReader.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DatabaseSchemaReader, Version=2.3.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DatabaseSchemaReader.2.3.2\lib\net45\DatabaseSchemaReader.dll</HintPath>
     </Reference>
-    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ensure.That, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.5.0.0\lib\net45\Ensure.That.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

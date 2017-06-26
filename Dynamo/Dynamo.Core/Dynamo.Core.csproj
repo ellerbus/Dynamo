@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dynamo.Core</RootNamespace>
     <AssemblyName>Dynamo.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,20 +33,17 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Augment, Version=1.5.5819.19079, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Augment.1.5.5819.19079\lib\net45\Augment.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Augment, Version=2.1.6283.21689, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Augment.2.1.0\lib\net461\Augment.dll</HintPath>
     </Reference>
-    <Reference Include="DatabaseSchemaReader, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DatabaseSchemaReader.1.5.0.5\lib\net45\DatabaseSchemaReader.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DatabaseSchemaReader, Version=2.3.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DatabaseSchemaReader.2.3.2\lib\net45\DatabaseSchemaReader.dll</HintPath>
     </Reference>
-    <Reference Include="DotLiquid">
-      <HintPath>..\packages\DotLiquid.1.8.0\lib\NET45\DotLiquid.dll</HintPath>
+    <Reference Include="DotLiquid, Version=2.0.145.0, Culture=neutral, PublicKeyToken=82e46016ecf9f07c, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotLiquid.2.0.145\lib\net45\DotLiquid.dll</HintPath>
     </Reference>
-    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ensure.That, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.5.0.0\lib\net45\Ensure.That.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,9 +62,6 @@
     <Compile Include="GeneratorColumn.cs" />
     <Compile Include="GeneratorColumnCollection.cs" />
     <Compile Include="GeneratorTable.cs" />
-    <Compile Include="LinesOfCodeCounter.cs" />
-    <Compile Include="LinesOfCodeMetric.cs" />
-    <Compile Include="LinesOfCodeViewModel.cs" />
     <Compile Include="GeneratorProject.cs" />
     <Compile Include="GeneratorViewModel.cs" />
     <Compile Include="Pluralizer.cs" />
